@@ -1,6 +1,6 @@
 &ACCESS RVP
 &REL 1
-&COMMENT Data for SIMPLE_MOVE
+&COMMENT Auto-loop PTP Move to P1 with external trigger
 DEFDAT SIMPLE_MOVE
 
 ; Define position P1

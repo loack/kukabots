@@ -20,7 +20,6 @@ class KukaVarProxyClient:
             self.sock = None
             print("Disconnected")
 
-
     def send(self, var, val, msgID):
         """
         kukavarproxy message format is 
@@ -58,7 +57,6 @@ class KukaVarProxyClient:
             return self.sock.recv(1024)                            # Return response with buffer size of 1024 bytes
         except:
             self.error_list(1)
-
 
     def __get_var(self, msg):
         """
@@ -116,6 +114,34 @@ class KukaVarProxyClient:
         elif ID == 3:
             print ("Error in write() statement.")
             print ("    Variable value is not defined.")
+
+    #define a function to get all current axis values
+    def get_current_axis_values(self):
+        """
+        Get the current axis values of the robot.
+        Returns a dictionary with axis names as keys and their values.
+        """
+        axis_values = self.read('$AXIS_ACT')
+        return axis_values
+    def get_current_position(self):
+        """
+        Get the current position of the robot.
+        Returns a dictionary with position names as keys and their values.
+        """
+        pos_values = self.read('$POS_ACT')
+        return pos_values
+    def get_current_temperature(self):
+        """
+        Get the current temperature of the robot.
+        Returns a dictionary with temperature names as keys and their values.
+        """
+        temp_values = []
+        for i in range(1,7):
+            temp_value = self.read(f'$MOT_TEMP[{i}]')
+            if temp_value == None:
+                break
+            temp_values.append(temp_value)
+        return temp_values
 
 
 if __name__ == "__main__":

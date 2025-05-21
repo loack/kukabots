@@ -1,6 +1,6 @@
 &ACCESS RVP
 &REL 1
-&COMMENT Simple PTP Move to P1
+&COMMENT Auto-loop PTP Move to P1 with external trigger
 DEF SIMPLE_MOVE ( )
     ; Initialize the program
     BAS (#INITMOV, 0)
@@ -10,8 +10,17 @@ DEF SIMPLE_MOVE ( )
     $ACC.CP = 50        ; Set acceleration to 50%
     $APO.CPTP = 100     ; Set approximation distance for PTP motion
 
-    ; Move to position P1
-    PTP P1
+    ; Main loop: wait for trigger and move to P1
+    LOOP
+        ; Wait for external trigger (e.g., $IN[1] set by KUKAVARPROXY)
+        WAIT FOR TRIG_USER
+
+        ; Move to position P1
+        PTP P1
+
+        ; Optional: Wait for trigger to be reset before next cycle
+        WAIT FOR NOT TRIG_USER
+    ENDLOOP
 
     ; End of program
 END
