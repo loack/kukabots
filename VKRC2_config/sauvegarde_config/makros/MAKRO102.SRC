@@ -1,0 +1,189 @@
+&ACCESS RV1
+&REL 1
+&COMMENT Fase 1 u 2 Reset
+&PARAM TPVW_VERSION = 3.3.5
+DEF MAKRO102 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO102 Reset Fase 1u2 Reset Verklemmanzeige * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO102 Reset Fase 1u2 Reset Verklemmanzeige * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Reset Fase 1 Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Fase 1 Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A549 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A549 = EIN,3: BOASG
+$OUT[549]=TRUE
+;ENDFOLD
+; FOLD -- Reset Fase 2 Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Fase 2 Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A597 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A597 = EIN,3: BOASG
+$OUT[597]=TRUE
+;ENDFOLD
+; FOLD WARTE ZEIT 2 [1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VWTASG %P 2:WARTE ZEIT 2 [1/10Sek],3: WTASG
+$LOOP_MSG[]="Wartezeit..."
+$LOOP_CONT=TRUE
+WAIT SEC (2)*0.1
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Reset Fase 1 u 2 Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Fase 1 u 2 Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A549 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A549 = AUS,3: BOASG
+$OUT[549]=FALSE
+;ENDFOLD
+; FOLD A597 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A597 = AUS,3: BOASG
+$OUT[597]=FALSE
+;ENDFOLD
+; FOLD -- erneuter Aufruf von Makro 102 in Makro 99 unterbinden --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- erneuter Aufruf von Makro 102 in Makro 99 unterbinden --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F197 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F197 = EIN,3: BOASG
+$FLAG[197]=TRUE
+;ENDFOLD
+; FOLD -- Einstellung Stoerzeit fuer Kappenfraeser in 1/10 Sek. --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Einstellung Stoerzeit fuer Kappenfraeser in 1/10 Sek. --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i7 ( EIN ) = -12;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i7 ( EIN ) = -12,3: ARIASG
+VW(#COUNTER,TRUE,7,(-12))
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 1 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 1 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F571 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F571 = EIN,3: BOASG
+$FLAG[571]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 2 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 2 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F572 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F572 = EIN,3: BOASG
+$FLAG[572]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 3 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 3 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F573 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F573 = EIN,3: BOASG
+$FLAG[573]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 4 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 4 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F574 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F574 = EIN,3: BOASG
+$FLAG[574]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 5 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 5 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F575 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F575 = EIN,3: BOASG
+$FLAG[575]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 6 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 6 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F576 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F576 = EIN,3: BOASG
+$FLAG[576]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 7 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 7 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F577 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F577 = EIN,3: BOASG
+$FLAG[577]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 8 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 8 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F578 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F578 = EIN,3: BOASG
+$FLAG[578]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 9 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 9 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F579 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F579 = EIN,3: BOASG
+$FLAG[579]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 10 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 10 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F580 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F580 = EIN,3: BOASG
+$FLAG[580]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 11 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 11 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F581 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F581 = EIN,3: BOASG
+$FLAG[581]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 12 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 12 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F582 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F582 = EIN,3: BOASG
+$FLAG[582]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 13 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 13 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F583 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F583 = EIN,3: BOASG
+$FLAG[583]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 14 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 14 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F584 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F584 = EIN,3: BOASG
+$FLAG[584]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 15 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 15 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F585 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F585 = EIN,3: BOASG
+$FLAG[585]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 16 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 16 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F586 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F586 = EIN,3: BOASG
+$FLAG[586]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 17 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 17 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F587 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F587 = EIN,3: BOASG
+$FLAG[587]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 18 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 18 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F588 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F588 = EIN,3: BOASG
+$FLAG[588]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 19 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 19 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F589 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F589 = EIN,3: BOASG
+$FLAG[589]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 20 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 20 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F590 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F590 = EIN,3: BOASG
+$FLAG[590]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 21 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 21 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F591 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F591 = EIN,3: BOASG
+$FLAG[591]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 22 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 22 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F592 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F592 = EIN,3: BOASG
+$FLAG[592]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 23 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 23 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F593 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F593 = EIN,3: BOASG
+$FLAG[593]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 24 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 24 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F594 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F594 = EIN,3: BOASG
+$FLAG[594]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 25 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 25 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F595 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F595 = EIN,3: BOASG
+$FLAG[595]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Auswertung Verklemmanzeige 26 = Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Auswertung Verklemmanzeige 26 = Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F596 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F596 = EIN,3: BOASG
+$FLAG[596]=TRUE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

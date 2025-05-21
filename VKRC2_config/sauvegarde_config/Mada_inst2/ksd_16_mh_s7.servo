@@ -1,0 +1,22 @@
+;****************************************
+;*** KUKA   Parametersatz             ***
+;*** Servoregler: KSD1-16             ***
+;*** Motortyp:  H   1FK7081-5AZ S40   ***
+;*** Motortyp:  H   H MCS14F 41 Vxx   ***
+;*** Version 0	vom 03.02.03          ***
+;****************************************
+;
+;
+PI   1069,  0 =    62    ;VP_Isq-Regler
+PI   1070,  0 =   300    ;KI_Isq-Regler
+PI   1071,  0 =    61    ;VP_Isd-Regler
+PI   1072,  0 =   300    ;KI_Isd-Regler
+PI   1073,  0 =   138    ;Back_EMF
+PI   1092,  0 =    18    ;Reglervorsteuerung
+PI   1018,  0 =     0    ;Schaltfrequenz 4kHz
+;PI   1100,  0 =   -500   ;FS Isdmax
+;PI   1101,  0 =    200   ;FS p
+;PI   1102,  0 =    2000  ;FS I
+;PI   1103,  0 =    240   ;FS Eins
+;PI   1104,  0 =     40   ;FS Hy
+;

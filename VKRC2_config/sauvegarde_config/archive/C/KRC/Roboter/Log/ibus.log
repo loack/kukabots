@@ -1,0 +1,65 @@
+FILE_PTR_POS=005042
+Start IBS PCI Driver: 04.05.15 : 19:36:43                                       
+CLogFile : Load log server status: 0                                            
+15/05/04 19:36:43:  IB: InitInstance: Driver version: 1.5.5.2                   
+15/05/04 19:36:43:  IB: INI-File Entries:                                       
+15/05/04 19:36:43:  IB: BoardType: 0                                            
+15/05/04 19:36:43:  IB: Boardnumber: 1                                          
+15/05/04 19:36:43:  IB: Extern Start: 0                                         
+15/05/04 19:36:43:  IB: Log-File: log\ibus.log                                  
+15/05/04 19:36:43:  IB: Debug Flag: 0x23                                        
+15/05/04 19:36:43:  IB: Reset Flag: 0                                           
+15/05/04 19:36:43:  IB: Watchdog: 1                                             
+15/05/04 19:36:43:  IB: Checklevel: 0                                           
+15/05/04 19:36:43:  IB: Inaccuracy: 0                                           
+15/05/04 19:36:43:  IB: Passive Update: 0                                       
+15/05/04 19:36:43:  IB: Master Continue with warning: 1                         
+15/05/04 19:36:43:  IB: Master used: 1                                          
+15/05/04 19:36:43:  IB: Swap Master Bytes : 0                                   
+15/05/04 19:36:43:  IB: Status Master Register: 4696                            
+15/05/04 19:36:43:  IB: Parameter Master Register 1: -1                         
+15/05/04 19:36:43:  IB: Parameter Master Register 2: -1                         
+15/05/04 19:36:43:  IB: UserQuitPF Bit: 0                                       
+15/05/04 19:36:43:  IB: Slave ID : 0x5e8                                        
+15/05/04 19:36:43:  IB: Slave used : 1                                          
+15/05/04 19:36:43:  IB: Swap Slave Bytes : 1                                    
+15/05/04 19:36:43:  IB: Slave continue by error: 1                              
+15/05/04 19:36:43:  IB: MasterToSlaveOK Bit: 32                                 
+15/05/04 19:36:43:  IB: Status Slave Register: -1                               
+15/05/04 19:36:43:  IB: Parameter Slave Register : -1                           
+15/05/04 19:36:43:  IB: Testausgabe: 0                                          
+15/05/04 19:36:43:  IB: Autorestart : 0                                         
+15/05/04 19:36:43:  IB: Task Priority : 170                                     
+15/05/04 19:36:43:  IB: MsgTask Cycle Time : 10                                 
+15/05/04 19:36:43:  IB: Sending Retry Time : 5                                  
+15/05/04 19:36:43:  IB: Error Handling : 1                                      
+15/05/04 19:36:43:  IB: On error clear MPM out: 1                               
+15/05/04 19:36:43:  IB: CycleTask Cycle Time : 1                                
+15/05/04 19:36:43:  IB: CMD-Baudrate: 0                                         
+15/05/04 19:36:43:  IB: Message delay: 50                                       
+15/05/04 19:36:43:  IB: Used block id: 1                                        
+15/05/04 19:36:43:  IB: Break by error: 1                                       
+15/05/04 19:36:43:  IB: Timeout: 60000                                          
+15/05/04 19:36:43:  IB: N1: 2.0 Fase rizeni                                     
+15/05/04 19:36:43:  IB: N2: 3.0 M.frezky X21                                    
+15/05/04 19:36:43:  IB: N3: 4.0 RIP                                             
+15/05/04 19:36:43:  IB: N4: 5.0 Modul Os 1 X41                                  
+15/05/04 19:36:43:  IB: N5: 6.0 Modul Os 3 X61                                  
+15/05/04 19:36:43:  IB: N6: 7.0 Svar.kleste X91                                 
+15/05/04 19:36:43:  IB: <- INI-File:                                            
+15/05/04 19:36:44:  IB: CBaseInstance: Baudrate Master: 500k Baud.              
+15/05/04 19:36:45:  IB: CBaseInstance: FW-Version: 4.63.                        
+15/05/04 19:36:45:  IB: CBaseInstance: HW-Type: IBS PCI SC/RI-LK                
+15/05/04 19:36:45:  IB: CBaseInstance: HW-Version: 22                           
+15/05/04 19:36:45:  IB: CBaseInstance: status diagnostic register set to address
+>: 4696                                                                         
+15/05/04 19:36:47:  IB: CBaseInstance: slave MPM address for input: 0x0380.     
+15/05/04 19:36:47:  IB: CBaseInstance: slave MPM address for output: 0x0380.    
+15/05/04 19:36:47:  IB: CBaseInstance: Slave deactivated! Diagnostic Registers: 
+>diag state = 0x0016 diag para = 0x0000 diag info = 0x0000                      
+15/05/04 19:36:48:  IB: CBaseInstance: Open read data length (IO: 192 <-> Bus: 8
+>0)                                                                             
+15/05/04 19:36:48:  IB: CBaseInstance: Open write data length (IO: 200 <-> Bus: 
+>80)                                                                            
+=====  LAST_ENTRY  =====                                                        
+                                                                                

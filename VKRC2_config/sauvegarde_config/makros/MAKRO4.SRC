@@ -1,0 +1,191 @@
+&ACCESS RVO1
+&REL 5
+&COMMENT SZ 1 schweissen
+&PARAM TPVW_VERSION = 3.3.5
+DEF MAKRO4 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO4 S-zange1 Arbh zu - schweissen -Arbh auf* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO4 S-zange1 Arbh zu - schweissen -Arbh auf* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Zaehlbit Zeitmessung Start --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zaehlbit Zeitmessung Start --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A42 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A42 = EIN,3: BOASG
+$OUT[42]=TRUE
+;ENDFOLD
+; FOLD -- Anforderung Wasserabsaugung Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Anforderung Wasserabsaugung Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A79 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A79 = AUS,3: BOASG
+$OUT[79]=FALSE
+;ENDFOLD
+; FOLD -- Anforderung Kuehlwasser Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Anforderung Kuehlwasser Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A80 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A80 = EIN,3: BOASG
+$OUT[80]=TRUE
+;ENDFOLD
+; FOLD -- Kontr. Kuehlwasser & Zangentemp + o.Zuendung + Simu --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontr. Kuehlwasser & Zangentemp + o.Zuendung + Simu --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS (E171 & A169 + F440) & !E172 & E199 + E65 + F14;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS (E171 & A169 + F440) & !E172 & E199 + E65 + F14,3:  WBOASG
+$LOOP_MSG[]="(E171 & A169 + F440) & !E172 & E199 + E65 + F14"
+$LOOP_CONT=TRUE
+WAIT FOR (($IN[171] AND $OUT[169] OR $FLAG[440]) AND NOT $IN[172] AND $IN[199] OR $IN[65] OR $FLAG[14]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Kontr. !FK & !Quitt Stoe Fase & !Quitt Stoe Fraesen -- ;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontr. !FK & !Quitt Stoe Fase & !Quitt Stoe Fraesen -- ,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E545 & !E66 & !E69;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E545 & !E66 & !E69,3: WBOASG
+$LOOP_MSG[]="!E545 & !E66 & !E69"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[545] AND NOT $IN[66] AND NOT $IN[69]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Kontr. Fase mit Strom + Simu + o.Zuendung --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontr. Fase mit Strom + Simu + o.Zuendung --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E552 + F14 + E65;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E552 + F14 + E65,3: WBOASG
+$LOOP_MSG[]="E552 + F14 + E65"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[552] OR $FLAG[14] OR $IN[65]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Start Messung Zangenschliesszeit --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Start Messung Zangenschliesszeit --,3: VW_COMMENT
+;ENDFOLD
+; FOLD t6 ( EIN ) = 0[1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VTASG %P 2:t6 ( EIN ) = 0[1/10Sek],3: TASG
+VW(#SET_TIME,TRUE,6,0,0)
+;ENDFOLD
+; FOLD -- Arbeitshub Zange 1 zu --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Arbeitshub Zange 1 zu --,3: VW_COMMENT
+;ENDFOLD
+; FOLD SPSMAKRO0 = !F14;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO0 = !F14,3: MAKRO
+SELECT(#MAKRO,0,NOT $FLAG[14])
+;ENDFOLD
+; FOLD -- Uebertrag Zangenschliesszeit auf Zaehler --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Uebertrag Zangenschliesszeit auf Zaehler --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i3 ( EIN ) = t6 * 100;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i3 ( EIN ) = t6 * 100,3: ARIASG
+VW(#COUNTER,TRUE,3,$TIMER[6]*0.01*100)
+;ENDFOLD
+; FOLD -- Stop Messung --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Stop Messung --,3: VW_COMMENT
+;ENDFOLD
+; FOLD t6 ( EIN ) = STOP;%{E}%MKUKATPVW %CVW_SPS %VTSTOP %P 2:t6 ( EIN ) = STOP,3: TSTOP
+VW(#SET_TIME,TRUE,6,1,0)
+;ENDFOLD
+; FOLD -- Kontr. Fase io & Druck io + Simu --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontr. Fase io & Druck io + Simu --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E549 & !E550 & !E556 & !E557 & E554 + F14;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E549 & !E550 & !E556 & !E557 & E554 + F14,3: WBOASG
+$LOOP_MSG[]="E549 & !E550 & !E556 & !E557 & E554 + F14"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[549] AND NOT $IN[550] AND NOT $IN[556] AND NOT $IN[557] AND $IN[554] OR $FLAG[14]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Start Messung Schweisszeit --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Start Messung Schweisszeit --,3: VW_COMMENT
+;ENDFOLD
+; FOLD t7 ( EIN ) = 0[1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VTASG %P 2:t7 ( EIN ) = 0[1/10Sek],3: TASG
+VW(#SET_TIME,TRUE,7,0,0)
+;ENDFOLD
+; FOLD -- Schweissen Start = !Simulation --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Schweissen Start = !Simulation --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A545 = !F14;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A545 = !F14,3: BOASG
+$OUT[545]=NOT $FLAG[14]
+;ENDFOLD
+; FOLD -- Hilfsmerk Fase Stoer quitt mit Ablaufwiederholung Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Hilfsmerk Fase Stoer quitt mit Ablaufwiederholung Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F110 = !F14;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F110 = !F14,3: BOASG
+$FLAG[110]=NOT $FLAG[14]
+;ENDFOLD
+; FOLD -- Schweisspunktzaehler + 1 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Schweisspunktzaehler + 1 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i2 ( EIN ) = i2 + 1;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i2 ( EIN ) = i2 + 1,3: ARIASG
+VW(#COUNTER,TRUE,2,I[2]+1)
+;ENDFOLD
+; FOLD -- Kontr. Fertigkontakt Fase oder Simu --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontr. Fertigkontakt Fase oder Simu --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E545 + F14;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E545 + F14,3: WBOASG
+$LOOP_MSG[]="E545 + F14"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[545] OR $FLAG[14]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Hilfsmerk Fase Stoer quitt mit Ablaufwiederholung Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Hilfsmerk Fase Stoer quitt mit Ablaufwiederholung Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F110 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F110 = AUS,3: BOASG
+$FLAG[110]=FALSE
+;ENDFOLD
+; FOLD -- Schweissen Start Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Schweissen Start Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A545 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A545 = AUS,3: BOASG
+$OUT[545]=FALSE
+;ENDFOLD
+; FOLD -- Zaehlbit Zeitmessung Stop --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zaehlbit Zeitmessung Stop --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A42 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A42 = AUS,3: BOASG
+$OUT[42]=FALSE
+;ENDFOLD
+; FOLD -- Uebertrag Schweisszeit auf Zaehler --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Uebertrag Schweisszeit auf Zaehler --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i4 ( EIN ) = t7 * 100;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i4 ( EIN ) = t7 * 100,3: ARIASG
+VW(#COUNTER,TRUE,4,$TIMER[7]*0.01*100)
+;ENDFOLD
+; FOLD -- Meld.Kappenwechsel erforderl.= max Punktestand errei --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Meld.Kappenwechsel erforderl.= max Punktestand errei --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A71 = E548;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A71 = E548,3: BOASG
+$OUT[71]=$IN[548]
+;ENDFOLD
+; FOLD -- Kontr. !Max Punktestand + Startfraesen angewaehlt --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontr. !Max Punktestand + Startfraesen angewaehlt --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E548 + E67;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E548 + E67,3: WBOASG
+$LOOP_MSG[]="!E548 + E67"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[548] OR $IN[67]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Meld. Kappenwechsel erforderlich Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Meld. Kappenwechsel erforderlich Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A71 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A71 = AUS,3: BOASG
+$OUT[71]=FALSE
+;ENDFOLD
+; FOLD -- Bilden Hilfsmerker Kappenfraesen --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Bilden Hilfsmerker Kappenfraesen --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F1 = E546 & !E548 + F1 & !E548;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F1 = E546 & !E548 + F1 & !E548,3: BOASG
+$FLAG[1]=$IN[546] AND NOT $IN[548] OR $FLAG[1] AND NOT $IN[548]
+;ENDFOLD
+; FOLD -- Start Messung Zangenoeffnungszeit --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Start Messung Zangenoeffnungszeit --,3: VW_COMMENT
+;ENDFOLD
+; FOLD t6 ( EIN ) = t6[1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VTASG %P 2:t6 ( EIN ) = t6[1/10Sek],3: TASG
+VW(#SET_TIME,TRUE,6,0,$TIMER[6]*0.01)
+;ENDFOLD
+; FOLD -- Arbeitshub Zange 1 auf --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Arbeitshub Zange 1 auf --,3: VW_COMMENT
+;ENDFOLD
+; FOLD SPSMAKRO1 = EIN;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO1 = EIN,3: MAKRO
+SELECT(#MAKRO,1,TRUE)
+;ENDFOLD
+; FOLD -- Uebertrag Zangenoeffnungszeit auf Zaehler --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Uebertrag Zangenoeffnungszeit auf Zaehler --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i3 ( EIN ) = t6 * 100;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i3 ( EIN ) = t6 * 100,3: ARIASG
+VW(#COUNTER,TRUE,3,$TIMER[6]*0.01*100)
+;ENDFOLD
+; FOLD -- Hilfsmerker Kuehlwasserdurchfluss vorhanden --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Hilfsmerker Kuehlwasserdurchfluss vorhanden --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F440 = E171 & !A169;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F440 = E171 & !A169,3:  BOASG
+$FLAG[440]=$IN[171] AND NOT $OUT[169]
+;ENDFOLD
+; FOLD -- Anforderung Kuelwasser an BMS Zeitverzoegert Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Anforderung Kuelwasser an BMS Zeitverzoegert Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A80 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A80 = AUS,3: BOASG
+$OUT[80]=FALSE
+;ENDFOLD
+; FOLD Puls A80 = Pegel: EIN Zeit:5 [1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VPULS %P 2:Puls A80 = Pegel: EIN Zeit:5 [1/10Sek],3: PULS
+VW (#VW_PULSE, TRUE, 1, 0, 5, 80, TRUE)
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

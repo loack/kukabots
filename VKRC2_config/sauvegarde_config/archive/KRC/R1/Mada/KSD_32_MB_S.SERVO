@@ -1,0 +1,17 @@
+;****************************************
+;*** KUKA   Parametersatz             ***
+;*** Servoregler: KSD1-32             ***
+;*** Motortyp:  B       1FK6100 S39   ***
+;*** Lieferant: Fa. Siemens           ***
+;*** Version 1	vom 18.09.00          ***
+;****************************************
+;
+;
+PI   1069,  0 =    54    ;VP_Isq-Regler
+PI   1070,  0 =   189    ;KI_Isq-Regler
+PI   1071,  0 =    53    ;VP_Isd-Regler
+PI   1072,  0 =   189    ;KI_Isd-Regler
+PI   1073,  0 =   151    ;Back_EMF
+PI   1092,  0 =    18    ;Reglervorsteuerung
+PI   1018,  0 =     0    ;Schaltfrequenz 4kHz
+;

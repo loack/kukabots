@@ -1,0 +1,23 @@
+;Produced at: 14.10.00
+;                     12:15:30
+;
+;Type           : fast calculation
+;
+;Comment    : Default
+;
+0 ;min. A1
+0 ;max. A1
+-90 ;min. A2
+0 ;max. A2
+90 ;min. A3
+95 ;max. A3
+-300 ;min. A4
+300 ;max. A4
+-60 ;min. A5
+60 ;max. A5
+-300 ;min. A6
+300 ;max. A6
+100 ;Mass [kg]
+10 ;Periods
+RobotType: #KR150_2_TJ FLOOR ZH01
+ToolType: 100

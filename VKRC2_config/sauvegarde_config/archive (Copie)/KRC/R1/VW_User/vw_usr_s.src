@@ -1,0 +1,75 @@
+&ACCESS RV
+&PARAM TPVW_VERSION = 3.3.5
+DEF  VW_USR_S (USER_CMD :IN)
+; FOLD ;%{H}%MKUKATPVW
+;VW_USER Call
+;Graf RE-SA 11.09.97
+DECL VW_USER_CMD USER_CMD
+SWITCH  USER_CMD
+CASE #USR_INIT
+USER_INIT ()
+CASE #USR_SAW
+USER_SAW ()
+CASE #USR_RESET
+USER_RESET ()
+CASE #USR_CANCEL
+USER_CANCEL ()
+CASE #USR_LOOP
+USER_LOOP ()
+DEFAULT
+ENDSWITCH
+END
+;ENDFOLD
+;-----------------------------------------------------------
+; FOLD Init;%{PS}
+DEF  USER_INIT ()
+;Aufruf beim Start des SPS.SUB
+END
+;ENDFOLD
+;-----------------------------------------------------------
+; FOLD Satzanwahl;%{PS}
+DEF  USER_SAW ()
+;Aufruf bei Verlust der Satzkoinzidenz (z.B. Satzanwahl)
+END
+;ENDFOLD
+;-----------------------------------------------------------
+; FOLD Reset;%{PS}
+DEF  USER_RESET ()
+;Aufruf bei Programmreset
+END
+;ENDFOLD
+;-----------------------------------------------------------
+; FOLD Cancel ;%{PS}
+DEF  USER_CANCEL ()
+;Aufruf bei Programmabwahl
+END
+;ENDFOLD
+;-----------------------------------------------------------
+; FOLD Loop ;%{PS}
+DEF  USER_LOOP ()
+;zyklischer Aufruf im SPS.SUB
+IF ($OV_PRO == 100) THEN    ;Wenn Programmoverride 100% dann
+$FLAG[499] = TRUE           ;Flag 499 Ein
+ELSE                        ;sonst
+$FLAG[499] = FALSE          ;Flag 499 Aus
+ENDIF
+$OUT[32] = $PERI_RDY        ;Meldung an BMS Roboter Bremsen gelueftet
+$OUT[31] = $ALARM_STOP_INTERN     ;Meldung an BMS NotAUS bei False
+;-----------------------------------------------------------
+;Nimak Servomotorische Roboterzange
+;Freigabe Speichern r
+IF $OUT[12] THEN
+$OUT[454]=FALSE
+ENDIF
+;Freigabe Start Positionieren
+IF $OUT[1021] or $OUT[485] or $OUT[465] or $OUT[466] or $OUT[467] or $OUT[468] THEN
+$FLAG[485]=TRUE
+ENDIF
+;Freigabe Start Positionieren r
+IF $OUT[481] or $OUT[482] THEN
+$FLAG[485]=FALSE
+ENDIF
+;-----------------------------------------------------------
+END
+;ENDFOLD
+;-----------------------------------------------------------

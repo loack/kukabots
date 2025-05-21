@@ -1,0 +1,21 @@
+KUKA IOSYS LOGFILE
+------------------
+Log Date 4.5.15 : 19:36
+
+open ini-file successful, version 1.00
+
+driver MFCDRV information
+  object file    
+  driver ready   1
+  driver version 200000a
+  function entry 
+  input  objects 0
+  output objects 0
+
+driver INTERBUS information
+  object file    
+  driver ready   1
+  driver version 0105
+  function entry 
+  input  objects 16
+  output objects 17

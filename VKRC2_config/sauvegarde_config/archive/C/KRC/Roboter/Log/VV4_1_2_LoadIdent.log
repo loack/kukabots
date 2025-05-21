@@ -1,0 +1,92 @@
+19:30:47 .REINSTALL.EXE started at: May 04, 2015 19:30:47
+19:30:47 -----------------------------------------------------------------------------
+19:30:47 .Command line: -Q
+19:30:47 .Kit-Dll loaded from: C:\KRC_OPTION\LOADDETERMINATION\REINST\KIT.DLL
+19:30:47 .CheckKitVersion: TRUE (KitVersion: 1.2.1.0)
+19:30:47 .Get infos from current installed release
+19:30:47 !Unable to get value of registry key 'Patch'.
+19:30:47 !Unable to get value of registry key 'PatchDir'.
+19:30:47 .Use INI-File: C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\KukaUpd.ini
+19:30:47 .Check INI-files.
+19:30:47 !Section 'Exec4' not found in 'C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\KukaUpd.ini'.
+19:30:47 !Section 'ShortCuts' not found in 'C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\KukaUpd.ini'.
+19:30:47 !Section 'Delete0' not found in 'C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\KukaUpd.ini'.
+19:30:47 !Section 'Delete' not found in 'C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\KukaUpd.ini'.
+19:30:47 !Section 'WinDir' not found in 'C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\KukaUpd.ini'.
+19:30:47 !Unable to get 'LogFile' from KuKaUpd.ini
+19:30:47 .GetUserExeLangID: 0x405
+19:30:47 !Get LanguageDir no Id available in section [WinDir]
+19:30:47 !Get LanguageDir Id not found in section [WinDir]
+19:30:47 .Check whether 'KUKA_HMI.EXE' is running
+19:30:47 .Check whether 'CROSS3.EXE' is running
+19:30:47 .Check whether 'KUKABOF.EXE' is running
+19:30:47 .Check whether 'KUKADB.EXE' is running
+19:30:47 .No KRC process is running => RunOnce=FALSE
+19:30:47 !Unable to get 'Administrator' from KuKaUpd.ini
+19:30:47 !Unable to get 'ShowSecurityCheck' from KuKaUpd.ini
+19:30:47 !Unable to get 'KrcRunning' from KuKaUpd.ini
+19:30:47 .Start prepare Technology Restore installation
+19:30:47 .Don't check installed version and service pack version
+19:30:47 !Source path and ServicePack path are equal. No copy of files.
+19:30:47 .Delete work 0
+19:30:47 !Delete work nothing to do
+19:30:47 .Make SaveDir
+19:30:47 !Make SaveDir nothing to do
+19:30:47 .Save files
+19:30:47 .Copy files with wininit-method
+19:30:47 !Get NoHibernate: No value for NoHibernate found. Use 'AUTO'
+19:30:47 .Check whether 'KUKA_HMI.EXE' is running
+19:30:47 .Check whether 'CROSS3.EXE' is running
+19:30:47 .Check whether 'KUKABOF.EXE' is running
+19:30:47 .Check whether 'KUKADB.EXE' is running
+19:30:47 .No KRC process is running => RunOnce=FALSE
+19:30:47 .KRC process is not running => NoHibernate=FALSE
+19:30:47 .Check whether 'KUKA_HMI.EXE' is running
+19:30:47 .Check whether 'CROSS3.EXE' is running
+19:30:47 .Check whether 'KUKABOF.EXE' is running
+19:30:47 .Check whether 'KUKADB.EXE' is running
+19:30:47 .No KRC process is running => RunOnce=FALSE
+19:30:47 .Unregister files
+19:30:47 !RegSvr: File not found 'C:\KRC\TP\LoadDetermination\lib\RobLoad.dll'.
+19:30:47 .Delete work 1
+19:30:47 !Delete work nothing to do
+19:30:47 .Copy files final step
+19:30:54 .CopyDir: 22 from C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KRCSetup\KRC to C:\KRC
+19:30:54 .Execute check parameter: C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\Krcupd\XchgFile.exe #C:\KRC\Roboter\Krc\Steu\Mada\$option.dat | C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\Krcupd\$option.add
+19:30:54 .Execute start: "C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\Krcupd\XchgFile.exe" C:\KRC\Roboter\Krc\Steu\Mada\$option.dat | C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\Krcupd\$option.add
+19:30:55 .XchgFile: CmdLine "C:\KRC\Roboter\Krc\Steu\Mada\$option.dat | C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\Krcupd\$option.add"
+19:30:55 .Kit-Dll loaded from: C:\KRC_OPTION\LOADDETERMINATION\REINST\KIT.DLL
+19:30:55 .reading: C:\KRC\ROBOTER\KRC\STEU\MADA\$option.dat
+19:30:55 .reading: C:\KRC_OPTION\LOADDETERMINATION\REINST\INTERNAT\KRCUPD\$OPTION.ADD
+19:30:55 .replaced "BOOL $IDENT_OPT=TRUE" by "BOOL $IDENT_OPT=TRUE"
+19:30:55 .writing: C:\KRC\ROBOTER\KRC\STEU\MADA\$option.dat
+19:30:55 .XchgFile: success
+19:30:55 .Return value from executed program: 0
+19:30:55 .Register files
+19:30:57 .RegSvr: Register of C:\KRC\TP\LoadDetermination\lib\RobLoad.dll succeeded.
+19:30:57 .Save registry
+19:30:57 .Registry work
+19:30:57 !Unable to get 'RegeditDir' from KuKaUpd.ini use default value.
+19:30:57 .Registry work: "C:\KRC_OPTION\LOADDETERMINATION\REINST\Internat\KrcUpd\VxWinRAM.reg"
+19:30:57 .Modify files
+19:30:57 .Make shortcuts
+19:30:57 !No files available to make shortcuts
+19:30:57 .No update of patch info in registry
+19:30:57 .Add KukaLog
+19:30:57 .Force KRC1 to make cold start
+19:30:57 .Force no hibernate
+19:30:57 .Check whether 'KUKA_HMI.EXE' is running
+19:30:57 .Check whether 'CROSS3.EXE' is running
+19:30:57 .Check whether 'KUKABOF.EXE' is running
+19:30:57 .Check whether 'KUKADB.EXE' is running
+19:30:57 .No KRC process is running => RunOnce=FALSE
+19:30:57 .Don't force windows to make restart  after installation of the Technology Restore
+19:30:57 .Check whether 'KUKA_HMI.EXE' is running
+19:30:57 .Check whether 'CROSS3.EXE' is running
+19:30:57 .Check whether 'KUKABOF.EXE' is running
+19:30:57 .Check whether 'KUKADB.EXE' is running
+19:30:57 .No KRC process is running => RunOnce=FALSE
+19:30:57 .Technology Restore executed successfully!!
+19:30:57 !Unable to get 'DelSourceDir' from KuKaUpd.ini
+19:30:57 .REINSTALL.EXE ends at: May 04, 2015 19:30:57
+19:30:57 -----------------------------------------------------------------------------

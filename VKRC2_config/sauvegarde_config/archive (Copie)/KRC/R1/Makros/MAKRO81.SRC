@@ -1,0 +1,33 @@
+&COMMENT Profilfrei Ein
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO81 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO81  Alle Profilfrei Ein    * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO81  Alle Profilfrei Ein    * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A49 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A49 = EIN,3:  BOASG
+$OUT[49]=TRUE
+;ENDFOLD
+; FOLD A50 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A50 = AUS,3:  BOASG
+$OUT[50]=FALSE
+;ENDFOLD
+; FOLD A51 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A51 = EIN,3:  BOASG
+$OUT[51]=TRUE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

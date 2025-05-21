@@ -1,0 +1,62 @@
+&ACCESS RV
+&PARAM TPVW_VERSION = 3.3.5
+DEF  VW_USER (USER_CMD :IN, PARA1 :IN,PARA2 :IN,PARA3 :IN,PARA4 :IN,PARA5 :IN,PARA6 :IN,PARA7 :IN )
+; FOLD ;%{H} %MKUKATPVW
+;VW_USER Call
+;Graf RE-SA 25.11.96
+DECL VW_USER_CMD USER_CMD
+REAL PARA1,PARA2,PARA3,PARA4,PARA5,PARA6
+BOOL PARA7
+SWITCH  USER_CMD
+CASE #USR_INIT
+USER_INIT ()
+CASE #USR_ADV
+USER_ADV (PARA1,PARA2,PARA3,PARA4,PARA5,PARA6,PARA7)
+CASE #USR_TRIG
+USER_TRIG (PARA1,PARA2,PARA3,PARA4,PARA5,PARA6,PARA7)
+CASE #USR_MAIN
+USER_MAIN (PARA1,PARA2,PARA3,PARA4,PARA5,PARA6,PARA7)
+CASE #USR_SAW
+USER_SAW ()
+CASE #USR_RESET
+USER_RESET ()
+CASE #USR_CANCEL
+USER_CANCEL ()
+DEFAULT
+ENDSWITCH
+END
+DEF  USER_INIT ()
+;Aufruf am Programmanfang
+END
+;----------------------------------------------------------------
+DEF  USER_ADV (P1 :IN,P2 :IN, P3 :IN,P4 :IN,P5 :IN,P6 :IN,P7 :IN)
+;Aufruf im Vorlauf
+INT P1,P2,P3,P4,P5,P6
+BOOL P7
+END
+;----------------------------------------------------------------
+DEF  USER_TRIG (P1 :IN,P2 :IN, P3 :IN,P4 :IN,P5 :IN,P6 :IN,P7 :IN)
+;Aufruf im Trigger der Punkt-SPS
+INT P1,P2,P3,P4,P5,P6
+BOOL P7
+END
+;----------------------------------------------------------------
+DEF  USER_MAIN (P1 :IN,P2 :IN, P3 :IN,P4 :IN,P5 :IN,P6 :IN,P7 :IN)
+;Aufruf im Hauptlauf
+INT P1,P2,P3,P4,P5,P6
+BOOL P7
+END
+;----------------------------------------------------------------
+DEF  USER_SAW ()
+;Aufruf bei Verlust der Satzkoinzidenz (z.B. Satzanwahl)
+END
+;----------------------------------------------------------------
+DEF  USER_RESET ()
+;Aufruf bei Programmreset
+END
+;----------------------------------------------------------------
+DEF  USER_CANCEL ()
+;Aufruf bei Programmabwahl
+END
+;----------------------------------------------------------------
+;ENDFOLD

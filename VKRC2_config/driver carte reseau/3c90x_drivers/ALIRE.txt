@@ -1,0 +1,15 @@
+ \ \      / (_)_ __ |___ /_  __  ___  _ __ __ _ 
+  \ \ /\ / /| | '_ \  |_ \ \/ / / _ \| '__/ _` |
+   \ V  V / | | | | |___) >  < | (_) | | | (_| |
+    \_/\_/  |_|_| |_|____/_/\_(_)___/|_|  \__, |
+                                          |___/ 
+
+Uploadé sur win3x.org... protection et sauvegarde du patrimoine informatique.
+blablabla, venez, c'est trop bien. 
+
+Fichier téléchargé sur http://www.win3x.org/win3board/index.php :
+3C90x_drivers.7z : Network drivers for 3Com Etherlink XL (3c90x)
+
+Note: 3c90x1.exe et 3c90x2.exe sont des archives autoextractibles,
+      à exécuter à partir de MS-DOS ou Windows 9x pour éviter des
+      erreurs d'écriture.

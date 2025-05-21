@@ -1,0 +1,63 @@
+&ACCESS RV1
+&REL 1
+&COMMENT 1.Fraeser Motorstrom Einst
+&PARAM TPVW_VERSION = 3.3.5
+DEF MAKRO207 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO207 Einstellung Motorstrom               * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO207 Einstellung Motorstrom               * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- * 1.Phoenix Motorwendelastschalter Kappenfräsen   * -- ;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- * 1.Phoenix Motorwendelastschalter Kappenfräsen   * -- ,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Einstellung Motorstrom --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Einstellung Motorstrom --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A929 = F311;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A929 = F311,3: BOASG
+$OUT[929]=$FLAG[311]
+;ENDFOLD
+; FOLD A930 = F312;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A930 = F312,3: BOASG
+$OUT[930]=$FLAG[312]
+;ENDFOLD
+; FOLD A931 = F313;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A931 = F313,3: BOASG
+$OUT[931]=$FLAG[313]
+;ENDFOLD
+; FOLD A932 = F314;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A932 = F314,3: BOASG
+$OUT[932]=$FLAG[314]
+;ENDFOLD
+; FOLD A933 = F315;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A933 = F315,3: BOASG
+$OUT[933]=$FLAG[315]
+;ENDFOLD
+; FOLD A934 = F316;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A934 = F316,3: BOASG
+$OUT[934]=$FLAG[316]
+;ENDFOLD
+; FOLD -- Reset Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F331 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F331 = EIN,3: BOASG
+$FLAG[331]=TRUE
+;ENDFOLD
+; FOLD -- Kontrolle Statusmeldung io --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle Statusmeldung io --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E941 & E942 & !E943 & !E944;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E941 & E942 & !E943 & !E944,3: WBOASG
+$LOOP_MSG[]="!E941 & E942 & !E943 & !E944"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[941] AND $IN[942] AND NOT $IN[943] AND NOT $IN[944]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD F331 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F331 = AUS,3: BOASG
+$FLAG[331]=FALSE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

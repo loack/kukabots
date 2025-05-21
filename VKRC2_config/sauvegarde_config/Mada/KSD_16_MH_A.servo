@@ -1,0 +1,17 @@
+;****************************************
+;*** KUKA   Parametersatz                     ***
+;*** Servoregler: KSD1-16                     ***
+;*** Motortyp:  H         KK53N               ***
+;*** Lieferant: Fa. PacSci                    ***
+;*** Versionsstand1 vom 18.9.2000             ***
+;****************************************
+;
+;
+PI   1069,  0 =    25    ;VP_Isq-Regler
+PI   1070,  0 =   211    ;KI_Isq-Regler
+PI   1071,  0 =    24    ;VP_Isd-Regler
+PI   1072,  0 =   211    ;KI_Isd-Regler
+PI   1073,  0 =   182    ;Back_EMF
+PI   1092,  0 =    18    ;Reglervorsteuerung
+PI   1018,  0 =     0    ;Schaltfrequenz 4kHz
+;

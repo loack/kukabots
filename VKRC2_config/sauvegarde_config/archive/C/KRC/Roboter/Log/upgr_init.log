@@ -1,0 +1,129 @@
+I/O-CONVERTER V1.09
+
+CONVERT: converting ...
+
+CONVERT: and now we build one string of all the parameters ...
+CONVERT: Para 1: C:\KRC_OLDINST|C:\KRC\Roboter
+CONVERT: Sourcepath: C:\KRC_OLDINST\
+CONVERT: Destpath: C:\KRC\Roboter\
+CONVERT: Sourcepath: c:\krc_oldinst\init\
+CONVERT: Destpath: c:\krc\roboter\init\
+
+COPY_OLD_FILES : c:\krc_oldinst\init\. not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\.. not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\Beispiel_VW_User.ini  >  c:\krc\roboter\init\Beispiel_VW_User.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ConfExtAxis.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ConfigMon.ini  >  c:\krc\roboter\init\ConfigMon.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\DEFUSER.PWL  >  c:\krc\roboter\init\DEFUSER.PWL copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ESCDiag.Ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ESCDiag2.Ini  >  c:\krc\roboter\init\ESCDiag2.Ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ESCDiag3.Ini  >  c:\krc\roboter\init\ESCDiag3.Ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ESCDiag4.Ini  >  c:\krc\roboter\init\ESCDiag4.Ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\Example.cfg  >  c:\krc\roboter\init\Example.cfg copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\Language.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\MenueKeyUser.ini  >  c:\krc\roboter\init\MenueKeyUser.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\MenueKeyVW.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\Si8075ax.2mh  >  c:\krc\roboter\init\Si8075ax.2mh copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\SoftKeyUser.ini  >  c:\krc\roboter\init\SoftKeyUser.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\SoftKeyVW.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\backward.ini  >  c:\krc\roboter\init\backward.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\bios.ini  >  c:\krc\roboter\init\bios.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\bosch.ini  >  c:\krc\roboter\init\bosch.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\cnke_1.ini  >  c:\krc\roboter\init\cnke_1.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\cnke_1SL.ini  >  c:\krc\roboter\init\cnke_1SL.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\cnke_2.ini  >  c:\krc\roboter\init\cnke_2.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\cnke_2SL.ini  >  c:\krc\roboter\init\cnke_2SL.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\devnet.ini  >  c:\krc\roboter\init\devnet.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_1Co.ini  >  c:\krc\roboter\init\dnsc_1Co.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_1Sl.ini  >  c:\krc\roboter\init\dnsc_1Sl.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_2Co.ini  >  c:\krc\roboter\init\dnsc_2Co.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_2Sl.ini  >  c:\krc\roboter\init\dnsc_2Sl.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_3Co.ini  >  c:\krc\roboter\init\dnsc_3Co.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_3Sl.ini  >  c:\krc\roboter\init\dnsc_3Sl.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_4Co.ini  >  c:\krc\roboter\init\dnsc_4Co.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_4Sl.ini  >  c:\krc\roboter\init\dnsc_4Sl.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_5Co.ini  >  c:\krc\roboter\init\dnsc_5Co.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_5Sl.ini  >  c:\krc\roboter\init\dnsc_5Sl.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_6Co.ini  >  c:\krc\roboter\init\dnsc_6Co.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\dnsc_6Sl.ini  >  c:\krc\roboter\init\dnsc_6Sl.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\fipio.ini  >  c:\krc\roboter\init\fipio.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\hw_inf.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ibspci1.ini  >  c:\krc\roboter\init\ibspci1.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\interbus.ini  >  c:\krc\roboter\init\interbus.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ioreplay.ini  >  c:\krc\roboter\init\ioreplay.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\iosys.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\krc12210.gsd  >  c:\krc\roboter\init\krc12210.gsd copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\percept.ini  >  c:\krc\roboter\init\percept.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\pfbms.ini  >  c:\krc\roboter\init\pfbms.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\profibus.ini  >  c:\krc\roboter\init\profibus.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\progress.ini not copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\riodrv.ini  >  c:\krc\roboter\init\riodrv.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\sbip.ini  >  c:\krc\roboter\init\sbip.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\serial.ini  >  c:\krc\roboter\init\serial.ini copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\siem806a.gsg  >  c:\krc\roboter\init\siem806a.gsg copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\slave.ldb  >  c:\krc\roboter\init\slave.ldb copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\symname_postranice_r1d.txt  >  c:\krc\roboter\init\symname_postranice_r1d.txt copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ESCDIAG.BAK  >  c:\krc\roboter\init\ESCDIAG.BAK copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\ESCDIAG1.INI  >  c:\krc\roboter\init\ESCDIAG1.INI copied!
+COPY_OLD_FILES : c:\krc_oldinst\init\testconfig.cfg  >  c:\krc\roboter\init\testconfig.cfg copied!
+
+CONVERT HW_INF: working on hw_inf.ini ...
+CONVERT HW_INF: copy section [SERIAL] from c:\krc_oldinst\init\hw_inf.ini to c:\krc\roboter\init\hw_inf.ini
+CONVERT HW_INF: searching drivers,which use serial interfaces
+CONVERT HW_INF: analysing c:\krc\roboter\init\iosys.ini
+CONVERT HW_INF: BOSCH not found
+CONVERT HW_INF: PERCEPTRON not found
+CONVERT HW_INF: finished successfully
+CONVERT IO_INF: ERROR: opening c:\krc_oldinst\init\io_inf.ini failed, file not found
+CONVERT IO_SYS: sections found and stored
+CONVERT IO_SYS: new section [END SECTION] deleted
+CONVERT IO_SYS: section [CONFIG] NOT copied
+CONVERT IO_SYS: section [DRIVERS] NOT copied
+CONVERT IO_SYS: no entry in section [MFC] found
+CONVERT IO_SYS: section [MFC] written
+CONVERT IO_SYS: section [INTERBUS] read
+CONVERT IO_SYS: section [INTERBUS] written
+CONVERT IO_SYS: no entry in section [DEVNET] found
+CONVERT IO_SYS: section [DEVNET] written
+CONVERT IO_SYS: section [BOSCH] NOT copied
+CONVERT IO_SYS: section [PERCEPTRON] NOT copied
+CONVERT IO_SYS: no entry in section [SBIP] found
+CONVERT IO_SYS: section [SBIP] written
+CONVERT IO_SYS: no entry in section [FIPIO] found
+CONVERT IO_SYS: section [FIPIO] written
+CONVERT IO_SYS: no entry in section [PROFISL] found
+CONVERT IO_SYS: section [PROFISL] written
+CONVERT IO_SYS: no entry in section [PROFIMA] found
+CONVERT IO_SYS: section [PROFIMA] written
+CONVERT IO_SYS: no entry in section [RIO] found
+CONVERT IO_SYS: section [RIO] written
+CONVERT IO_SYS: no entry in section [LIBO] found
+CONVERT IO_SYS: section [LIBO] written
+CONVERT IO_SYS: no entry in section [PBMASL] found
+CONVERT IO_SYS: section [PBMASL] written
+CONVERT IO_SYS: no entry in section [DNSC1] found
+CONVERT IO_SYS: section [DNSC1] written
+CONVERT IO_SYS: no entry in section [DNSC2] found
+CONVERT IO_SYS: section [DNSC2] written
+CONVERT IO_SYS: no entry in section [DNSC3] found
+CONVERT IO_SYS: section [DNSC3] written
+CONVERT IO_SYS: no entry in section [DNSC4] found
+CONVERT IO_SYS: section [DNSC4] written
+CONVERT IO_SYS: no entry in section [DNSC5] found
+CONVERT IO_SYS: section [DNSC5] written
+CONVERT IO_SYS: no entry in section [DNSC6] found
+CONVERT IO_SYS: section [DNSC6] written
+CONVERT IO_SYS: no entry in section [DSEIO] found
+CONVERT IO_SYS: section [DSEIO] written
+CONVERT IO_SYS: section [INTERBUSPCI] read
+CONVERT IO_SYS: section [INTERBUSPCI] written
+CONVERT IO_SYS: no entry in section [CNKE1] found
+CONVERT IO_SYS: section [CNKE1] written
+CONVERT IO_SYS: section [CNKE2] read
+CONVERT IO_SYS: section [CNKE2] written
+CONVERT IO_SYS: section [END SECTION] NOT copied
+CONVERT IO_SYS: section [END SECTION] created
+CONVERT IO_SYS: finished successfully
+
+
+CONVERT: finished successfully

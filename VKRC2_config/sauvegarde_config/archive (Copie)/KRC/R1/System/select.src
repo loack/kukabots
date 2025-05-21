@@ -1,0 +1,289 @@
+&ACCESS RV
+&PARAM TPVW_VERSION =3.3.5
+DEF  SELECT (SUB :IN,NO :IN,CALL_CND :IN,ARI_OP :IN,ARI_NUM :IN,BOOL_OP :IN,BOOL_NUM :IN )
+; FOLD ;%{H} %MKUKATPVW
+INT NO,ARI_NUM,BOOL_NUM,NR
+BOOL CALL_CND
+DECL SUBTYPE SUB
+DECL ARI_TYP ARI_OP
+DECL BOOL_TYP BOOL_OP
+IF  NOT CALL_CND THEN
+GOTO PEXIT
+ENDIF
+SWITCH  SUB
+CASE #UP
+CALLBYSELECT=TRUE
+SWITCH  NO  ;-- CALL UP $$1$$ --
+CASE 10
+UP10 ( )
+CASE 1
+UP1 ( )
+CASE 8
+UP8 ( )
+CASE 9
+UP9 ( )
+CASE 41
+UP41 ( )
+CASE 51
+UP51 ( )
+CASE 52
+UP52 ( )
+CASE 42
+UP42 ( )
+DEFAULT
+$LOOP_MSG[]="                                                                                                                               "
+$LOOP_MSG[]="no valid UP-Call !!!"
+HALT
+$LOOP_MSG[]="                                                                                                                               "
+ENDSWITCH
+CALLBYSELECT=FALSE
+CASE #MAKRO
+SWITCH  NO  ;-- CALL MAKRO $$1$$ --
+CASE 95
+MAKRO95 ( )
+CASE 99
+MAKRO99 ( )
+CASE 96
+MAKRO96 ( )
+CASE 4
+MAKRO4 ( )
+CASE 86
+MAKRO86 ( )
+CASE 82
+MAKRO82 ( )
+CASE 81
+MAKRO81 ( )
+CASE 80
+MAKRO80 ( )
+CASE 77
+MAKRO77 ( )
+CASE 76
+MAKRO76 ( )
+CASE 75
+MAKRO75 ( )
+CASE 74
+MAKRO74 ( )
+CASE 73
+MAKRO73 ( )
+CASE 72
+MAKRO72 ( )
+CASE 71
+MAKRO71 ( )
+CASE 54
+MAKRO54 ( )
+CASE 40
+MAKRO40 ( )
+CASE 3
+MAKRO3 ( )
+CASE 210
+MAKRO210 ( )
+CASE 21
+MAKRO21 ( )
+CASE 207
+MAKRO207 ( )
+CASE 201
+MAKRO201 ( )
+CASE 200
+MAKRO200 ( )
+CASE 20
+MAKRO20 ( )
+CASE 2
+MAKRO2 ( )
+CASE 199
+MAKRO199 ( )
+CASE 102
+MAKRO102 ( )
+CASE 1
+MAKRO1 ( )
+CASE 0
+MAKRO0 ( )
+CASE 204
+MAKRO204 ( )
+DEFAULT
+$LOOP_MSG[]="                                                                                                                               "
+$LOOP_MSG[]="no valid Makro-Call !!!"
+HALT
+$LOOP_MSG[]="                                                                                                                               "
+ENDSWITCH
+CASE #CYC_UP
+NR=0
+WHILE   NOT (CHECK_BOOL(BOOL_OP,BOOL_NUM) OR CHECK_ARI(NR,ARI_OP,ARI_NUM))
+NR=NR+1
+CALLBYSELECT=TRUE
+SWITCH  NO  ;-- CALL UP $$2$$ --
+CASE 10
+UP10 ( )
+CASE 1
+UP1 ( )
+CASE 8
+UP8 ( )
+CASE 9
+UP9 ( )
+CASE 41
+UP41 ( )
+CASE 51
+UP51 ( )
+CASE 52
+UP52 ( )
+CASE 42
+UP42 ( )
+DEFAULT
+$LOOP_MSG[]="                                                                                                                               "
+$LOOP_MSG[]="no valid UP-Call !!!"
+HALT
+$LOOP_MSG[]="                                                                                                                               "
+ENDSWITCH
+CALLBYSELECT=FALSE
+ENDWHILE
+CASE #CYC_MAKRO
+NR=0
+WHILE   NOT (CHECK_BOOL(BOOL_OP,BOOL_NUM) OR CHECK_ARI(NR,ARI_OP,ARI_NUM))
+NR=NR+1
+SWITCH  NO  ;-- CALL MAKRO $$2$$ --
+CASE 95
+MAKRO95 ( )
+CASE 99
+MAKRO99 ( )
+CASE 96
+MAKRO96 ( )
+CASE 4
+MAKRO4 ( )
+CASE 86
+MAKRO86 ( )
+CASE 82
+MAKRO82 ( )
+CASE 81
+MAKRO81 ( )
+CASE 80
+MAKRO80 ( )
+CASE 77
+MAKRO77 ( )
+CASE 76
+MAKRO76 ( )
+CASE 75
+MAKRO75 ( )
+CASE 74
+MAKRO74 ( )
+CASE 73
+MAKRO73 ( )
+CASE 72
+MAKRO72 ( )
+CASE 71
+MAKRO71 ( )
+CASE 54
+MAKRO54 ( )
+CASE 40
+MAKRO40 ( )
+CASE 3
+MAKRO3 ( )
+CASE 210
+MAKRO210 ( )
+CASE 21
+MAKRO21 ( )
+CASE 207
+MAKRO207 ( )
+CASE 201
+MAKRO201 ( )
+CASE 200
+MAKRO200 ( )
+CASE 20
+MAKRO20 ( )
+CASE 2
+MAKRO2 ( )
+CASE 199
+MAKRO199 ( )
+CASE 102
+MAKRO102 ( )
+CASE 1
+MAKRO1 ( )
+CASE 0
+MAKRO0 ( )
+CASE 204
+MAKRO204 ( )
+DEFAULT
+$LOOP_MSG[]="                                                                                                                               "
+$LOOP_MSG[]="no valid Makro-Call !!!"
+HALT
+$LOOP_MSG[]="                                                                                                                               "
+ENDSWITCH
+ENDWHILE
+DEFAULT
+ENDSWITCH
+PEXIT:
+END
+;ENDFOLD
+; FOLD ;%{H}
+DEF TIMEOUT_UP (NR: IN)
+DECL STATE_T STATE
+INT OFFSET, NR
+IF $PRO_MOVE THEN
+BRAKE F
+ENDIF
+$LOOP_MSG[]="                                                                                                                               "
+OFFSET=11
+$LOOP_MSG[]="TIMEOUT IN    "
+SWRITE($LOOP_MSG[],STATE,OFFSET,"MAKRO%D",NR)
+$LOOP_CONT=TRUE
+WAIT FOR (NOT ($LOOP_CONT) AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                               "
+END
+;ENDFOLD
+; FOLD ;%{H}
+DEFFCT  BOOL CHECK_BOOL(BOOLOP :IN,BOOLOP_NUM :IN)
+INT BOOLOP_NUM
+DECL BOOL_TYP BOOLOP
+BOOL STOP_BOOL
+SWITCH  BOOLOP
+CASE #EIN
+STOP_BOOL=TRUE
+CASE #AUS
+STOP_BOOL=FALSE
+CASE #E
+STOP_BOOL=$IN[BOOLOP_NUM]
+CASE #NOT_E
+STOP_BOOL= NOT $IN[BOOLOP_NUM]
+CASE #A
+STOP_BOOL=$OUT[BOOLOP_NUM]
+CASE #NOT_A
+STOP_BOOL= NOT $OUT[BOOLOP_NUM]
+CASE #M
+STOP_BOOL=$CYCFLAG[BOOLOP_NUM]
+CASE #NOT_M
+STOP_BOOL= NOT $CYCFLAG[BOOLOP_NUM]
+CASE #F
+STOP_BOOL=$FLAG[BOOLOP_NUM]
+CASE #NOT_F
+STOP_BOOL= NOT $FLAG[BOOLOP_NUM]
+CASE #T
+STOP_BOOL=$TIMER_FLAG[BOOLOP_NUM]
+CASE #NOT_T
+STOP_BOOL= NOT $TIMER_FLAG[BOOLOP_NUM]
+CASE #S
+STOP_BOOL=S[BOOLOP_NUM]
+CASE #NOT_S
+STOP_BOOL= NOT S[BOOLOP_NUM]
+ENDSWITCH
+RETURN  (STOP_BOOL)
+ENDFCT
+;ENDFOLD
+; FOLD ;%{H}
+DEFFCT  BOOL CHECK_ARI(ACT_NR :IN, ARIOP :IN ,ARIOP_NUM :IN)
+INT ACT_NR, ARIOP_NUM, MAX_NR
+DECL ARI_TYP ARIOP
+SWITCH  ARIOP
+CASE #NUM
+MAX_NR=ARIOP_NUM
+CASE #COUNT
+MAX_NR=I[ARIOP_NUM]
+CASE #BIN
+MAX_NR=B[ARIOP_NUM]
+CASE #ANA
+MAX_NR=$ANOUT[ARIOP_NUM]*1000
+CASE #ANAIN
+MAX_NR=$ANIN[ARIOP_NUM]*1000
+CASE #TIMER
+MAX_NR=$TIMER[ARIOP_NUM]*0.01
+ENDSWITCH
+RETURN (ACT_NR>=MAX_NR)
+ENDFCT
+;ENDFOLD

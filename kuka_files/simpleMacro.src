@@ -1,0 +1,23 @@
+DEF PROG1()
+;--- Declaration section ---
+INT J
+;--- Instruction section ---
+$VEL_AXIS[X]=100 ;Definition of the axis velocities
+$VEL_AXIS[2]=100
+$VEL_AXIS[3]=100
+$VEL_AXIS[4]=100
+$VEL_AXIS[5]=100
+$VEL_AXIS[6]=100
+$ACC_AXIS[1]=100 ;Definition of the axis accelerations
+$ACC_AXIS[2]=100
+$ACC_AXIS[3]=100
+$ACC_AXIS[4]=100
+$ACC_AXIS[5]=100
+$ACC_AXIS[6]=100
+PTP {A1 0,A2 0,A3 0,A4 0,A5 0,A6 0}
+FOR J=1 TO 5
+PTP {A1 +2}
+PTP {A6 -3}
+ENDFOR
+PTP {A1 0,A2 0,A3 0,A4 0,A5 0,A6 0}
+END

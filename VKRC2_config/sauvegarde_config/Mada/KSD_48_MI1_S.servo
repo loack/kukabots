@@ -1,0 +1,17 @@
+;****************************************
+;*** KUKA   Parametersatz                     ***
+;*** Servoregler: KSD1-48                     ***
+;*** Motortyp:  I1         1FK6101S44         ***
+;*** Lieferant: Fa. Siemens                   ***
+;*** Versionsstand1 vom 11.10.2000            ***
+;****************************************
+;
+;
+PI   1069,  0 =    33    ;VP_Isq-Regler
+PI   1070,  0 =   390    ;KI_Isq-Regler
+PI   1071,  0 =    32    ;VP_Isd-Regler
+PI   1072,  0 =   390    ;KI_Isd-Regler
+PI   1073,  0 =   178    ;Back_EMF
+PI   1092,  0 =    18    ;Reglervorsteuerung
+PI   1018,  0 =     0    ;Schaltfrequenz 4kHz
+;

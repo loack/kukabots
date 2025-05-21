@@ -1,0 +1,17 @@
+;****************************************
+;*** KUKA   Parametersatz             	***
+;*** Servoregler: KSD1-48             	***
+;*** Motortyp:  G1      FK7100 5AZ9 S41 ***
+;*** Motortyp:  G1       MCS19F 43      ***
+;*** Version 0	vom 02.01.03            ***
+;****************************************
+;
+;
+PI   1069,  0 =    55    ;VP_Isq-Regler
+PI   1070,  0 =   108    ;KI_Isq-Regler
+PI   1071,  0 =    54    ;VP_Isd-Regler
+PI   1072,  0 =   109    ;KI_Isd-Regler
+PI   1073,  0 =   121    ;Back_EMF
+PI   1092,  0 =    18    ;Reglervorsteuerung
+PI   1018,  0 =     0    ;Schaltfrquenz 4kHz 
+;

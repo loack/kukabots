@@ -1,0 +1,140 @@
+&ACCESS  RV
+&PARAM TPVW_VERSION=3.3.5
+DEF  CELL ( )
+;FOLD AUTOMATIK EXTERN ;%{SE}%MKUKATPVW,%C,%V
+INT I,J,CELL_CNT
+BOOL IS_ANY_BIT
+STEP=0
+PGNO=0
+CELL_CNT=0
+P0_MERKER=TRUE
+$OUT[LPKT]=FALSE
+VW_INB=FALSE ; reset Inbetriebnahme Flag
+VW_CBY_CELL=TRUE
+VW_CALL_CELL=FALSE
+IF $MODE_OP==#EX THEN
+IF  NOT $IN_HOME THEN
+$LOOP_MSG[]="                                                                                                                                "
+$LOOP_MSG[]="WAITING FOR PF0 !!!"
+$LOOP_CONT=TRUE
+WAIT FOR  ($IN_HOME) OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+ENDIF
+ENDIF
+;ENDFOLD
+;FOLD Folgenummer berechnen ;%{SE}%MKUKATPVW,%C,%V
+IF (P_OLD<>0) AND ($MODE_OP==#EX) THEN
+; Kaltstart-Hochlauf in AUTO-EXT --> letzte Folgennummer wird selektiert
+IF P_TYPE==0 THEN ;Integer
+PGNO=P_SELECT
+STEP=1
+ELSE ;1 AUS N
+IF (P_SELECT>0) AND (P_SELECT<9) THEN
+PGNO=1
+FOR I=1 TO  (P_SELECT-1)
+PGNO=PGNO*2
+ENDFOR
+STEP=1
+ELSE
+STEP=0
+PGNO=0
+ENDIF
+ENDIF
+ENDIF
+IF (P_SELECT>0) AND ($MODE_OP<>#EX) THEN
+; Handbetrieb --> die letzte angewaehlte Folge wird selektiert
+IF P_TYPE==0 THEN ;Integer
+PGNO=P_SELECT
+STEP=1
+ELSE ;1 AUS N
+IF (P_SELECT>0) AND (P_SELECT<9) THEN
+PGNO=1
+FOR I=1 TO  (P_SELECT-1)
+PGNO=PGNO*2
+ENDFOR
+STEP=1
+ELSE
+CELL_CNT=1
+STEP=0
+PGNO=0
+ENDIF
+ENDIF
+ENDIF
+LOOP
+IF (( NOT $ON_PATH) AND ($MODE_OP<>#EX)) THEN ;noch keinen Folgennullpunkt erreicht, und P_SELECT nicht freigegeben
+IF CELL_CNT==1 THEN
+IF P_TYPE==0 THEN ;Integer
+PGNO=P_OLD
+STEP=1
+ELSE ;1 AUS N
+IF (P_OLD>0) AND (P_OLD<9) THEN
+PGNO=1
+FOR I=1 TO  (P_OLD-1)
+PGNO=PGNO*2
+ENDFOR
+STEP=1
+ELSE
+PGNO=0
+STEP=0
+ENDIF
+ENDIF
+ENDIF
+CELL_CNT=CELL_CNT+1
+ELSE
+; es wurde ein Folgennullpunkt angefahren --> ab jetzt die Folge vom Slave lesen
+IF $ON_PATH THEN
+STEP=0
+ENDIF
+ENDIF
+;ist der Submit-Interpreter aktiv
+IF ($PRO_STATE0<>#P_ACTIVE) THEN
+$LOOP_MSG[]="                                                                                                                                "
+$LOOP_MSG[]="Start SPS.SUB !"
+$LOOP_CONT=TRUE
+WAIT FOR  ($PRO_STATE0==#P_ACTIVE)
+$LOOP_MSG[]="                                                                                                                                "
+ENDIF
+$LOOP_MSG[]="Warte auf gueltige Folgenummer                                                                                                 "
+;FOLGE-NUMMER BERECHNEN
+IF STEP==0 THEN
+IS_ANY_BIT=FALSE
+REPEAT
+OUT_WPROZ=FALSE
+OUT_WSLAV=TRUE
+IF (PRG_NR <= 0) THEN
+IS_ANY_BIT = FALSE
+PGNO=0
+ELSE
+IS_ANY_BIT = TRUE
+PGNO = PRG_NR
+ENDIF
+UNTIL IS_ANY_BIT
+OUT_WPROZ=FALSE
+OUT_WSLAV=FALSE
+ENDIF
+STEP=0
+;ENDFOLD
+;FOLD Folge starten ;%{SE}%MKUKATPVW,%C,%V
+SWITCH  P_TYPE
+CASE 0; FOLGENUMMER INTEGER
+SWITCH PGNO
+CASE -1
+ENDSWITCH
+CASE 1; FOLGENUMMER 1 AUS N
+SWITCH PGNO
+CASE 1,2,4,8,16,32,64,128
+SWITCH PGNO
+CASE 8
+FOLGE4()
+CASE 16
+FOLGE5()
+CASE 64
+FOLGE7()
+CASE 128
+FOLGE8()
+ENDSWITCH
+ENDSWITCH
+ENDSWITCH
+ENDLOOP
+END
+;ENDFOLD

@@ -1,0 +1,89 @@
+&COMMENT Ausw.Motorstrom
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO199 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO199 Auswertung Motorstrom                * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO199 Auswertung Motorstrom                * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Phoenix Motorwendelastschalter                   * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Phoenix Motorwendelastschalter                   * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F319 = i9 > 63;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F319 = i9 > 63,3:  BOCMP
+$FLAG[319]=I[9]>63
+;ENDFOLD
+; FOLD WARTE BIS !F319;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !F319,3:  WBOASG
+$LOOP_MSG[]="!F319"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $FLAG[319]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD F318 = i9 < 1;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F318 = i9 < 1,3:  BOCMP
+$FLAG[318]=I[9]<1
+;ENDFOLD
+; FOLD WARTE BIS !F318;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !F318,3:  WBOASG
+$LOOP_MSG[]="!F318"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $FLAG[318]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD F316 = i9 > 31;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F316 = i9 > 31,3:  BOCMP
+$FLAG[316]=I[9]>31
+;ENDFOLD
+; FOLD i9 ( F316 ) = i9 - 32;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( F316 ) = i9 - 32,3:  ARIASG
+VW(#COUNTER,$FLAG[316],9,I[9]-32)
+;ENDFOLD
+; FOLD F315 = i9 > 15;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F315 = i9 > 15,3:  BOCMP
+$FLAG[315]=I[9]>15
+;ENDFOLD
+; FOLD i9 ( F315 ) = i9 - 16;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( F315 ) = i9 - 16,3:  ARIASG
+VW(#COUNTER,$FLAG[315],9,I[9]-16)
+;ENDFOLD
+; FOLD F314 = i9 > 7;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F314 = i9 > 7,3:  BOCMP
+$FLAG[314]=I[9]>7
+;ENDFOLD
+; FOLD i9 ( F314 ) = i9 - 8;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( F314 ) = i9 - 8,3:  ARIASG
+VW(#COUNTER,$FLAG[314],9,I[9]-8)
+;ENDFOLD
+; FOLD F313 = i9 > 3;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F313 = i9 > 3,3:  BOCMP
+$FLAG[313]=I[9]>3
+;ENDFOLD
+; FOLD i9 ( F313 ) = i9 - 4;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( F313 ) = i9 - 4,3:  ARIASG
+VW(#COUNTER,$FLAG[313],9,I[9]-4)
+;ENDFOLD
+; FOLD F312 = i9 > 1;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F312 = i9 > 1,3:  BOCMP
+$FLAG[312]=I[9]>1
+;ENDFOLD
+; FOLD i9 ( F312 ) = i9 - 2;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( F312 ) = i9 - 2,3:  ARIASG
+VW(#COUNTER,$FLAG[312],9,I[9]-2)
+;ENDFOLD
+; FOLD F311 = i9 > 0;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F311 = i9 > 0,3:  BOCMP
+$FLAG[311]=I[9]>0
+;ENDFOLD
+; FOLD i9 ( F311 ) = i9 - 1;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( F311 ) = i9 - 1,3:  ARIASG
+VW(#COUNTER,$FLAG[311],9,I[9]-1)
+;ENDFOLD
+; FOLD F317 = i9 = 0;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F317 = i9 = 0,3:  BOCMP
+$FLAG[317]=I[9]==0
+;ENDFOLD
+; FOLD WARTE BIS F317;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS F317,3:  WBOASG
+$LOOP_MSG[]="F317"
+$LOOP_CONT=TRUE
+WAIT FOR ($FLAG[317]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

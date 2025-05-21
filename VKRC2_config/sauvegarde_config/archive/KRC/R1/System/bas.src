@@ -1,0 +1,294 @@
+&ACCESS R
+&COMMENT BASIS package
+&PARAM TPVW_VERSION=3.3.5
+DEF  BAS (COMMAND :IN,REAL_PAR :IN )
+  ; FOLD ;%{H} %MKUKATPVW
+  DECL BAS_COMMAND COMMAND
+  REAL REAL_PAR
+  SWITCH  COMMAND
+  CASE #INITMOV
+    INITMOV ( )
+  CASE #INITMOVEUP
+    INITMOVEUP ( )
+  CASE #ACC_CP
+    ACC_CP (REAL_PAR )
+  CASE #ACC_PTP
+    ACC_PTP (REAL_PAR )
+  CASE #VEL_CP
+    VEL_CP (REAL_PAR )
+  CASE #VEL_PTP
+    VEL_PTP (REAL_PAR )
+  CASE #TOOL
+    TOOL (REAL_PAR )
+  CASE #BASE
+    BASE (REAL_PAR )
+  CASE #EX_BASE
+    EX_BASE (REAL_PAR )
+  CASE #PTP_DAT
+    PTP_DAT ( )
+  CASE #CP_DAT
+    CP_DAT ( )
+  ENDSWITCH
+END
+DEF  INITMOV ( )
+  INT I
+  ; PTP-Parameters:
+  ACC_PTP (100.0 ) ; ptp acceleration 100% = DEF_ACC_PTP
+  VEL_PTP (100.0 ) ; ptp velocity 100% = DEF_VEL_PTP
+  ; CP-Parameters:
+  ACC_CP (100.0 ) ; path acceleration 100%  =  DEF_ACC_CP
+  $ACC.ORI1=DEF_ACC_ORI1 ; swivel acceleration
+  $ACC.ORI2=DEF_ACC_ORI2 ; rotation acceleration
+  VEL_CP (DEF_VEL_CP ) ; path velocity
+  $VEL.ORI1=DEF_VEL_ORI1 ; swivel velocity
+  $VEL.ORI2=DEF_VEL_ORI2 ; rotation velocity
+  ; Parameters for Approximation:
+  $APO.CPTP=DEF_APO_CPTP ; PTP-Approximation
+  $APO.CDIS=DEF_APO_CDIS ; Distance-Approximation
+  $APO.CVEL=DEF_APO_CVEL ; Speed-Approximation
+  $APO.CORI=DEF_APO_CORI ; Orientation-Approximation
+  $FILTER=$DEF_FLT_PTP ; filter
+  $ADVANCE=DEF_ADVANCE ; advance
+  $ORI_TYPE=#VAR ; variable orientation
+  $CIRC_TYPE=DEF_CIRC_TYPE ; CIRC-orientation
+  IF $KINCLASS<>#NONE THEN
+    BASE (0 ) ; Activating Base $WORLD
+    TOOL (0 ) ; Activating Tool and Default-Load
+  ENDIF
+  IF $TCP_IPO==TRUE THEN
+    $IPO_MODE=#BASE
+  ENDIF
+  IF $ADAP_ACC<>#NONE THEN
+    IF LOAD_A1_DATA.M<0 THEN
+      $LOAD_A1.M=0
+      $LOAD_A1.CM={X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+      $LOAD_A1.J={X 0.0, Y 0.0, Z 0.0}
+    ELSE
+      $LOAD_A1.M=LOAD_A1_DATA.M
+      $LOAD_A1.CM=LOAD_A1_DATA.CM
+      $LOAD_A1.J=LOAD_A1_DATA.J
+    ENDIF
+    IF LOAD_A2_DATA.M<0 THEN
+      $LOAD_A2.M=0
+      $LOAD_A2.CM={X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+      $LOAD_A2.J={X 0.0, Y 0.0, Z 0.0}
+    ELSE
+      $LOAD_A2.M=LOAD_A2_DATA.M
+      $LOAD_A2.CM=LOAD_A2_DATA.CM
+      $LOAD_A2.J=LOAD_A2_DATA.J
+    ENDIF
+    IF LOAD_A3_DATA.M<0 THEN
+      $LOAD_A3.M=$DEF_LA3_M
+      $LOAD_A3.CM=$DEF_LA3_CM
+      $LOAD_A3.J=$DEF_LA3_J
+    ELSE
+      $LOAD_A3.M=LOAD_A3_DATA.M
+      $LOAD_A3.CM=LOAD_A3_DATA.CM
+      $LOAD_A3.J=LOAD_A3_DATA.J
+      IF (($LOAD_A3.M<>0) AND ($LOAD_A3.J.X==0) AND ($LOAD_A3.J.Y==0) AND ($LOAD_A3.J.Z==0)) THEN
+        $LOAD_A3.J=$DEF_LA3_J
+      ENDIF
+    ENDIF
+  ENDIF
+  ; standard group definition
+  COMPL_GROUP=1
+  FOR I=1 TO  $EX_AX_NUM
+    COMPL_GROUP=COMPL_GROUP*2+1
+  ENDFOR
+  $ACT_GROUP=COMPL_GROUP
+END
+DEF  INITMOVEUP ( )
+  INT I
+  ; PTP-Parameters:
+  ACC_PTP (100.0 ) ; ptp acceleration 100% = DEF_ACC_PTP
+  VEL_PTP (100.0 ) ; ptp velocity 100% = DEF_VEL_PTP
+  ; CP-Parameters:
+  ACC_CP (100.0 ) ; path acceleration 100%  =  DEF_ACC_CP
+  $ACC.ORI1=DEF_ACC_ORI1 ; swivel acceleration
+  $ACC.ORI2=DEF_ACC_ORI2 ; rotation acceleration
+  VEL_CP (DEF_VEL_CP ) ; path velocity
+  $VEL.ORI1=DEF_VEL_ORI1 ; swivel velocity
+  $VEL.ORI2=DEF_VEL_ORI2 ; rotation velocity
+  ; Parameters for Approximation:
+  $APO.CPTP=DEF_APO_CPTP ; PTP-Approximation
+  $APO.CDIS=DEF_APO_CDIS ; Distance-Approximation
+  $APO.CVEL=DEF_APO_CVEL ; Speed-Approximation
+  $APO.CORI=DEF_APO_CORI ; Orientation-Approximation
+  $ADVANCE=DEF_ADVANCE ; advance
+  $ORI_TYPE=#VAR ; variable orientation
+  $CIRC_TYPE=DEF_CIRC_TYPE ; CIRC-orientation
+  IF  NOT CALLBYSELECT THEN
+    $FILTER=$DEF_FLT_PTP ; filter
+    IF $KINCLASS<>#NONE THEN
+      BASE (0 ) ; Activating Base $WORLD
+      TOOL (0 ) ; Activating Tool and Default-Load
+    ENDIF
+    IF $TCP_IPO==TRUE THEN
+      $IPO_MODE=#BASE
+    ENDIF
+    IF $ADAP_ACC<>#NONE THEN
+      IF LOAD_A1_DATA.M<0 THEN
+        $LOAD_A1.M=0
+        $LOAD_A1.CM={X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+        $LOAD_A1.J={X 0.0, Y 0.0, Z 0.0}
+      ELSE
+        $LOAD_A1.M=LOAD_A1_DATA.M
+        $LOAD_A1.CM=LOAD_A1_DATA.CM
+        $LOAD_A1.J=LOAD_A1_DATA.J
+      ENDIF
+      IF LOAD_A2_DATA.M<0 THEN
+        $LOAD_A2.M=0
+        $LOAD_A2.CM={X 0.0, Y 0.0, Z 0.0, A 0.0, B 0.0, C 0.0}
+        $LOAD_A2.J={X 0.0, Y 0.0, Z 0.0}
+      ELSE
+        $LOAD_A2.M=LOAD_A2_DATA.M
+        $LOAD_A2.CM=LOAD_A2_DATA.CM
+        $LOAD_A2.J=LOAD_A2_DATA.J
+      ENDIF
+      IF LOAD_A3_DATA.M<0 THEN
+        $LOAD_A3.M=$DEF_LA3_M
+        $LOAD_A3.CM=$DEF_LA3_CM
+        $LOAD_A3.J=$DEF_LA3_J
+      ELSE
+        $LOAD_A3.M=LOAD_A3_DATA.M
+        $LOAD_A3.CM=LOAD_A3_DATA.CM
+        $LOAD_A3.J=LOAD_A3_DATA.J
+        IF (($LOAD_A3.M<>0) AND ($LOAD_A3.J.X==0) AND ($LOAD_A3.J.Y==0) AND ($LOAD_A3.J.Z==0)) THEN
+          $LOAD_A3.J=$DEF_LA3_J
+        ENDIF
+      ENDIF
+    ENDIF
+    ; standard group definition
+    COMPL_GROUP=1
+    FOR I=1 TO  $EX_AX_NUM
+      COMPL_GROUP=COMPL_GROUP*2+1
+    ENDFOR
+    $ACT_GROUP=COMPL_GROUP
+  ENDIF
+  CALLBYSELECT=FALSE
+END
+DEF  ACC_CP (ACC_FACTOR :IN )
+  REAL ACC_FACTOR ; [%]
+  IF ACC_FACTOR>100.0 THEN
+    $ACC.CP=DEF_ACC_CP
+    $ACC.ORI1=DEF_ACC_ORI1
+    $ACC.ORI2=DEF_ACC_ORI2
+  ELSE
+    $ACC.CP=DEF_ACC_CP*ACC_FACTOR/100.0
+    $ACC.ORI1=DEF_ACC_ORI1*ACC_FACTOR/100.0
+    $ACC.ORI2=DEF_ACC_ORI2*ACC_FACTOR/100.0
+  ENDIF
+END
+DEF  ACC_PTP (ACC_FACTOR :IN )
+  REAL ACC_FACTOR ; [%]
+  REAL ACC
+  INT I
+  CONTINUE
+  IF $ADAP_ACC==#NONE THEN
+    IF DEF_ACC_PTP>100 THEN
+      DEF_ACC_PTP=100
+    ENDIF
+    IF ACC_FACTOR>100.0 THEN
+      ACC=DEF_ACC_PTP
+    ELSE
+      ACC=DEF_ACC_PTP*ACC_FACTOR/100.0
+    ENDIF
+  ELSE
+    ACC=ACC_FACTOR
+  ENDIF
+  FOR I=1 TO  6
+    $ACC_AXIS[I]=ACC
+  ENDFOR
+  FOR I=1 TO  $EX_AX_NUM
+    $ACC_EXTAX[I]=ACC
+  ENDFOR
+END
+DEF  VEL_CP (VEL_VALUE :IN )
+  REAL VEL_VALUE ; [m/s]
+  IF VEL_VALUE>DEF_VEL_CP THEN
+    $VEL.CP=DEF_VEL_CP
+  ELSE
+    $VEL.CP=VEL_VALUE*DEF_VEL_FACT
+  ENDIF
+END
+DEF  VEL_PTP (VEL_FACTOR :IN )
+  REAL VEL_FACTOR ; [%]
+  REAL VEL
+  INT I
+  IF VEL_FACTOR>100.0 THEN
+    VEL=DEF_VEL_PTP
+  ELSE
+    VEL=DEF_VEL_PTP*VEL_FACTOR/100.0
+  ENDIF
+  FOR I=1 TO  6
+    $VEL_AXIS[I]=VEL
+  ENDFOR
+  FOR I=1 TO  $EX_AX_NUM
+    $VEL_EXTAX[I]=VEL
+  ENDFOR
+END
+DEF  TOOL (TOOL_NO :IN )
+  INT TOOL_NO
+  IF (TOOL_NO==0) THEN
+    $TOOL=$NULLFRAME
+    IF $ADAP_ACC<>#NONE THEN
+      $LOAD.M=$DEF_L_M
+      $LOAD.CM=$DEF_L_CM
+      $LOAD.J=$DEF_L_J
+    ENDIF
+  ELSE
+    CONTINUE
+    $TOOL=TOOL_DATA[TOOL_NO]
+    IF $ADAP_ACC<>#NONE THEN
+      IF LOAD_DATA[TOOL_NO].M<0 THEN
+        $LOAD.M=$DEF_L_M
+        $LOAD.CM=$DEF_L_CM
+        $LOAD.J=$DEF_L_J
+      ELSE
+        $LOAD.M=LOAD_DATA[TOOL_NO].M
+        $LOAD.CM=LOAD_DATA[TOOL_NO].CM
+        $LOAD.J=LOAD_DATA[TOOL_NO].J
+        IF (($LOAD.M<>0) AND ($LOAD.J.X==0) AND ($LOAD.J.Y==0) AND ($LOAD.J.Z==0)) THEN
+          $LOAD.J=$DEF_L_J
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+  CONTINUE
+  $ACT_TOOL=TOOL_NO
+END
+DEF  BASE (BASE_NO :IN )
+  INT BASE_NO
+  IF (BASE_NO==0) THEN
+    CONTINUE
+    $BASE=$WORLD
+  ELSE
+    CONTINUE
+    $BASE=BASE_DATA[BASE_NO]
+  ENDIF
+  CONTINUE
+  $ACT_BASE=BASE_NO ; Storing actual Base-Number in global variable
+  CONTINUE
+  $ACT_EX_AX=-1
+END
+DEF  EX_BASE (EX_AX_NO :IN )
+  INT EX_AX_NO
+  CONTINUE
+  IF EX_AX_NO>0 THEN
+    $BASE=EK(EX_AX_DATA[EX_AX_NO].ROOT,EX_AX_DATA[EX_AX_NO].EX_KIN,EX_AX_DATA[EX_AX_NO].OFFSET)
+  ENDIF
+  CONTINUE
+  $ACT_EX_AX=EX_AX_NO ;Storing number of activated external axis in global variable
+  CONTINUE
+  $ACT_BASE=-1
+END
+DEF  PTP_DAT ( )
+  VEL_PTP (PDAT_ACT.VEL )
+  ACC_PTP (PDAT_ACT.ACC )
+  $APO.CPTP=PDAT_ACT.APO_DIST
+END
+DEF  CP_DAT ( )
+  VEL_CP (LDAT_ACT.VEL )
+  ACC_CP (LDAT_ACT.ACC )
+  $APO.CDIS=LDAT_ACT.APO_DIST
+END

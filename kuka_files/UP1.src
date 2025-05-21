@@ -1,0 +1,17 @@
+&ACCESS RVP
+&REL 1
+&COMMENT Simple PTP Move to P1
+DEF SIMPLE_MOVE ( )
+    ; Initialize the program
+    BAS (#INITMOV, 0)
+
+    ; Set motion parameters
+    $VEL.CP = 0.25      ; Set velocity to 25% of maximum
+    $ACC.CP = 50        ; Set acceleration to 50%
+    $APO.CPTP = 100     ; Set approximation distance for PTP motion
+
+    ; Move to position P1
+    PTP P1
+
+    ; End of program
+END

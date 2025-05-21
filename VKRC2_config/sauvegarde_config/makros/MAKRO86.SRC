@@ -1,0 +1,43 @@
+&ACCESS RV1
+&REL 1
+&COMMENT Arbeitsende 1
+&PARAM TPVW_VERSION = 3.3.5
+DEF MAKRO86 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO86     Meldung an BMS Arbeitsende 1      * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO86     Meldung an BMS Arbeitsende 1      * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Meldung an BMS Arbeitsende 1 Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Meldung an BMS Arbeitsende 1 Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A20 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A20 = EIN,3: BOASG
+$OUT[20]=TRUE
+;ENDFOLD
+; FOLD -- Warte Quittierung Arbeitsende 1 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte Quittierung Arbeitsende 1 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E20;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E20,3: WBOASG
+$LOOP_MSG[]="E20"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[20]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Meldung an BMS Arbeitsende 1 Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Meldung an BMS Arbeitsende 1 Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A20 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A20 = AUS,3: BOASG
+$OUT[20]=FALSE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

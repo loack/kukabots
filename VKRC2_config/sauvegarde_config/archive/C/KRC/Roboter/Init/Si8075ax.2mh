@@ -1,0 +1,110 @@
+[General]
+Spec_Revision=V01.10
+
+[Master]
+Name=CP 5613/CP 5614
+Descr=6GK1561-3AA00
+PNO=32885
+CtrlProgId_DP_Master=DpPcMasterCtrl.DpPcMasterCtrl
+SizeRAM1=90720
+SizeRAM2=524288
+ASIC=2
+ChangeHostLink=0
+SlaveFct=0
+Diagnosis=1
+AutoStop=0
+TriggeredOnEdge=1
+FailSafe=1
+DPX=0
+CL_9_6=244
+CL_19_2=244
+CL_93_75=244
+CL_187_5=244
+CL_500=244
+CL_1500=244
+CL_3000=244
+CL_6000=244
+CL_12000=244
+FMS=0
+Upload=0
+
+
+[Busparameter]
+BaudratesDP      =1111111111
+BaudratesDP_FMS  =1111111111
+BaudratesDP_V4x  =1111111111
+BaudratesAG95    =1111111111
+BaudratesUserdef =1111111111
+BaudratesUniv    =0001011111
+BaudratesStandard=1111111111
+Profiles=1101001
+MasterAddress=1,125
+GapRange=0,100
+
+[GUI-Master]
+Addressmode=0
+ImNr=0
+Multiprocessing=0
+ErrorIndication=0
+ExMemCard=0
+ExBinFile=0
+ExSDB=0
+ExDPM=0
+ExNCM=1
+ForceWatchDog=0
+LSAP=0
+VFD=0
+
+[MasterTimes]
+MinInterval=0
+MinSlaveInterval=0
+InterruptDelay=0
+PollDelay=0
+
+[Slaves]
+MaxSlaves=126
+DP=1
+SPC=0
+SPM=0
+AS-I=1
+SharedInput=0
+SharedOutput=0
+MaxInputData=244
+MaxOutputData=244
+MaxInputDataNC=244
+MaxOutputDataNC=244
+MaxInputDataMC=244
+MaxOutputDataMC=244
+MaxParamData=244
+MaxConfigData=244
+
+
+[GenHost]
+HighestHost=1
+Bitmap=cp5412.bmp
+MaxMasters=1
+StartupDelay=0
+
+[GenAddresses]
+ForceAddresses=0
+CntInLocks=2
+InLock1=P241-P255
+InLock2=Q000-Q255
+CntOutLocks=2
+OutLock1=P241-P255
+OutLock2=Q000-Q255
+CheckMemMap=0
+
+
+[GenGUI-Host]
+StartupDelay=0
+
+;--------- Host PC/PG ---
+[Host1]
+Name=CP 5613/CP 5614
+Descr=SIMATIC NET DP-Master (PC/PG)
+Internal=41
+
+
+
+

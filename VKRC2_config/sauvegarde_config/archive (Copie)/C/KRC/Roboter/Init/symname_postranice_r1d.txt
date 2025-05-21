@@ -1,0 +1,489 @@
+E1 Zvoleni Folge 1
+E2 Zvoleni Folge 2
+E3 Zvoleni Folge 3
+E4 Zvoleni Folge 4 Sk260
+E5 Zvoleni Folge 5 Sk262
+E6 Zvoleni Folge 6
+E7 Zvoleni Folge 7 Frezovani
+E8 Zvoleni Folge 8 Servisni pozice
+E9 Spusteni programu pozadovano
+E10 Pohyb pri K25 povolen
+E11 Pohyb pri K26 povolen
+E12 Zapnuti pohonu pri automatickem rezimu
+E13 Zarizeni zabezpeceno
+E14 Simulace (provedeni programu bez dilu)
+E15 Rezerva
+E16 Rezerva
+E17 Rezerva
+E18 Rezerva
+E19 Rezerva
+E20 Ukonceni prace potvrzeno
+E21 Opusteni postaveni pro udrzbu pozadovano
+E22 Blok. 1 od R1C
+E23 Blok. 1 od R1E
+E24 Blok. 1 od R1B
+E25 Blok. 4 od (Reserve)
+E26 Blok. 5 od (Reserve)
+E27 Blok. 6 od R1C
+E28 Blok. 7/8 Robot
+E29 Vymena nastroje
+E30 Ref. pozice
+E31 Reserve
+E32 Reserve
+E33 Kontrola dilu St.4/5 obsazen Sk26x
+E34 Rezerva
+E35 Rezerva
+E36 Reserve
+E37 Reserve
+E38 Reserve
+E39 Reserve
+E40 Reserve
+E41 Reserve
+E42 Reserve
+E43 Reserve
+E44 Reserve
+E45 Reserve
+E46 Reserve
+E47 Reserve
+E48 Reserve
+E49 Uvolneni 1 St.4/5 Zvarat
+E50 Uvolneni 2 St.4/5 Zvarat
+E51 Reserve
+E52 Reserve
+E53 Reserve
+E54 Reserve
+E55 Reserve
+E56 Reserve
+E57 Reserve
+E58 Reserve
+E59 Reserve
+E60 Reserve
+E61 Reserve
+E62 Reserve
+E63 Reserve
+E64 Reserve
+E65 bez zapaleni
+E66 Kvit. chyba fase
+E67 Start freza Z 1
+E68 Uvolneni frezovat
+E69 Kvit.poruchy frezy
+E70 Freza cepicek vysilac impulsu
+E71 Reserve
+E72 Reserve
+E73 Reserve
+E74 Reserve
+E75 Reserve
+E76 Reserve
+E77 Reserve
+E78 Reserve
+E79 Odsavani vody zap
+E80 Chladici voda zap
+E169 Tlak vzduchu 6bar OK
+E170 Tlak vzduchu 6bar Vyp.
+E171 Chladici voda min
+E172 Chladici voda max
+E173 Citac otacek frezy 1Z20
+E174 Reserve
+E175 Istic Freza OK
+E176 Reserve
+E177 Reserve
+E178 Reserve
+E179 Reserve
+E180 Reserve
+E193 Kleste 1 otevren (pracovni zdvih)
+E194 Reserve
+E195 Kleste. 1 zavreno (pracovni zdvih)
+E196 Reserve
+E197 Kleste. 1 otevren (predzdvih)
+E198 Reserve
+E199 Kontrola teploty sv.trafa 1
+E200 Kontr. K-prutok vody
+E545 F1 Svareni dokonceno   A-Bit 0
+E546 F1 Zadost o prevarit   A-Bit 1
+E547 F1 Opotrebeni vystraha A-Bit 2
+E548 F1 Opotrebeni dosazeno A-Bit 3
+E549 F1 Rizeni pripraveno   A-Bit 4
+E550 F1 Chyba svareni       A-Bit 5
+E551 F1 Kontrola procesu    A-Bit 6
+E552 F1 Svar s proudem      A-Bit 7
+E553 F1 Chyba TL 80         A-Bit 8
+E554 F1 Kontrola tlaku      A-Bit 9
+E555 F1 Uhel zap< min.Schw  A-Bit10
+E556 F1 Proud<-tolerance    A-Bit11
+E557 F1 Chyba hardwaru      A-Bit12
+E558 F1 Rezerva             A-Bit13
+E559 F1 Rezerva             A-Bit14
+E560 F1 Rezerva             A-Bit15
+E561 F1 Kleste 1 reset      A-Bit 0
+E562 F1 Kleste 2 reset      A-Bit 1
+E563 F1 Kleste 3 reset      A-Bit 2
+E564 F1 Kleste 4 reset      A-Bit 3
+E565 F1 Kleste 5 reset      A-Bit 4
+E566 F1 Kleste 6 reset      A-Bit 5
+E567 F1 Kleste 7 reset      A-Bit 6
+E568 F1 Kleste 8 reset      A-Bit 7
+E569 F1 Rezerva             A-Bit 8
+E570 F1 Rezerva             A-Bit 9
+E571 F1 Rezerva             A-Bit10
+E572 F1 Rezerva             A-Bit11
+E573 F1 Rezerva             A-Bit12
+E574 F1 Rezerva             A-Bit13
+E575 F1 Rezerva             A-Bit14
+E576 F1 Chyba komunikace    A-Bit15
+E577 F1 Sv tlak slovo1      A-Bit 0
+E578 F1 Sv tlak slovo2      A-Bit 1
+E579 F1 Sv tlak slovo4      A-Bit 2
+E580 F1 Sv tlak slovo8      A-Bit 3
+E581 F1 Sv tlak slovo16     A-Bit 4
+E582 F1 Sv tlak slovo32     A-Bit 5
+E583 F1 Sv tlak slovo64     A-Bit 6
+E584 F1 Sv tlak slovo128    A-Bit 7
+E585 F1 Sila plech slovo1   A-Bit 8
+E586 F1 Sila plech slovo2   A-Bit 9
+E587 F1 Sila plech slovo4   A-Bit10
+E588 F1 Sila plech slovo8   A-Bit11
+E589 F1 Sila plech slovo16  A-Bit12
+E590 F1 Sila plech slovo32  A-Bit13
+E591 F1 Sila plech slovo64  A-Bit14
+E592 F1 Sila plech slovo128 A-Bit15
+E929 KF1 MB0 Motor I Monitor
+E930 KF1 MB1 Motor I Monitor
+E931 KF1 MB2 Motor I Monitor
+E932 KF1 MB3 Motor I Monitor
+E933 KF1 MB4 Motor I Monitor
+E934 KF1 MB5 Motor I Monitor
+E935 KF1 Motor bezi
+E936 KF1 Potvrzeni nouzoveho chodu
+E937 KF1 Vstup 0 - otacky frezy
+E938 KF1 Vstup 1
+E939 KF1 Vstup 2
+E940 KF1 Vstup 3
+E941 KF1 F0 Diagnose Code
+E942 KF1 F1 Diagnose Code
+E943 KF1 F2 Diagnose Code
+E944 KF1 F3 Diagnose Code
+E977 Zastavovaci podminka v automatice
+A1 Folge 1
+A2 Folge 2
+A3 Folge 3
+A4 Folge 4 Sk260
+A5 Folge 5 Sk262
+A6 Folge 6
+A7 Folge 7 Frezovani
+A8 Folge 8 Servisni pozice
+A9 Pripraven
+A10 Rucni rezim
+A11 Krokovy chod programu
+A12 Automaticky rezim
+A13 Pohony zapnuty
+A14 Posledni bod
+A15 Zakladni postaveni
+A16 Na programovane draze
+A17 Cekat na kontakt - proces
+A18 Cekat na kontakt - Slave
+A19 Proklemovat
+A20 Konec prace I
+A21 V postaveni pro udrzbu I
+A22 Blok. 1 na R1C
+A23 Blok. 1 na R1E
+A24 Blok. 1 na R1B
+A25 Blok. 4 na (Reserve)
+A26 Blok. 5 na (Reserve)
+A27 Blok. 6 na R1C
+A28 Blok. 7/8
+A29 Vymena nastroje
+A30 Ref. pozice
+A31 nouzove vypinani
+A32 Hlaseni do BMS Brzdy robota chlazeny
+A33 Varovaci bit Interbus Master
+A34 Zadost BMS Uvoln.susednho robota E22 1C
+A35 Zadost BMS Uvoln.susednho robota E23 1E
+A36 Zadost BMS Uvoln.susednho robota E24 1B
+A37 Zadost BMS Uvoln.susednho robota E25
+A38 Zadost BMS Uvoln.susednho robota E26
+A39 Zadost BMS Uvoln.susednho robota E27C
+A40 Zadost BMS Uvoln.susednho robota E28 uvol.7
+A41 Zadost BMS Uvoln.susednho robota E28 uvol.8
+A42 Bit na mereni casu blokovani
+A43 Hlaseni BMS Stav prubehu Rob-flg Wert 1
+A44 Hlaseni BMS Stav prubehu Rob-flg Wert 2
+A45 Hlaseni BMS Stav prubehu Rob-flg Wert 4
+A46 Hlaseni BMS Stav prubehu Rob-flg Wert 8
+A47 Hlaseni BMS Stav prubehu Rob-flg Wert 16
+A48 Hlaseni BMS Stav prubehu Rob-flg Wert 32
+A49 Uvolneni 1 St.4/5
+A50 Pozice konec Svareni 1 St.4/5
+A51 Uvolneni 2  Otocny stul
+A52 Reserve
+A53 Reserve
+A54 Reserve
+A55 Reserve
+A56 Reserve
+A57 Reserve
+A58 Reserve
+A59 Reserve
+A60 Reserve
+A61 Reserve
+A62 Reserve
+A63 Reserve
+A64 Reserve
+A65 Fase 1 s/zapaleni hlaseni na MBS
+A66 Fase chyba
+A67 Fase 1 Hardware chyba TL80
+A68 Hlaseni Kvit.vymena cepicek pres centralni PC
+A69 Fase zapal.uhel<min
+A70 Predvarovani vymena cepicek sv.kleste
+A71 Vymena cepicek sv.kleste
+A72 Porucha frezy 1
+A73 Pocitadlo zdvihu sv.kleste
+A74 Dosazeny pocet
+A75 Reserve
+A76 Reserve
+A77 Prutok chl vody max
+A78 Prutok chl vody min
+A79 Pozadavek odsavat vodu
+A80 Pozadavek chladici vodu
+A169 chladící voda zapojeno
+A193 Kleste 1 zavrit (pracovni zdvih)
+A194 Kleste 1 otevrit (pracovni zdvih)
+A195 Kleste 1 pom.zavrit (pomocny zdvih)
+A196 Kleste 1 pom.otevrit (pomocny zdvih)
+A197 Rychle odvzdusneni kl.1
+A198 Reserva instalace klesti 1
+A199 Reserva instalace klesti 1
+A200 Reserva instalace klesti 1
+A545 F1 Start svareni       E-Bit 0
+A546 F1 Kvit prevarit       E-Bit 1
+A547 F1 Servoventil zapnout E-Bit 2
+A548 F1 Reset opotrebeni    E-Bit 3
+A549 F1 Reset chyby         E-Bit 4
+A550 F1 Reset chyby Nr.     E-Bit 5
+A551 F1 Rezerva             E-Bit 6
+A552 F1 Svar s proudem      E-Bit 7
+A553 F1 Hodnota 1           E-Bit 8
+A554 F1 Hodnota 2           E-Bit 9
+A555 F1 Hodnota 4           E-Bit10
+A556 F1 Hodnota 8           E-Bit11
+A557 F1 Hodnota 16          E-Bit12
+A558 F1 Hodnota 32          E-Bit13
+A559 F1 Hodnota 64          E-Bit14
+A560 F1 Hodnota 128         E-Bit15
+A561 F1 Kleste1 Quitovani   E-Bit 0
+A562 F1 Kleste2 Quitovani   E-Bit 1
+A563 F1 Kleste3 Quitovani   E-Bit 2
+A564 F1 Kleste4 Quitovani   E-Bit 3
+A565 F1 Kleste5 Quitovani   E-Bit 4
+A566 F1 Kleste6 Quitovani   E-Bit 5
+A567 F1 Kleste7 Quitovani   E-Bit 6
+A568 F1 Kleste8 Quitovani   E-Bit 7
+A569 F1 Rezerva             E-Bit 8
+A570 F1 Rezerva             E-Bit 9
+A571 F1 Rezerva             E-Bit10
+A572 F1 Rezerva             E-Bit11
+A573 F1 Rezerva             E-Bit12
+A574 F1 Start protokolovani E-Bit13
+A575 F1 Stop protokolovani  E-Bit14
+A576 F1 Kvit chyba komunik  E-Bit15
+A577 F1 Sv index slovo 1    Bin1 E-Bit 0
+A578 F1 Sv index slovo 2    Bin1 E-Bit 1
+A579 F1 Sv index slovo 4    Bin1 E-Bit 2
+A580 F1 Sv index slovo 8    Bin1 E-Bit 3
+A581 F1 Sv index slovo 16   Bin1 E-Bit 4
+A582 F1 Sv index slovo 32   Bin1 E-Bit 5
+A583 F1 Sv index slovo 64   Bin1 E-Bit 6
+A584 F1 Sv index slovo 128  Bin1 E-Bit 7
+A585 F1 Sv index slovo 256  Bin1 E-Bit 8
+A586 F1 Sv index slovo 512  Bin1 E-Bit 9
+A587 F1 Sv index slovo 1k   Bin1 E-Bit10
+A588 F1 Sv index slovo 2k   Bin1 E-Bit11
+A589 F1 Sv index slovo 4k   Bin1 E-Bit12
+A590 F1 Sv index slovo 8k   Bin1 E-Bit13
+A591 F1 Sv index slovo 16k  Bin1 E-Bit14
+A592 F1 Sv index slovo 32k  Bin1 E-Bit15
+A929 KF1 Proud Code W1
+A930 KF1 Proud Code W2
+A931 KF1 Proud Code W4
+A932 KF1 Proud Code W8
+A933 KF1 Proud Code W16
+A934 KF1 Proud Code W32
+A935 KF1 Kvitovani poruchy
+A936 KF1 Ofuk frezy
+A937 KF1 Vyhrazeno 0 Hex
+A938 KF1 Funkcni bit masky 0
+A939 KF1 Funkcni bit masky 1
+A940 KF1 Funkcni bit masky 2
+A941 KF1 Funkcni bit masky 3
+A942 KF1 LOG
+A943 KF1 Smer otaceni 1 zap
+A944 KF1 Smer otaceni 2 zap
+M1 Bezpecnost stroje
+M18 Kontrola polohy SZ 1
+I1 Doba pohybu robota
+I2 Pocitadlo zvaracich bodu
+I3 Doba pohybu klesti
+I4 Doba svareni
+I6 Pocitadlo opetovne zavol.makra
+I7 Casovy limit startu frezovani
+I8 Pocet otacani frezky
+I9 Jmenovita hodnota proudu motoru
+F1 Zadost freza1
+F2 Zadost freza2
+F3 Zadost freza3
+F4 Kleste kontrola vody
+F10 Proplach pozadovan/robot byl vyp
+F11 KL1 preruseni reset
+F12 KL1 preruseni
+F14 Simulace (jizda bez dilu)
+F15 Cekani pri UP proplachu
+F20 Proplach pozadovan/robot byl vyp
+F21 KL2 preruseni reset
+F22 KL2 preruseni
+F31 Upnuti 1 navolit
+F32 Upnuti 2 navolit
+F33 Upnuti 3 navolit
+F34 Upnuti 4 navolit
+F35 Upnuti 5 navolit
+F36 Upnuti 6 navolit
+F37 Upnuti 7 navolit
+F38 Upnuti 8 navolit
+F44 Davkovac neni naplnen
+F45 KL1 premosteni(bereit/endstellung)
+F46 KL2 premosteni(bereit/endstellung)
+F100 Podminka vykonani Makra 99
+F101 Zastaveni dilu v zasobniku vybrano
+F106 F Vyhodnoceni svareni OK
+F107 F Vyhodnoceni svareni OK
+F110 F1,2 Hlaseni start svareni
+F121 KF 1,2,3, Tmp porucha
+F122 KF Impulsy probehly
+F123 Casova hodnota na Reset Fase
+F124 KF K1 Frezovani preruseno opakovat
+F125 KF K2 Frezovani preruseno opakovat
+F126 KF K3 Frezovani preruseno opakovat
+F127 KF K1 Pocet otacek dosazen
+F128 KF K2 Pocet otacek dosazen
+F129 KF K3 Pocet otacek dosazen
+F163 Blokovani do BMS
+F181 Pozadavek
+F182 Zasuvny valec V
+F183 Zasuvny valec R
+F189 Pozadavek proplach KL1,2
+F190 Prenos hlaseni F1 quit kleste
+F196 KL1 Tryska Volna
+F197 F1 Zpetne hlaseni z robota
+F199 KF Start frezovani
+F200 KF Volba sekvence (klesteXfreza)
+F201 KF1 navolena
+F202 KF2 navolena
+F203 KF3 navolena
+F205 KF Vyfouknout pri pomoc zdvihu
+F208 Pocitadlo Reset Fase pres casovac
+F212 KL2 Tryska Volna
+F245 Kleste 1,2 prac zdvih ovladat
+F246 Kleste 1,2 pomoc zdvih ovladat
+F290 KF1 Zpetny chod
+F301 KF1 navolena
+F302 KF2 navolena
+F303 KF3 navolena
+F311 KF Motor I porovnani>0
+F312 KF Motor I porovnani>1
+F313 KF Motor I porovnani>2
+F314 KF Motor I porovnani>3
+F315 KF Motor I porovnani>4
+F316 KF Motor I porovnani>16
+F317 KF Motor I porovnani=0
+F318 KF Motor I porovnani<1
+F319 KF Motor I porovnani>63
+F331 KF1 Reset Phoenix menic
+F332 KF2 Reset Phoenix menic
+F333 KF3 Reset Phoenix menic
+F334 KF4 Reset Phoenix menic
+F401 Kleste 1 frezovat
+F402 Kleste 2 frezovat
+F403 Kleste 3 frezovat
+F404 Kleste 4 frezovat
+F405 Kleste 5 frezovat
+F406 Kleste 6 frezovat
+F407 Kleste 7 frezovat
+F408 Kleste 8 frezovat
+F409 Restet Stepper pres SPS
+F440 K1 Chladici voda OK
+F499 Programova rychlost 100%
+F500 Status jizda bez podminek
+F501 Kleste 1 poloha prac V
+F502 Kleste 1 poloha pomoc V
+F503 Kleste 2 poloha prac V
+F504 Kleste 2 poloha pomoc V
+F505 Kleste 3 poloha prac V
+F506 Kleste 2 poloha pomoc V
+F507 Zasuvny valec 1 poloha V
+F508 Zasuvny valec 2 poloha V
+F509 Zasuvny valec 3 poloha V
+F510 Drapak 1 poloha V
+F511 Drapak 2 poloha V
+F512 Drapak 3 poloha V
+F513 Razitko poloha V
+F514 Volitelne 1 poloha V
+F515 Volitelne 2 poloha V
+F516 Volitelne 3 poloha V
+F517 Volitelne 4 poloha V
+F518 Volitelne 5 poloha V
+F519 Volitelne 6 poloha V
+F571 Kleste 1 zablokovany
+F572 Kleste 2 zablokovany
+F573 Kleste 3 zablokovany
+F574 Zasuvny valec 1 zablokovany
+F575 Zasuvny valec 2 zablokovany
+F576 Zasuvny valec 3 zablokovany
+F577 Drapak 1 zablokovany
+F578 Drapak 2 zablokovany
+F579 Drapak 3 zablokovany
+F580 Razitko zablokovane
+F581 zablokovany volitelne 1
+F582 zablokovany volitelne 2
+F583 zablokovany volitelne 3
+F584 zablokovany volitelne 4
+F585 zablokovany volitelne 5
+F586 zablokovany volitelne 6
+F587 zablokovany volitelne 7
+F588 zablokovany volitelne 8
+F589 zablokovany volitelne 9
+F590 zablokovany volitelne 10
+F591 zablokovany volitelne 11
+F592 zablokovany volitelne 12
+F593 zablokovany volitelne 13
+F594 zablokovany volitelne 14
+F595 zablokovany volitelne 15
+F596 zablokovany volitelne 16
+F598 Soucet zablokovani 571-581
+F599 Soucet zablokovani 572-592
+F628 Prisavky 1 tmp vyfuk
+F629 Prisavky 2 tmp vyfuk
+F630 Volaci flag upinky otevreny
+F632 Makro 32 tmp
+F633 Makro 33 tmp
+F634 Makro 34 tmp
+F635 Makro 35 tmp
+F636 Makro 36 tmp
+F637 Makro 37 tmp
+F638 Makro 38 tmp
+F639 Makro 39 tmp
+F716 Reset hlaseni motor stop
+F717 Motor stop po preruseni
+F718 Motor doleva
+F719 Motor doprava
+F721 Kontrola otacek tmp
+F722 Kontrola otacek Positivni hrana
+F723 Kontrola otacek negativni hrana
+F724 Kontrola otacek kontrola casu
+F751 Reset motor 1 Phoenix
+F752 Reset motor 2 Phoenix
+F753 Reset motor 3 Phoenix
+F754 Reset motor 4 Phoenix
+F755 Reset motor 5 Phoenix
+F756 Reset motor 6 Phoenix
+T1 Pracovni cas
+T2 Pracovni cas
+T6 KF Hlidani otacek
+T7 KF Cas ofuku
+

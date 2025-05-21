@@ -1,0 +1,2210 @@
+&ACCESS R
+&PARAM TPVW_VERSION = 3.3.5
+DEF  VW (COMMAND :IN,COND :IN,P1 :IN,P2 :IN,P3 :IN,P4 :IN,B1 :IN, POINT :IN )
+   ; FOLD ;%{H} %MKUKATPVW
+   ; standard routines VW-tech package
+   DECL VW_COMMAND COMMAND
+   BOOL COND
+   REAL P1,P2,P3,P4
+   BOOL B1
+   DECL E6POS POINT
+   IF  NOT COND THEN
+      GOTO PEXIT
+   ENDIF
+   SWITCH  COMMAND
+   CASE #VW_PULSE
+      VW_PULSE (P1,P2,P3,P4,B1)
+   CASE #VW_INIT
+      $CYCFLAG[31]=TRUE
+      $CYCFLAG[30]=$CYCFLAG[31]
+      TRIGGER  WHEN DISTANCE=1 DELAY=-0.05 DO $OUT[PF0]=TRUE
+      WEAVE_INIT ( )
+      VW_USER (#USR_INIT )
+      INIT_PROG ( )
+   CASE #VW_INIT_UP
+      IF  NOT CALLBYSELECT THEN
+         $CYCFLAG[31]=TRUE
+         $CYCFLAG[30]=$CYCFLAG[31]
+         $LOOP_MSG[]="                                                                                                                               "
+         VW_USER (#USR_INIT )
+         BAS (#INITMOVEUP )
+         WEAVE_INIT ( )
+      ENDIF
+   CASE #BINOUT
+      BINOUT (P1,P2 ) ; interface#, output value
+   CASE #TRIG_BIN
+      BINOUT (P1,P2 ) ; interface#, output value
+   CASE #ANAOUT
+      ANAOUT (P1,P2,P3,P4 ) ; output mode, interface#, output factor, output offset
+   CASE #TRIG_ANA
+      ANAOUT (1,P1,P2,0 ) ; output mode konst, interface#, output offset, output factor
+   CASE #TRIG_ANAV
+      ANAOUT_VEL (1,P1,P2 ) ; mode vprop, interface#, output vel-factor
+   CASE #TRIG_ANAO
+      ANAOUT_VEL (2,P1,P2 ) ; mode offset, interface#, output offset, offs-factor
+   CASE #GUN
+      GUN (P1,P2 ) ; gun#, open/close
+   CASE #COUNTER
+      COUNTER (P1,P2 ) ; counter#, value
+   CASE #SET_TIME
+      SET_TIMER (P1,P2,P3 ) ; timer#, timer stop/start, start value
+   CASE #MPARA
+      MPARA ( )
+   CASE #FB_CHECK
+      FB_CHECK ( )
+   CASE #FB_STOP
+      FB_STOP ( )
+   CASE #TRIG_OUT
+      TRIG_OUT (P1,P2,B1 ) ; interface#, output value
+   CASE #SUCH_START
+      SUCHEN (P1,P2,P3,P4 ) ; Ini Nah, Ini Fern, red. Geschwindigkeit, Merker/Eingaenge
+   CASE #SUCH_STOP
+      RESUME_UP ( )
+   CASE #VW_SPS_INIT
+      AE_SPS_INIT ( )
+   CASE #VW_SPS_CYC
+      AE_SPS_CYC ( )
+   CASE #VW_AUE_INIT
+      $CYCFLAG[31]=TRUE
+      $CYCFLAG[30]=$CYCFLAG[31]
+      AUE_INIT ( )
+   CASE #VW_AUE_WAIT
+      AUE_WAIT ( )
+   CASE #VW_AUE_END
+      AUE_END ( )
+   CASE #VW_ZANGE
+      SUB_ZANGE ( )
+   CASE #VW_WEAV
+      WEAVING (B1,P1,P2,P3,P4 )
+   CASE #VW_WEAV_C
+      WEAVING_C (B1,P1,P2,P3,P4 )
+   CASE #VW_P_FREE
+      SPS_P_FREE ( )
+      VW_USER (#USR_CANCEL )
+      VW_USR_S (#USR_CANCEL )
+   CASE #VW_P_RESET
+      SPS_P_RESET ( )
+      VW_USER (#USR_RESET )
+      VW_USR_S (#USR_RESET )
+   CASE #VW_BLOCK_SEL
+      SPSBLOCK_SEL ( )
+      VW_USER (#USR_SAW )
+      VW_USR_S (#USR_SAW )
+   CASE #MOVE_BCO
+      SPSMOVEBCO ( )
+   CASE #VERR_EIN
+      VW_VERR_EIN (P1,P2,P3,P4 )
+   CASE #VERR_AUS
+      VW_VERR_AUS (P1 )
+   CASE #IBS_CHANGE
+      IBS_ALTERNAT (P1,P2,B1 ) ;Segment , Teilnehmer , EIN/AUS
+   DEFAULT
+   ENDSWITCH
+   PEXIT:
+END
+DEF  INIT_PROG ( )
+   ; reset timer for FB ONL pulse
+   $TIMER[15]=0
+   $TIMER_STOP[15]=TRUE
+   BAS (#INITMOV )
+   $LOOP_MSG[]="                                                                                                                               "
+   $CYCFLAG[30]=$CYCFLAG[31]
+   FB_STATE.N=0
+END
+DEF  BINOUT (B_NR :IN,NR :IN )
+   INT B_NR,NR
+   INT MASK,N
+   BOOL PARI
+   DECL CHAR MSG_STRING[20]
+   DECL BOOL B_BIT[32]
+   PARI=FALSE
+   MASK=1
+   FOR N=1 TO  B_LEN[B_NR]
+      PARI=PARI EXOR ((NR B_AND MASK>0))
+      B_BIT[N]=((NR B_AND MASK)>0)
+      MASK=MASK*2
+   ENDFOR
+   Mask=Mask-1 
+   ; dummy mask, limit to the possible
+   IF NR > Mask THEN
+      NR = 0
+      PARI=FALSE
+      MSG_STRING[]="BinOutValueOversized"
+      ;Value for BinOut[B_NR]>MaxValue --> Zero are assigned
+      NOTIFY_MSG (MSG_STRING[],B_NR)
+   ENDIF
+   ;Negative values cannot be set.    
+   IF NR < 0 THEN 
+      NR = 0
+      PARI=FALSE
+      MSG_STRING[]="BinOutValueLessZero"
+      ;Value for BinOut[B_NR]<0 --> Zero are assigned
+      NOTIFY_MSG (MSG_STRING[],B_NR)
+   ENDIF
+   IF B_PAR[B_NR]==#ODD THEN
+      PARI= NOT (PARI)
+   ENDIF
+   IF PARI AND (B_PAR[B_NR]<>#NONE) THEN
+      B_BIT[B_LEN[B_NR]+1]=TRUE
+   ELSE
+      B_BIT[B_LEN[B_NR]+1]=FALSE
+      MASK=0
+   ENDIF
+   IF B_LEN[B_NR]>0 THEN
+      B[B_NR]=NR
+	SWITCH B_NR
+	CASE 1
+	  BINOUT1=NR
+	CASE 2
+	  BINOUT2=NR
+	CASE 3
+	  BINOUT3=NR
+	CASE 4
+	  BINOUT4=NR
+	CASE 5
+	  BINOUT5=NR
+	CASE 6
+	  BINOUT6=NR
+	CASE 7
+	  BINOUT7=NR
+	CASE 8
+	  BINOUT8=NR
+	CASE 9
+	  BINOUT9=NR
+	CASE 10
+	  BINOUT10=NR
+      ENDSWITCH
+      IF B_PAR[B_NR]<>#NONE THEN
+        $OUT[B_LEN[B_NR]+B_FBIT[B_NR]]=B_BIT[B_LEN[B_NR]+1]
+      ENDIF
+   ENDIF
+END
+DEF NOTIFY_MSG (BINOUT_MSG[]:OUT,B_NR:IN)
+   CHAR BINOUT_MSG[]
+   DECL MSG_T EMPTY_MSG
+   DECL STATE_T STATE
+   INT  Dummy
+   INT B_NR
+   INT  Offset 
+   EMPTY_MSG={MSG_T: VALID FALSE,RELEASE FALSE,TYP #NOTIFY,MODUL[] " ",KEY[] " ",PARAM_TYP #VALUE,PARAM[] " ",DLG_FORMAT[] " ",ANSWER 0}
+   $MSG_T=EMPTY_MSG
+   $MSG_T.MODUL[]="TPVW" 
+   OFFSET=0 
+   SWRITE ($MSG_T.PARAM[],STATE,OFFSET,"%d",B_NR)
+   OFFSET=0
+   SWRITE($MSG_T.KEY[],STATE,OFFSET,BINOUT_MSG[],Dummy)
+   $MSG_T.PARAM_TYP=#VALUE
+   $MSG_T.TYP=#NOTIFY  
+   $MSG_T.VALID=TRUE  
+   WHILE  $MSG_T.VALID
+      WAIT SEC 0.05
+   ENDWHILE
+   WAIT SEC 0.2
+   $MSG_T=EMPTY_MSG
+END
+DEF  GUN (GUN_NO :IN,OPEN_GUN :IN )
+   INT GUN_NO,OPEN_GUN
+   SWITCH  DEF_ZANGE[GUN_NO].TYP
+   CASE 1,3
+      IF OPEN_GUN>0 THEN
+         ; gun open
+         IF DEF_ZANGE[GUN_NO].A_AUF>0 THEN
+            $OUT[DEF_ZANGE[GUN_NO].A_AUF]=TRUE
+         ENDIF
+         IF DEF_ZANGE[GUN_NO].A_ZU>0 THEN
+            $OUT[DEF_ZANGE[GUN_NO].A_ZU]=FALSE
+         ENDIF
+      ELSE
+         ; gun close
+         IF DEF_ZANGE[GUN_NO].A_AUF>0 THEN
+            $OUT[DEF_ZANGE[GUN_NO].A_AUF]=FALSE
+         ENDIF
+         IF DEF_ZANGE[GUN_NO].A_ZU>0 THEN
+            $OUT[DEF_ZANGE[GUN_NO].A_ZU]=TRUE
+         ENDIF
+      ENDIF
+   CASE 2,4
+      IF OPEN_GUN>0 THEN
+         ; gun open
+         IF DEF_ZANGE[GUN_NO].A_ZU>0 THEN
+            $OUT[DEF_ZANGE[GUN_NO].A_ZU]=FALSE
+         ENDIF
+         IF DEF_ZANGE[GUN_NO].A_AUF>0 THEN
+            PULSE ($OUT[DEF_ZANGE[GUN_NO].A_AUF],TRUE,PULS_TIME )
+         ENDIF
+      ELSE
+         ; gun close
+         IF DEF_ZANGE[GUN_NO].A_AUF>0 THEN
+            $OUT[DEF_ZANGE[GUN_NO].A_AUF]=FALSE
+         ENDIF
+         IF DEF_ZANGE[GUN_NO].A_ZU>0 THEN
+            PULSE ($OUT[DEF_ZANGE[GUN_NO].A_ZU],TRUE,PULS_TIME )
+         ENDIF
+      ENDIF
+   DEFAULT
+   ENDSWITCH
+END
+DEF  ANAOUT_VEL (MODE :IN,IFC_NO :IN,FACTOR :IN )
+   INT IFC_NO,MODE
+   REAL FACTOR
+   IF FACTOR==0 THEN
+      FACTOR=2E+06
+   ENDIF
+   IF MODE==1 THEN ;change vel-factor
+      SWITCH  IFC_NO
+      CASE 1
+         FAC1=1000.0/FACTOR
+      CASE 2
+         FAC2=1000.0/FACTOR
+      CASE 3
+         FAC3=1000.0/FACTOR
+      CASE 4
+         FAC4=1000.0/FACTOR
+      CASE 5
+         FAC5=1000.0/FACTOR
+      CASE 6
+         FAC6=1000.0/FACTOR
+      CASE 7
+         FAC7=1000.0/FACTOR
+      CASE 8
+         FAC8=1000.0/FACTOR
+      CASE 9
+         FAC9=1000.0/FACTOR
+      CASE 10
+         FAC10=1000.0/FACTOR
+      CASE 11
+         FAC11=1000.0/FACTOR
+      CASE 12
+         FAC12=1000.0/FACTOR
+      CASE 13
+         FAC13=1000.0/FACTOR
+      CASE 14
+         FAC14=1000.0/FACTOR
+      CASE 15
+         FAC15=1000.0/FACTOR
+      CASE 16
+         FAC16=1000.0/FACTOR
+      ENDSWITCH
+   ELSE ;change offs-factor
+      SWITCH  IFC_NO
+      CASE 1
+         OFS1=FACTOR*1E-04
+      CASE 2
+         OFS2=FACTOR*1E-04
+      CASE 3
+         OFS3=FACTOR*1E-04
+      CASE 4
+         OFS4=FACTOR*1E-04
+      CASE 5
+         OFS5=FACTOR*1E-04
+      CASE 6
+         OFS6=FACTOR*1E-04
+      CASE 7
+         OFS7=FACTOR*1E-04
+      CASE 8
+         OFS8=FACTOR*1E-04
+      CASE 9
+         OFS9=FACTOR*1E-04
+      CASE 10
+         OFS10=FACTOR*1E-04
+      CASE 11
+         OFS11=FACTOR*1E-04
+      CASE 12
+         OFS12=FACTOR*1E-04
+      CASE 13
+         OFS13=FACTOR*1E-04
+      CASE 14
+         OFS14=FACTOR*1E-04
+      CASE 15
+         OFS15=FACTOR*1E-04
+      CASE 16
+         OFS16=FACTOR*1E-04
+      ENDSWITCH
+   ENDIF
+END
+DEF  ANAOUT (MODE :IN,IFC_NO :IN,FACTOR :IN,OFFSET :IN )
+   INT IFC_NO,MODE,OFFSET
+   REAL FACTOR
+   SWITCH  MODE
+   CASE 1 ; constant setting
+      IF IFC_NO==1 THEN
+         ANOUT OFF ANA1
+      ENDIF
+      IF IFC_NO==2 THEN
+         ANOUT OFF ANA2
+      ENDIF
+      IF IFC_NO==3 THEN
+         ANOUT OFF ANA3
+      ENDIF
+      IF IFC_NO==4 THEN
+         ANOUT OFF ANA4
+      ENDIF
+      IF IFC_NO==5 THEN
+         ANOUT OFF ANA5
+      ENDIF
+      IF IFC_NO==6 THEN
+         ANOUT OFF ANA6
+      ENDIF
+      IF IFC_NO==7 THEN
+         ANOUT OFF ANA7
+      ENDIF
+      IF IFC_NO==8 THEN
+         ANOUT OFF ANA8
+      ENDIF
+      IF IFC_NO==9 THEN
+         ANOUT OFF ANA9
+      ENDIF
+      IF IFC_NO==10 THEN
+         ANOUT OFF ANA10
+      ENDIF
+      IF IFC_NO==11 THEN
+         ANOUT OFF ANA11
+      ENDIF
+      IF IFC_NO==12 THEN
+         ANOUT OFF ANA12
+      ENDIF
+      IF IFC_NO==13 THEN
+         ANOUT OFF ANA13
+      ENDIF
+      IF IFC_NO==14 THEN
+         ANOUT OFF ANA14
+      ENDIF
+      IF IFC_NO==15 THEN
+         ANOUT OFF ANA15
+      ENDIF
+      IF IFC_NO==16 THEN
+         ANOUT OFF ANA16
+      ENDIF
+      $ANOUT[IFC_NO]=FACTOR*1E-04
+   CASE 2 ; velocity depending
+      SWITCH  IFC_NO
+      CASE 1
+         OFS1=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC1=1000/FACTOR
+         ANOUT ON ANA1=$VEL_ACT*FAC1+OFS1 DELAY= ANA_DELAY1
+      CASE 2
+         OFS2=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC2=1000/FACTOR
+         ANOUT ON ANA2=$VEL_ACT*FAC2+OFS2 DELAY= ANA_DELAY2
+      CASE 3
+         OFS3=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC3=1000/FACTOR
+         ANOUT ON ANA3=$VEL_ACT*FAC3+OFS3 DELAY= ANA_DELAY3
+      CASE 4
+         OFS4=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC4=1000/FACTOR
+         ANOUT ON ANA4=$VEL_ACT*FAC4+OFS4 DELAY= ANA_DELAY4
+      CASE 5
+         OFS5=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC5=1000/FACTOR
+         ANOUT ON ANA5=$VEL_ACT*FAC5+OFS5 DELAY= ANA_DELAY5
+      CASE 6
+         OFS6=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC6=1000/FACTOR
+         ANOUT ON ANA6=$VEL_ACT*FAC6+OFS6 DELAY= ANA_DELAY6
+      CASE 7
+         OFS7=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC7=1000/FACTOR
+         ANOUT ON ANA7=$VEL_ACT*FAC7+OFS7 DELAY= ANA_DELAY7
+      CASE 8
+         OFS8=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC8=1000/FACTOR
+         ANOUT ON ANA8=$VEL_ACT*FAC8+OFS8 DELAY= ANA_DELAY8
+      CASE 9
+         OFS9=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC9=1000/FACTOR
+         ANOUT ON ANA9=$VEL_ACT*FAC9+OFS9 DELAY= ANA_DELAY9
+      CASE 10
+         OFS10=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC10=1000/FACTOR
+         ANOUT ON ANA10=$VEL_ACT*FAC10+OFS10 DELAY= ANA_DELAY10
+      CASE 11
+         OFS11=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC11=1000/FACTOR
+         ANOUT ON ANA11=$VEL_ACT*FAC11+OFS11 DELAY= ANA_DELAY11
+      CASE 12
+         OFS12=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC12=1000/FACTOR
+         ANOUT ON ANA12=$VEL_ACT*FAC12+OFS12 DELAY= ANA_DELAY12
+      CASE 13
+         OFS13=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC13=1000/FACTOR
+         ANOUT ON ANA13=$VEL_ACT*FAC13+OFS13 DELAY= ANA_DELAY13
+      CASE 14
+         OFS14=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC14=1000/FACTOR
+         ANOUT ON ANA14=$VEL_ACT*FAC14+OFS14 DELAY= ANA_DELAY14
+      CASE 15
+         OFS15=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC15=1000/FACTOR
+         ANOUT ON ANA15=$VEL_ACT*FAC15+OFS15 DELAY= ANA_DELAY15
+      CASE 16
+         OFS16=OFFSET*1E-04
+         IF FACTOR==0 THEN
+            FACTOR=2E+06
+         ENDIF
+         FAC16=1000/FACTOR
+         ANOUT ON ANA16=$VEL_ACT*FAC16+OFS16 DELAY= ANA_DELAY16
+      ENDSWITCH
+   CASE 3 ; weave amplitude depending
+      FAC1=OFFSET*1E-04
+      OFS1=FACTOR*1E-04
+      SWITCH  IFC_NO
+      CASE 1
+         ANOUT ON ANA1=FAC1*$TECHVAL[3]+OFS1
+      CASE 2
+         ANOUT ON ANA2=FAC1*$TECHVAL[3]+OFS1
+      CASE 3
+         ANOUT ON ANA3=FAC1*$TECHVAL[3]+OFS1
+      CASE 4
+         ANOUT ON ANA4=FAC1*$TECHVAL[3]+OFS1
+      CASE 5
+         ANOUT ON ANA5=FAC1*$TECHVAL[3]+OFS1
+      CASE 6
+         ANOUT ON ANA6=FAC1*$TECHVAL[3]+OFS1
+      CASE 7
+         ANOUT ON ANA7=FAC1*$TECHVAL[3]+OFS1
+      CASE 8
+         ANOUT ON ANA8=FAC1*$TECHVAL[3]+OFS1
+      CASE 9
+         ANOUT ON ANA9=FAC1*$TECHVAL[3]+OFS1
+      CASE 10
+         ANOUT ON ANA10=FAC1*$TECHVAL[3]+OFS1
+      CASE 11
+         ANOUT ON ANA11=FAC1*$TECHVAL[3]+OFS1
+      CASE 12
+         ANOUT ON ANA12=FAC1*$TECHVAL[3]+OFS1
+      CASE 13
+         ANOUT ON ANA13=FAC1*$TECHVAL[3]+OFS1
+      CASE 14
+         ANOUT ON ANA14=FAC1*$TECHVAL[3]+OFS1
+      CASE 15
+         ANOUT ON ANA15=FAC1*$TECHVAL[3]+OFS1
+      CASE 16
+         ANOUT ON ANA16=FAC1*$TECHVAL[3]+OFS1
+      ENDSWITCH
+   ENDSWITCH
+END
+DEF  COUNTER (CNT_NO :IN,VALUE :IN )
+   INT CNT_NO,VALUE
+   I[CNT_NO]=VALUE
+END
+DEF  SET_TIMER (TIMER_NO :IN,TIMER_STOP :IN,TIMER_VALUE :IN )
+   INT TIMER_NO,TIMER_STOP,TIMER_VALUE
+   IF TIMER_STOP>0 THEN
+      ; timer stop
+      $TIMER_STOP[TIMER_NO]=TRUE
+   ELSE
+      ; timer start with value
+      $TIMER[TIMER_NO]=TIMER_VALUE*100
+      $TIMER_STOP[TIMER_NO]=FALSE
+   ENDIF
+END
+DEF  MPARA ( )
+   ; start pulse timer for FB ONL
+   CONTINUE
+   IF  ((NOT $ON_PATH) OR BSTEP_FLAG) THEN
+      $ACT_TOOL=-1
+      $ACT_BASE=-1
+      $LOOP_MSG[]="                                                                                                                               "
+      IF (NOT INT10) OR (NOT EG_SERVO_INIT) THEN
+         T_INT10 ( )
+      ENDIF
+      IF (($PRO_STATE0<>#P_ACTIVE) AND (STOP_FLAG)) THEN
+         T_SUB ( )
+      ENDIF
+      INTERRUPT ON 10
+      WAIT SEC 0.05
+      ;FB_ONL - Flanke
+      $TIMER[15]=-250
+      $TIMER_STOP[15]=FALSE
+      IF $PRO_MODE<>#BSTEP THEN
+         WAIT FOR (($CYCFLAG[30]) OR ($TIMER[15]>-10))
+      ENDIF
+      WAIT SEC 0.15
+      $TIMER[15]=1
+      FB_STOP ()
+      BSTEP_FLAG=FALSE
+      $LOOP_MSG[]="                                                                                                                               "
+   ENDIF
+   ; check Interbus segment
+   ;CHECK_IBS ()
+   ; has Tool-Number changed
+   SWITCH  ADV_TOOL[VW_MPARA_ACT.TOOL_NO]
+   CASE #STANDARD
+      IF TOOL_TYPE[VW_MPARA_ACT.TOOL_NO]==#BASE THEN
+         BAS (#TOOL,VW_MPARA_ACT.TOOL_NO )
+         BAS (#BASE,0 )
+         $IPO_MODE=#BASE
+      ELSE
+         BAS (#BASE,VW_MPARA_ACT.TOOL_NO )
+         $TOOL=$NULLFRAME
+         CONTINUE
+         $ACT_TOOL=0
+         $IPO_MODE=#TCP
+         IF $ADAP_ACC<>#NONE THEN
+            IF LOAD_DATA[VW_MPARA_ACT.TOOL_NO].M<0 THEN
+               $LOAD.M=$DEF_L_M
+               $LOAD.CM=$DEF_L_CM
+               $LOAD.J=$DEF_L_J
+            ELSE
+               $LOAD.M=LOAD_DATA[VW_MPARA_ACT.TOOL_NO].M
+               $LOAD.CM=LOAD_DATA[VW_MPARA_ACT.TOOL_NO].CM
+               $LOAD.J=LOAD_DATA[VW_MPARA_ACT.TOOL_NO].J
+               IF (($LOAD.M<>0) AND ($LOAD.J.X==0) AND ($LOAD.J.Y==0) AND ($LOAD.J.Z==0)) THEN
+                  $LOAD.J=$DEF_L_J
+               ENDIF
+            ENDIF
+         ENDIF
+      ENDIF
+   CASE #TOOL_BASE
+      $IPO_MODE=TOOL_TYPE[VW_MPARA_ACT.TOOL_NO]
+      BAS (#TOOL,VW_MPARA_ACT.TOOL_NO )
+      BAS (#BASE,VW_MPARA_ACT.TOOL_NO )
+   CASE #TOOL_EXAX
+      $IPO_MODE=TOOL_TYPE[VW_MPARA_ACT.TOOL_NO]
+      BAS (#TOOL,VW_MPARA_ACT.TOOL_NO )
+      BAS (#EX_BASE,VW_MPARA_ACT.TOOL_NO )
+   ENDSWITCH
+   IF NO_MPARA_ASSIGN THEN
+      NO_MPARA_ASSIGN=FALSE
+      RETURN
+   ENDIF
+   IF VW_MPARA_ACT.MOVE_TYPE==#GLUE_MOTION THEN
+      $VEL.CP=VW_MPARA_ACT.VB*0.001
+      $VEL.ORI1=DEF_VEL_ORI1
+      $VEL.ORI2=DEF_VEL_ORI2
+      $ACC.CP=$ACC_MA.CP*VW_MPARA_ACT.ACC*0.01
+      $ACC.ORI1=$ACC_MA.ORI1*VW_MPARA_ACT.ACC*0.01
+      $ACC.ORI2=$ACC_MA.ORI2*VW_MPARA_ACT.ACC*0.01
+      IF VW_MPARA_ACT.VE>0 THEN
+         $APO.CDIS=VW_MPARA_ACT.VE
+      ELSE
+         $APO.CDIS=DEF_APO_CDIS
+      ENDIF
+      RETURN
+   ENDIF
+   IF VW_MPARA_ACT.MOVE_TYPE==#PTP_MOTION THEN
+      BAS (#VEL_PTP,VW_MPARA_ACT.VB )
+      BAS (#ACC_PTP,VW_MPARA_ACT.ACC )
+      IF VW_MPARA_ACT.VE>0 THEN
+         $APO.CPTP=VW_MPARA_ACT.VE
+      ELSE
+         $APO.CPTP=DEF_APO_CPTP
+      ENDIF
+   ELSE ;CP-Motion
+      BAS (#VEL_CP,VW_MPARA_ACT.VB*0.001 )
+      $VEL.ORI1=DEF_VEL_ORI1
+      $VEL.ORI2=DEF_VEL_ORI2
+      BAS (#ACC_CP,VW_MPARA_ACT.ACC )
+      IF VW_MPARA_ACT.VE>0 THEN
+         $APO.CVEL=VW_MPARA_ACT.VE
+      ELSE
+         $APO.CVEL=DEF_APO_CVEL
+      ENDIF
+   ENDIF
+END
+DEF  FB_LOOP_MSG ( )
+  DECL STATE_T STATE
+  DECL MODUS_T MODUS
+  DECL CHAR AND_OPS[1]
+  INT OFFSET,V_OFFSET,INT_N
+  INT VERR_NR, OUT_NR
+  BOOL MIT_VERR
+  DECL CHAR MY_MSG[470]
+  IF (DETECT_LMS (VERR_NR, OUT_NR)) THEN
+    $OUT[OUT_NR]=FALSE   ;Freigabeausgang wieder zuruecksetzen
+    ;--- Meldung, dass Verriegelungsausgang <Out_Nr> in der Verrieglung Nr. <Verr_Nr> ueberschrieben wurde ---
+    MAKE_LMS_MSG (VERR_NR, OUT_NR)
+  ENDIF
+  OFFSET=0
+  MIT_VERR=FALSE
+  MY_MSG[]="                                                                                                                              "
+  SWRITE(MY_MSG[],STATE,OFFSET,$CYC_DEF30[],0)
+  IF (OFFSET==3) AND (MY_MSG[1]=="E") AND (MY_MSG[2]=="I") AND (MY_MSG[3]=="N") THEN
+    $LOOP_MSG[]="                                                                                                                               "
+    OFFSET=0
+  ELSE
+    IF (OFFSET==4) AND (MY_MSG[1]=="S") AND (MY_MSG[2]=="I") AND (MY_MSG[3]=="M") THEN
+      $LOOP_MSG[]="                                                                                                                               "
+      OFFSET=0
+    ELSE
+      IF (OFFSET==5) AND (MY_MSG[1]==" ") AND (MY_MSG[2]=="E") AND (MY_MSG[3]=="I") AND (MY_MSG[4]=="N") THEN
+        $LOOP_MSG[]="                                                                                                                               "
+        OFFSET=0
+      ELSE
+        $LOOP_MSG[]="                                                                                                                               "
+        OFFSET=0
+        SWRITE($LOOP_MSG[],STATE,OFFSET,$CYC_DEF30[],0)
+        OFFSET=OFFSET+1
+      ENDIF
+    ENDIF
+  ENDIF
+  V_OFFSET=0
+  $CYC_DEF31[]="                                                                      "
+  FOR INT_N=1 TO  8
+    IF VW_VERR[INT_N].IN<>1025 THEN
+      IF V_OFFSET>0 THEN
+        SWRITE($CYC_DEF31[],STATE,V_OFFSET,"&",0)
+        V_OFFSET=V_OFFSET+1
+      ENDIF
+      SWRITE($CYC_DEF31[],STATE,V_OFFSET,VW_VERR[INT_N].NAME[],0)
+      MIT_VERR=TRUE
+    ENDIF
+  ENDFOR
+  IF MIT_VERR THEN
+    IF ((OFFSET+V_OFFSET)>110) THEN
+          IF OFFSET>0 THEN
+            SWRITE($LOOP_MSG[],STATE,OFFSET,"&",0)
+          ENDIF
+      SWRITE($LOOP_MSG[],STATE,OFFSET," M31",0)
+    ELSE
+      FOR INT_N=1 TO  8
+        IF VW_VERR[INT_N].IN<>1025 THEN
+          SWRITE($LOOP_MSG[],STATE,OFFSET,"&",0)
+          SWRITE($LOOP_MSG[],STATE,OFFSET,VW_VERR[INT_N].NAME[],0)
+        ENDIF
+      ENDFOR
+    ENDIF
+  ENDIF
+END
+DEF  MAKE_LMS_MSG (VERR_NR :IN, OUT_NR :IN)
+  DECL INT VERR_NR
+  DECL INT OUT_NR
+  DECL MSG_T EMPTY_MSG
+  DECL INT ANSWER
+  DECL INT OFFSET
+  DECL STATE_T STATE
+  EMPTY_MSG={MSG_T: VALID FALSE,RELEASE FALSE,TYP #NOTIFY,MODUL[] " ",KEY[] " ",PARAM_TYP #VALUE,PARAM[] " ",DLG_FORMAT[] " ",ANSWER 0}
+  $MSG_T=EMPTY_MSG
+  $MSG_T.MODUL[]="TPVW"
+  $MSG_T.KEY[]="VERR_FRG_LMS"
+  $MSG_T.PARAM_TYP=#VALUE
+  $MSG_T.PARAM[]="                    "
+  OFFSET=0
+  SWRITE ($MSG_T.PARAM[],STATE,OFFSET,"A%d, ",OUT_NR)
+  SWRITE ($MSG_T.PARAM[],STATE,OFFSET,"VERR_%d",VERR_NR)   
+  $MSG_T.TYP=#QUIT
+  $MSG_T.VALID=TRUE
+  WAIT SEC 0.2
+  WAIT FOR NOT $MSG_T.VALID
+  HALT
+END
+DEF  FB_SAVE_MSG ( )
+   DECL STATE_T STATE
+   DECL MODUS_T MODUS
+   INT OFFSET
+   L_MSG_SAVE[]="                                                                                                                              "
+   IF ($LOOP_MSG[1]<>" ") OR ($LOOP_MSG[2]<>" ") OR ($LOOP_MSG[3]<>" ") THEN
+      L_MSG_SAVE[]=" "
+      OFFSET=0
+      SWRITE(L_MSG_SAVE[],STATE,OFFSET,$LOOP_MSG[],0)
+   ENDIF
+END
+DEF  FB_LOAD_MSG ( )
+   DECL STATE_T STATE
+   DECL MODUS_T MODUS
+   INT OFFSET
+   $LOOP_MSG[]="                                                                                                                               "
+   OFFSET=0
+   SWRITE($LOOP_MSG[],STATE,OFFSET,L_MSG_SAVE[],0)
+END
+DEF  FB_CHECK ( )
+   IF $CYCFLAG[30] AND ($TIMER[15]<0) THEN
+      BRAKE
+      IF $PRO_MODE<>#BSTEP THEN
+         WAIT FOR  ($TIMER[15]>0)
+      ENDIF
+   ENDIF
+   $LOOP_CONT=TRUE
+   WAIT FOR  $CYCFLAG[30] OR ( NOT ($LOOP_CONT) AND ($MODE_OP<>#EX))
+   $LOOP_CONT=TRUE
+END
+DEF  FB_STOP ( )
+   INT INT_N
+   BOOL EXIT_OK
+   BOOL IN_APO_1
+   IN_APO_1= NOT (($MOVE_STATE==#PTP_AP02) OR ($MOVE_STATE==#LIN_AP02) OR ($MOVE_STATE==#CIRC_AP02))
+   IF ((IN_APO_1) OR (NOT SEARCH_ACTIV)) THEN
+      $VW_FB_HOLD=TRUE
+   ENDIF
+   IF $PRO_MOVE THEN
+      BRAKE
+   ENDIF
+   FB_STATE.APO_2= NOT IN_APO_1
+   FB_STATE.N=FB_STATE.N+1
+   FB_STATE.HOLD=$VW_FB_HOLD
+   FB_SAVE_MSG ( )
+   FB_LOOP_MSG ( )
+   $LOOP_CONT=TRUE
+   EXIT_OK=FALSE
+   REPEAT
+      WHILE   NOT ($CYCFLAG[30] OR ( NOT ($LOOP_CONT) AND ($MODE_OP<>#EX)))
+         IF ($LOOP_MSG[1]==" ") AND ($LOOP_MSG[2]==" ") AND ($LOOP_MSG[3]==" ") THEN
+            FB_LOOP_MSG ( )
+            WAIT SEC 0.1
+            IF ($LOOP_MSG[1]==" ") AND ($LOOP_MSG[2]==" ") AND ($LOOP_MSG[3]==" ") THEN
+               $LOOP_MSG[]="Warte FB     AUS                                                                                                               "
+            ENDIF
+         ENDIF
+         IF $PRO_MOVE THEN
+            BRAKE
+         ENDIF
+         IF $PRO_MODE1==#BSTEP THEN
+            ;RETURN
+         ENDIF
+      ENDWHILE
+      IF  NOT $LOOP_CONT THEN
+         ;Simuliere-Taste gedrueckt
+         $CYCFLAG[30]=TRUE
+         WAIT SEC 0.1
+         $CYC_DEF30[]="SIMU"
+         FOR INT_N=1 TO  8
+            IF  NOT $IN[VW_VERR[INT_N].IN] THEN
+               VW_VERR[INT_N].IN=1025
+               VW_VERR[INT_N].NAME[]="SIMU   "
+            ENDIF
+         ENDFOR
+         WRITE_VERR_COND (FALSE)  ;Auffrischen der Verriegelungsbedingung
+         EXIT_OK=TRUE
+         $LOOP_CONT=TRUE
+      ELSE
+         $TIMER[16]=-150
+         $TIMER_STOP[16]=FALSE
+         WHILE   NOT ( NOT $CYCFLAG[30] OR ($TIMER[16]>0))
+         ENDWHILE
+         IF $TIMER[16]>0 THEN
+            $TIMER_STOP[16]=TRUE
+            EXIT_OK=TRUE
+         ELSE
+         ENDIF
+      ENDIF
+   UNTIL EXIT_OK
+   $LOOP_CONT=TRUE
+   FB_LOAD_MSG ( )
+   WAIT SEC 0.024
+   $VW_FB_HOLD=FALSE
+END
+DEF  TRIG_OUT (NO :IN,MODE :IN,STATE :IN )
+   ; set a digital output
+   INT NO,MODE
+   BOOL STATE
+   IF MODE==0 THEN
+      $OUT[NO]=STATE
+   ELSE
+      $FLAG[NO]=STATE
+   ENDIF
+END
+DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
+   INT E_STOP,E_RED,VEL_RED,INPUT_CASE
+   OV_OLD=$OV_PRO
+   SUCH_RED=VEL_RED
+   INTERRUPT DECL 102 WHEN $OV_PRO<>OLD_OV_PRO DO SET_V_SLW ( )     
+   IF (INPUT_CASE == 2) OR (INPUT_CASE == 4) THEN
+      INTERRUPT DECL 101 WHEN $CYCFLAG[E_RED] DO RED_UP (SUCH_RED )
+      IF $CYCFLAG[E_RED] THEN
+      ;Sensor Nah liegt bereits an
+      $OV_PRO=0.01*$OV_PRO*VEL_RED
+      INTERRUPT OFF 101
+   ELSE
+      INTERRUPT ON 101
+   ENDIF
+   ELSE
+      INTERRUPT DECL 101 WHEN $IN[E_RED] DO RED_UP (SUCH_RED )
+      IF $IN[E_RED] THEN
+         ;Sensor Nah liegt bereits an
+         $OV_PRO=0.01*$OV_PRO*VEL_RED
+         INTERRUPT OFF 101
+      ELSE
+         INTERRUPT ON 101
+      ENDIF
+   ENDIF
+   IF (INPUT_CASE == 3) OR (INPUT_CASE == 4) THEN
+      IF  NOT $CYCFLAG[E_STOP] THEN
+         INTERRUPT ON 12
+      LIN  Z_PUNKT
+      WAIT SEC 0.01
+      INTERRUPT OFF 12
+      INTERRUPT OFF 101
+      INTERRUPT OFF 102
+      $OV_PRO=OV_OLD
+   ELSE
+      ;Sensor Fern liegt bereits an
+      INTERRUPT OFF 12
+      INTERRUPT OFF 101
+      INTERRUPT OFF 102
+      $OV_PRO=OV_OLD
+   ENDIF
+   ELSE
+      IF  NOT $IN[E_STOP] THEN
+         INTERRUPT ON 12
+         LIN  Z_PUNKT
+         WAIT SEC 0.01
+         INTERRUPT OFF 12
+         INTERRUPT OFF 101
+         INTERRUPT OFF 102
+         $OV_PRO=OV_OLD
+      ELSE
+         ;Sensor Fern liegt bereits an
+         INTERRUPT OFF 12
+         INTERRUPT OFF 101
+         INTERRUPT OFF 102
+         $OV_PRO=OV_OLD
+      ENDIF
+   ENDIF
+END
+DEF  RESUME_UP ( )
+   SUCH_RED=100
+   BRAKE
+   INTERRUPT OFF 102
+   INTERRUPT OFF 101
+   INTERRUPT OFF 12
+   $OV_PRO=OV_OLD
+   RESUME
+END
+DEF  RED_UP (V_RED :OUT )
+   INT V_RED
+   INTERRUPT OFF 101
+   IF SUCH_RED<>100 THEN
+      OV_OLD=$OV_PRO
+      $OV_PRO=0.01*$OV_PRO*V_RED
+      INTERRUPT ON 102              
+   ENDIF
+END
+DEF SET_V_SLW ( )               
+  $OV_PRO=0.01*OV_OLD*SUCH_RED        
+END                       
+DEF  AE_SPS_INIT ( )
+   ; reset Inbetriebnahme-Flag
+   INT S
+   VW_INB=FALSE
+   ; reset WPROZ, WSLAV
+   OUT_WPROZ=FALSE
+   OUT_WSLAV=FALSE
+   ; reset Zangentaste
+   ZANGEN_FUNKT=0
+   $H_POS=$H_POS
+   MODE=#SYNC
+   ;$Pro_Mode-Umschaltung und Satzanwahl
+   LAST_PRMODE=$PRO_MODE1
+   WAIT SEC 1.0
+   IF $PRO_STATE1==#P_FREE THEN
+      ;Default-Werte fuer Merker 1..24
+      CYC_RESET ( )
+      ; Automatik Extern Initialisierung (SPS.SUB)
+      PRG_NR_REFL = 0
+      P0_MERKER=TRUE
+   ENDIF
+END
+DEF  WPROZ_WSLAV ( )
+   IF  NOT (OUT_WSLAV OR OUT_WPROZ) THEN
+      IF I_PROSLA<>0 THEN
+         I_PROSLA=0
+         B_WSLAV[1]=FALSE
+         B_WSLAV[2]=FALSE
+         B_WSLAV[3]=FALSE
+         B_WPROZ[1]=FALSE
+         B_WPROZ[2]=FALSE
+         B_WPROZ[3]=FALSE
+         $OUT[WPROZ]=FALSE
+         $OUT[WSLAV]=FALSE
+      ENDIF
+      RETURN
+   ENDIF
+   I_PROSLA=I_PROSLA+1
+   IF ((I_PROSLA>=4) OR (I_PROSLA<=0)) THEN
+      I_PROSLA=1
+   ENDIF
+   B_WPROZ[I_PROSLA]=OUT_WPROZ
+   B_WSLAV[I_PROSLA]=OUT_WSLAV
+   IF (B_WPROZ[1] AND B_WPROZ[2] AND B_WPROZ[3]) THEN
+      $OUT[WPROZ]=TRUE
+   ENDIF
+   IF ( NOT (B_WPROZ[1]) AND  NOT (B_WPROZ[2]) AND  NOT (B_WPROZ[3])) THEN
+      $OUT[WPROZ]=FALSE
+   ENDIF
+   IF (B_WSLAV[1] AND B_WSLAV[2] AND B_WSLAV[3]) THEN
+      $OUT[WSLAV]=TRUE
+   ENDIF
+   IF ( NOT (B_WSLAV[1]) AND  NOT (B_WSLAV[2]) AND  NOT (B_WSLAV[3])) THEN
+      $OUT[WSLAV]=FALSE
+   ENDIF
+END
+DEF  AE_SPS_CYC ( )
+   ;Automatik Extern Zyklischer Teil im SPS.SUB
+   BOOL MERK1
+   INT S
+   IF $PRO_MODE1==#BSTEP THEN
+      ;FB_ONL - Flanke
+      $TIMER[15]=-300
+      $TIMER_STOP[15]=FALSE
+      IF NOT BSTEP_FLAG THEN
+         $LOOP_MSG[]="                                                                                                                               "
+      ENDIF
+      BSTEP_FLAG=TRUE
+   ENDIF
+   IF ((A_QUAL>0) AND (E_QUAL>0)) THEN
+      $OUT[A_QUAL]=$IN[E_QUAL]
+   ENDIF
+   MERK1=$ALARM_STOP AND $USER_SAF
+   $OUT[PF0]=(P0_MERKER OR (DownLoadActive AND ($Mode_OP==#EX))) AND $IN_HOME
+   IF MERK1==FALSE THEN
+      WAIT FOR  $PRO_ACT==FALSE
+   ENDIF
+   $OUT[RK100]=MERK1
+   WPROZ_WSLAV ( )
+   IF $PRO_MODE1<>#BSTEP THEN
+      IF ((FB_FLAG>0) AND (FB_FLAG<1025)) THEN
+         $FLAG[FB_FLAG]=$CYCFLAG[30]
+      ENDIF
+      IF ((VERR_FLAG>0) AND (VERR_FLAG<1025)) THEN
+         $FLAG[VERR_FLAG]=$CYCFLAG[31]
+      ENDIF
+   ENDIF
+   IF ($OUT[PF0] AND VW_CALL_CELL AND ( NOT $PRO_MOVE) AND ($MODE_OP==#EX)) THEN
+      CWRITE($CMD,STAT,MODE,"STOP 1")
+      CWRITE($CMD,STAT,MODE,"CANCEL 1")
+      P_OLD=P_SELECT
+      CWRITE($CMD,STAT,MODE,"RUN /R1/CELL ()")
+   ENDIF
+   ;Aufruf des Makro-SAW
+   IF (LAST_PRMODE<>$PRO_MODE1) THEN
+      CHG_PRMODE=TRUE
+      LAST_PRMODE=$PRO_MODE1
+   ENDIF
+   IF $LINE_SEL_OK THEN
+      WAIT SEC 0.8
+      IF ((LAST_PRMODE<>$PRO_MODE1) AND (NOT CHG_PRMODE)) THEN
+         CHG_PRMODE=TRUE
+      ELSE
+         P0_MERKER=FALSE
+         $LINE_SEL_OK=FALSE
+         IF CHG_PRMODE THEN
+            CHG_PRMODE=FALSE
+         ELSE
+            IF $PRO_STATE1<>#P_ACTIVE THEN
+               $LOOP_MSG[]="                                                                                                                               "
+            ENDIF
+            IF $MODE_OP<>#EX THEN
+               MAKROSAW ( )
+               IF $TECH_OPT==TRUE THEN
+                  $TECH_C[1].MODE=#OFF
+                  $TECH_C[2].MODE=#OFF
+                  $TECH_C[3].MODE=#OFF
+               ENDIF
+            ENDIF
+         ENDIF
+      ENDIF
+   ENDIF
+   IF ((NOT CHG_PRSTATE) AND ($PRO_STATE1<>#P_ACTIVE) AND ($PRO_MOVE)) THEN
+      ;Handverfahren bei gestoptem Programm
+      CHG_PRSTATE=TRUE
+      IF $MODE_OP<>#EX THEN
+         MAKROSAW ( )
+      ELSE
+         IF NOT $NEAR_POSRET THEN
+            MAKROSAW ( )
+         ENDIF
+      ENDIF
+   ENDIF
+   IF ((CHG_PRSTATE) AND ($PRO_STATE1==#P_ACTIVE)) THEN
+      CHG_PRSTATE=FALSE
+   ENDIF
+   ; Override auf 10% setzen bei Wechsel auf Hand
+   IF NOT DISABLE_OV_CHANGE THEN
+      IF ($MODE_OP==#T2) AND (OLD_MODE_OP==#EX) THEN
+         IF $OV_PRO>=10 THEN
+            OLD_OV_PRO=$OV_PRO
+            $OV_PRO=10
+            OV_CHANGED=TRUE
+         ENDIF
+      ENDIF
+      IF ($MODE_OP==#EX) AND OV_CHANGED THEN
+         OV_CHANGED=FALSE
+         $OV_PRO=OLD_OV_PRO
+      ENDIF
+      OLD_MODE_OP=$MODE_OP
+   ENDIF
+   ; Rueckmeldung Folge loeschen
+   IF $PRO_STATE1==#P_FREE THEN
+      PRG_NR_REFL = 0
+   ENDIF
+END
+DEF  AUE_INIT ( )
+   ;Automatik extern am Anfang der Folge
+   INT INT_N
+   $ADVANCE=DEF_ADVANCE
+   VW_CALL_CELL=FALSE
+   P0_MERKER=$IN_HOME
+   $OUT[PF0]=$IN_HOME
+   FOR INT_N=1 TO  8
+      VW_VERR[INT_N].IN=1025
+      VW_VERR[INT_N].OUT=0
+   ENDFOR
+   WRITE_VERR_COND (FALSE)
+   $CYC_DEF31[]="                                         "
+   $LOOP_MSG[]="                                                                                                                               "
+   IF PGNO>0 THEN
+      IF P_TYPE==0 THEN ;Integer
+         P_OLD=PGNO
+         P_SELECT=PGNO
+      ELSE ;1 AUS N
+         P_OLD=LOG_2(PGNO)
+         P_SELECT=LOG_2(PGNO)
+      ENDIF
+   ENDIF
+   IF  NOT VW_CBY_CELL THEN
+      IF ($MODE_OP==#T1) OR ($MODE_OP==#T2) THEN
+         LAST_PRO_NR ( )
+         IF PGNO >= 0 THEN
+           PRG_NR_REFL = PGNO
+         ELSE
+           PRG_NR_REFL = 0
+         ENDIF
+      ENDIF
+   ENDIF
+   ; init online FB
+   $CYCFLAG[30]=TRUE
+   $CYCFLAG[31]=TRUE
+   $CYC_DEF30[]="EIN"
+   $CYCFLAG[30]=$CYCFLAG[31]
+END
+DEFFCT  INT LOG_2(WERT :IN)
+   INT CNT,VALUE,WERT
+   VALUE=1
+   FOR CNT=1 TO  32
+      IF WERT==VALUE THEN
+         RETURN  CNT
+      ENDIF
+      VALUE=VALUE*2
+   ENDFOR
+   IF (CNT>=32) THEN
+      RETURN  0
+   ENDIF
+ENDFCT
+DEF  AUE_WAIT ( )
+   BOOL SIMU_START
+   INT P
+   $ADVANCE=DEF_ADVANCE
+   ;Automatik extern in der Folge
+   IF (VW_INB AND $EXTSTARTTYP) THEN
+      N_VW=FALSE
+      RETURN
+   ENDIF
+   $H_POS=$AXIS_ACT
+   $LOOP_CONT=TRUE
+   $LOOP_MSG[]="Warte Folgestart SRB                                                                                                           "
+   REPEAT
+      P0_MERKER=TRUE
+      BITSHIFT=1
+      P=0
+      N_VW=FALSE
+      IF VW_CBY_CELL THEN
+         IF (P_TYPE == 0) THEN
+            P = PRG_NR
+         ELSE
+            P = LOG_2(PRG_NR)
+         ENDIF
+      ENDIF
+      IF (P<>P_OLD) THEN
+         N_VW=TRUE
+      ELSE
+         PRG_NR_REFL = PRG_NR
+      ENDIF
+      IF (P==0) AND VW_INB AND (($MODE_OP==#T1) OR ($MODE_OP==#T2)) THEN
+         N_VW=FALSE
+         SIMU_START=TRUE
+      ELSE
+         SIMU_START=FALSE
+      ENDIF
+      IF ((P==0) OR (P==P_OLD)) AND  NOT ($LOOP_CONT) AND (($MODE_OP==#T1) OR ($MODE_OP==#T2)) THEN
+         N_VW=FALSE
+         SIMU_START=TRUE
+      ENDIF
+      IS_CELL ( )
+      IF  NOT VW_CBY_CELL THEN
+         IF ($MODE_OP==#T1) OR ($MODE_OP==#T2) THEN
+            N_VW=FALSE
+         ELSE
+            VW_CALL_CELL=TRUE
+            $LOOP_MSG[]="Fuer Automatik CELL anwaehlen                                                                                                  "
+            WHILE   NOT (($MODE_OP==#T1) OR ($MODE_OP==#T2))
+               WAIT SEC 0.1
+            ENDWHILE
+            $LOOP_MSG[]="Warte Folgestart SRB                                                                                                           "
+         ENDIF
+      ENDIF
+      OUT_WSLAV=TRUE
+      OUT_WPROZ=FALSE
+   UNTIL ((($IN[SRB]==TRUE) AND (P>0)) OR (N_VW==TRUE)) OR SIMU_START
+   $LOOP_MSG[]="                                                                                                                               "
+   OUT_WSLAV=FALSE
+   OUT_WPROZ=FALSE
+   IF N_VW==TRUE THEN
+      PRG_NR_REFL = 0
+   ELSE
+      P0_MERKER=FALSE
+   ENDIF
+   $LOOP_CONT=TRUE
+END
+DEF  AUE_END ( )
+   INT S
+   WAIT SEC 0.01
+   ;FB ONL deaktivieren
+   $CYC_DEF30[]="EIN"
+   $CYCFLAG[30]=TRUE
+   $OUT[LPKT]=TRUE
+   $LOOP_MSG[]="Warte Folgennummer 0                                                                                                           "
+   $LOOP_CONT=TRUE
+   IF (VW_INB AND $EXTSTARTTYP) THEN
+      RETURN
+   ENDIF
+   REPEAT
+      WAIT SEC 0.04
+      OUT_WSLAV=TRUE
+      OUT_WPROZ=FALSE
+   UNTIL (PRG_NR==0) OR ( NOT ($LOOP_CONT) AND (($MODE_OP==#T1) OR ($MODE_OP==#T2)))
+   $LOOP_CONT=TRUE
+   OUT_WSLAV=FALSE
+   OUT_WPROZ=FALSE
+   $LOOP_MSG[]="                                                                                                                               "
+   IF (VW_CBY_CELL) OR (($MODE_OP<>#T1) AND ($MODE_OP<>#T2)) THEN
+      PRG_NR_REFL = 0
+   ENDIF
+   $OUT[LPKT]=FALSE
+   IF VW_INB AND (($MODE_OP==#T1) OR ($MODE_OP==#T2)) THEN
+      HALT
+   ENDIF
+   WAIT SEC 0.04
+END
+DEF  SUB_ZANGE ( )
+   INT SEGMENT,TEILNEHMER
+   BOOL TEMP_BOOL,MODE_IBS_ON,MODE_IBS_OFF
+   DECL IBS_MODE_TYP IBSMODE
+   IF (DEF_ZANGE[AKT_ZANGE].TYP == 6) THEN
+      If FL_GUN_FCT THEN
+         IF DEF_ZANGE[AKT_ZANGE].A_AUF > 0 THEN
+            ;I/O servo gun open start/stop (Cositronic)
+            $OUT[DEF_ZANGE[AKT_ZANGE].A_AUF]=GUN_OPEN
+         ENDIF
+         IF DEF_ZANGE[AKT_ZANGE].A_ZU > 0 THEN
+            ;I/O servo gun close Start/stop (Cositronic)
+            $OUT[DEF_ZANGE[AKT_ZANGE].A_ZU]=GUN_CLOSE
+         ENDIF
+         FL_GUN_FCT=FALSE
+      ENDIF
+   ELSE
+      IF ((GUN_CLOSE) OR (GUN_OPEN)) THEN
+         IF DEF_ZANGE[AKT_ZANGE].A_AUF > 0 THEN
+            $OUT[DEF_ZANGE[AKT_ZANGE].A_AUF]=FALSE
+         ENDIF
+         IF DEF_ZANGE[AKT_ZANGE].A_ZU > 0 THEN
+            $OUT[DEF_ZANGE[AKT_ZANGE].A_ZU]=FALSE
+         ENDIF
+         GUN_CLOSE=FALSE
+         GUN_OPEN=FALSE
+      ENDIF
+   ENDIF
+   IF ((ZANGEN_FUNKT<=0) OR ($PRO_MOVE) OR ($MODE_OP==#INVALID)) THEN
+      ZANGEN_FUNKT=0
+      RETURN
+   ENDIF
+   ;I-BUS-Berechnungen
+   SEGMENT=DEF_IBSZANGE[AKT_ZANGE].SEGMENT
+   TEILNEHMER=DEF_IBSZANGE[AKT_ZANGE].TEILNEHMER
+   IBSMODE=DEF_IBSZANGE[AKT_ZANGE].IBS_MODE
+   ;I-BUS-Anschaltung
+   MODE_IBS_OFF=FALSE
+   MODE_IBS_ON=FALSE
+   IF (DEF_ZANGE[AKT_ZANGE].TYP==3) OR (DEF_ZANGE[AKT_ZANGE].TYP==4) THEN
+      IF (SEGMENT==0) AND (TEILNEHMER==0) THEN
+         MODE_IBS_OFF=TRUE
+      ELSE
+         IF ($IBUS_ON<>((SEGMENT*256)+TEILNEHMER)) THEN
+            MODE_IBS_ON=TRUE
+         ENDIF
+      ENDIF
+   ENDIF
+   ;eigentliche I-BUS-Anschaltung
+   IF MODE_IBS_ON THEN
+      TEMP_BOOL=SET_IBS(SEGMENT,TEILNEHMER)
+      ZANGEN_FUNKT=0
+      RETURN
+   ENDIF
+   IF ((MODE_IBS_OFF) AND (IBSMODE==#PREE_OFF)) THEN
+      TEMP_BOOL=RESET_IBS(SEGMENT,TEILNEHMER)
+   ENDIF
+   ;Bedienung der Zange-AUF/ZU-Tasten (SPS.SUB)
+   IF (ZANGEN_FUNKT==1) THEN
+      ;Zange oeffnen
+      VW (#GUN,TRUE,AKT_ZANGE,1 )
+   ENDIF
+   IF (ZANGEN_FUNKT==2) THEN
+      ;Zange schliessen
+      VW (#GUN,TRUE,AKT_ZANGE,0 )
+   ENDIF
+   ZANGEN_FUNKT=0
+   ;Ende der Bedienung Zange-AUF/ZU-Tasten (SPS.SUB)
+   ;nachtraegliche I-BUS-Abschaltung
+   IF ((MODE_IBS_OFF) AND (IBSMODE==#PAST_OFF)) THEN
+      WAIT SEC PULS_TIME
+      TEMP_BOOL=RESET_IBS(SEGMENT,TEILNEHMER)
+   ENDIF
+END
+DEF  WEAVE_INIT ( )
+   ;mechanical weaving
+   IF $TECH_OPT==TRUE THEN
+      A_LAST_FILT=$DEF_FLT_PTP
+      $TECH[1].CLASS=#PATH
+      $TECH[1].FCTCTRL.OFFSET_IN=0
+      $TECH[1].FCTCTRL.OFFSET_OUT=0
+      $TECH[1].MODE=#OFF
+      $TECH[2].CLASS=#PATH
+      $TECH[2].FCTCTRL.OFFSET_IN=0
+      $TECH[2].FCTCTRL.OFFSET_OUT=0
+      $TECH[2].MODE=#OFF
+      ;thermic weaving
+      $TECH[3].CLASS=#PATH
+      $TECH[3].FCTCTRL.OFFSET_IN=0
+      $TECH[3].FCTCTRL.OFFSET_OUT=0
+      $TECH[3].MODE=#OFF
+      ;common
+      $TECH[1].FCTCTRL.GEOREF=#Y
+      $TECH[2].FCTCTRL.GEOREF=#X
+      $TECH[3].FCTCTRL.GEOREF=#NONE
+      $TECHANGLE.A=0
+      $TECHANGLE.B=0
+      $TECHANGLE.C=0
+      $TECHSYS=#TTS
+      $TECH[1].FCTCTRL.SCALE_IN=1
+      $TECH[1].FCTCTRL.SCALE_OUT=0
+      $TECH[2].FCTCTRL.SCALE_IN=1
+      $TECH[2].FCTCTRL.SCALE_OUT=0
+      $TECH[3].FCTCTRL.SCALE_IN=1
+      $TECH[3].FCTCTRL.SCALE_OUT=1
+      $TECHANGLE.C=0
+   ENDIF
+END
+DEF  WEAVING (W_STATE :IN,W_TYP :IN,AMPLITUDE :IN,PERIOD :IN,W_ANGLE :IN )
+   BOOL W_STATE ;weaving ON / OFF
+   INT W_TYP,AMPLITUDE,PERIOD,W_ANGLE
+   IF $TECH_OPT==TRUE THEN
+      IF W_STATE==TRUE THEN
+         ; weaving will be switched ON
+         WEAV_DEF (W_TYP )
+         $TECH[1].FCTCTRL.SCALE_IN=PERIOD
+         $TECH[1].FCTCTRL.SCALE_OUT=AMPLITUDE
+         $TECH[2].FCTCTRL.SCALE_IN=PERIOD
+         $TECH[2].FCTCTRL.SCALE_OUT=AMPLITUDE
+         $TECH[3].FCTCTRL.SCALE_IN=PERIOD
+         $TECH[3].FCTCTRL.SCALE_OUT=1
+         $TECHANGLE.C=W_ANGLE
+         IF $TECH[1].MODE==#OFF THEN
+            $TECH[1].MODE=#CYCLE
+            $TECH[2].MODE=#CYCLE
+            $TECH[3].MODE=#CYCLE
+         ENDIF ;tech_mode
+      ELSE
+         ; weaving will be switched OFF
+         $TECH[1].MODE=#OFF
+         $TECH[2].MODE=#OFF
+         $TECH[3].MODE=#OFF
+      ENDIF ;w_state
+   ENDIF ;tech_opt
+END
+DEF  WEAVING_C (W_STATE :IN,W_TYP :IN,AMPLITUDE :IN,PERIOD :IN,W_ANGLE :IN )
+   BOOL W_STATE ;weaving ON / OFF
+   INT W_TYP,AMPLITUDE,PERIOD,W_ANGLE
+   IF $TECH_OPT==TRUE THEN
+      IF W_STATE==TRUE THEN
+         ; weaving will be switched ON
+         IF $TECH[1].MODE<>#OFF THEN
+            $TECH_C[1].FCTCTRL.SCALE_IN=PERIOD
+            $TECH_C[1].FCTCTRL.SCALE_OUT=AMPLITUDE
+            $TECH_C[2].FCTCTRL.SCALE_IN=PERIOD
+            $TECH_C[2].FCTCTRL.SCALE_OUT=AMPLITUDE
+            $TECH_C[3].FCTCTRL.SCALE_IN=PERIOD
+            $TECH_C[3].FCTCTRL.SCALE_OUT=1
+            $TECHANGLE_C.C=W_ANGLE
+         ENDIF ;tech_mode
+      ELSE
+         ; weaving will be switched OFF
+         IF $TECH[1].MODE<>#OFF THEN
+            $TECH_C[1].MODE=#OFF
+            $TECH_C[2].MODE=#OFF
+            $TECH_C[3].MODE=#OFF
+         ENDIF
+      ENDIF ;w_state
+   ENDIF ;tech_opt
+END
+; standard cancel Routine
+DEF  SPS_P_FREE ( )
+   ; reset WPROZ, WSLAV
+   INT INT_N
+   INT10=FALSE
+   OUT_WPROZ=FALSE
+   OUT_WSLAV=FALSE
+   ;Zuruecksetzen der aktiven Verriegelungen
+   $CYCFLAG[31]=TRUE  ;reset, da andernfalls $out[0] eine Bedingung werden koennte --> Fehler im EXPR_INT...
+   FOR INT_N=1 TO  8
+      IF ((VW_VERR[INT_N].OUT<>0) AND (VW_VERR[INT_N].IN<>1025)) THEN
+         $OUT[VW_VERR[INT_N].OUT]=FALSE
+      VW_VERR[INT_N].IN=1025
+      ENDIF
+      VW_VERR[INT_N].OUT=0
+   ENDFOR
+   WRITE_VERR_COND (TRUE)   
+   $TIMER[15]=0
+   $TIMER_STOP[15]=TRUE
+   ; reset messages
+   $LOOP_MSG[]="                                                                                                                               "
+   ; reset SPS_CALL
+   SPS_N=-1
+   ; reset PF0-Merker
+   P0_MERKER=FALSE
+   PRG_NR_REFL = 0
+   CALLBYSELECT=FALSE
+END
+DEF  SPS_P_RESET ( )
+   ; reset WPROZ, WSLAV
+   INT INT_N
+   INT10=FALSE
+   OUT_WPROZ=FALSE
+   OUT_WSLAV=FALSE
+   ;Zuruecksetzen der aktiven Verriegelungen
+   $CYCFLAG[31]=TRUE  ;reset, da andernfalls $out[0] eine Bedingung werden koennte --> Fehler im EXPR_INT...
+   WAIT SEC 0.1
+   FOR INT_N=1 TO  8
+      IF ((VW_VERR[INT_N].OUT<>0) AND (VW_VERR[INT_N].IN<>1025)) THEN
+         $OUT[VW_VERR[INT_N].OUT]=FALSE
+         VW_VERR[INT_N].IN=1025
+      ENDIF
+      VW_VERR[INT_N].OUT=0
+   ENDFOR
+   WRITE_VERR_COND (TRUE)   
+   VW_CBY_CELL=FALSE
+   $TIMER[15]=0
+   $TIMER_STOP[15]=TRUE
+   $LOOP_MSG[]="                                                                                                                               "
+   SPS_N=-1
+   P0_MERKER=FALSE
+   ; write P_SELECT
+   LAST_PRO_NR ( )
+   CALLBYSELECT=FALSE
+END
+DEF  SPSBLOCK_SEL ( )
+END
+; gets the last selected Programm-Number
+DEF  LAST_PRO_NR ( )
+   DECL STATE_T STATE
+   DECL CHAR PRO_NAME1_L[24]
+   INT OFFSET
+   PRO_NAME1_L[]="                        "
+   OFFSET=0
+   WAIT SEC 0.1
+   SWRITE(PRO_NAME1_L[],STATE,OFFSET,$PRO_NAME1[],0)
+   IF (PRO_NAME1_L[1]=="F") AND (PRO_NAME1_L[2]=="O") AND (PRO_NAME1_L[3]=="L") AND (PRO_NAME1_L[4]=="G") AND (PRO_NAME1_L[5]=="E") THEN
+      OFFSET=5
+      SREAD($PRO_NAME1[],STATE,OFFSET,"%D",P_SELECT)
+   ENDIF
+END
+DEF  SPSMOVEBCO ( )
+   $TIMER[15]=-250
+   $TIMER_STOP[15]=FALSE
+   INTERRUPT ENABLE 10
+END
+DEF  VW_VERR_EIN (NR :IN,IN_NR :IN,OUT_NR :IN,V_PRIO :IN )
+   INT NO,NR,IN_NR,OUT_NR,V_PRIO,OFFSET
+   DECL STATE_T STATE
+   DECL MODUS_T MODUS
+   NO=0
+   IF VW_VERR[NR].IN<>1025 THEN
+      CONTINUE
+      $LOOP_CONT=TRUE
+      $LOOP_MSG[]="WAIT FOR   < VERR. OFF > "
+      WAIT FOR  ((VW_VERR[NR].IN==1025) OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX)))
+      $LOOP_MSG[]="                                                                                                                               "
+   ENDIF
+   VW_VERR[NR].NAME[]="       "
+   CONTINUE
+   SWRITE(VW_VERR[NR].NAME[],STATE,NO,TEMP_E[],IN_NR)
+   $LOOP_MSG[]="                                                                                                                               "
+   OFFSET=0
+   CONTINUE
+   SWRITE($LOOP_MSG[],STATE,OFFSET,VW_VERR[NR].NAME[],0)
+   $LOOP_CONT=TRUE
+   CONTINUE
+   WHILE   NOT ($IN[IN_NR] OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX)))
+      IF ($LOOP_MSG[1]==" ") AND ($LOOP_MSG[2]==" ") THEN
+         OFFSET=0
+         CONTINUE
+         SWRITE($LOOP_MSG[],STATE,OFFSET,VW_VERR[NR].NAME[],0)
+         CONTINUE
+         WAIT SEC 0.05
+      ENDIF
+   ENDWHILE
+   CONTINUE
+   IF  NOT $LOOP_CONT THEN
+      IN_NR=1025
+      VW_VERR[NR].NAME[]="SIMU   "
+   ENDIF
+   $LOOP_CONT=TRUE
+   CONTINUE
+   $OUT[OUT_NR]=FALSE
+   IF V_PRIO>1 THEN
+      CONTINUE
+      WAIT SEC 0.25
+      CONTINUE
+      IF  NOT $IN[IN_NR] THEN
+         CONTINUE
+         $OUT[OUT_NR]=TRUE
+         $LOOP_CONT=TRUE
+         CONTINUE
+         WHILE   NOT ($IN[IN_NR] OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX)))
+            IF ($LOOP_MSG[1]==" ") AND ($LOOP_MSG[2]==" ") THEN
+               OFFSET=0
+               CONTINUE
+               SWRITE($LOOP_MSG[],STATE,OFFSET,VW_VERR[NR].NAME[],0)
+               CONTINUE
+               WAIT SEC 0.05
+            ENDIF
+         ENDWHILE
+         CONTINUE
+         IF  NOT $LOOP_CONT THEN
+            IN_NR=1025
+            VW_VERR[NR].NAME[]="SIMU   "
+         ENDIF
+         $LOOP_CONT=TRUE
+         CONTINUE
+         $OUT[OUT_NR]=FALSE
+      ENDIF
+   ENDIF
+   VW_VERR[NR].IN=IN_NR
+   VW_VERR[NR].OUT=OUT_NR
+   $LOOP_MSG[]="                                                                                                                               "
+   WRITE_VERR_COND (FALSE)
+   IF $ACT_ADVANCE<1 THEN
+	$VW_RETRACE_AMF=TRUE
+   ENDIF
+END
+DEF  VW_VERR_AUS (NR :IN )
+   INT NR
+   VW_VERR[NR].IN=1025 ;Ueberwachung abschalten
+   WRITE_VERR_COND (TRUE)  ;$CYCFLAG[31] neu aufbauen
+   IF VW_VERR[NR].OUT>0 THEN
+      $OUT[VW_VERR[NR].OUT]=TRUE ;Verriegelungsausgang setzen
+   ENDIF
+   VW_VERR[NR].NAME[]="       "
+END
+DEF  IBS_ALTERNAT (SEGMENT :IN,TEILNEHMER :IN,S_MODE :IN )
+   DECL STATE_T STATE
+   INT OFFSET,SEGMENT,TEILNEHMER
+   BOOL S_MODE
+   OFFSET=0
+   ; Bussegment einschalten
+   IF  NOT SET_IBS(SEGMENT,TEILNEHMER) THEN
+      SWRITE($LOOP_MSG[],STATE,OFFSET,"ERROR IBUS_ON  %D.",SEGMENT)
+      SWRITE($LOOP_MSG[],STATE,OFFSET,"%D",TEILNEHMER)
+      $LOOP_CONT=TRUE
+      WAIT FOR  ($IBUS_ON==(SEGMENT*256)+TEILNEHMER)  OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+      $LOOP_MSG[]="                                                                                                                               "
+   ENDIF
+   IF NOT S_MODE THEN
+      ; Bussegment ausschalten
+      IF  NOT RESET_IBS(SEGMENT,TEILNEHMER) THEN
+         SWRITE($LOOP_MSG[],STATE,OFFSET,"ERROR IBUS_OFF  %D.",SEGMENT)
+         SWRITE($LOOP_MSG[],STATE,OFFSET,"%D",TEILNEHMER)
+         $LOOP_CONT=TRUE
+         WAIT FOR  ($IBUS_OFF>0)  OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+         $LOOP_MSG[]="                                                                                                                               "
+      ENDIF
+   ENDIF
+END
+DEF VW_PULSE (TYP: IN,TYP_NR: IN,TIME :IN,OUT_NR: IN,NEGATION :IN)
+    BOOL NEGATION
+    INT TYP,TYP_NR,TIME,OUT_NR
+    SWITCH TYP
+    CASE 1
+        IF ($OUT[OUT_NR]==FALSE) THEN
+           PULSE($OUT[OUT_NR],TRUE,TIME/10.0)
+        ENDIF
+    CASE 2
+        IF ($OUT[OUT_NR]==TRUE) THEN
+           PULSE($OUT[OUT_NR],FALSE,TIME/10.0)
+        ENDIF
+    CASE 3
+        IF NEGATION THEN
+            IF NOT ($OUT[OUT_NR]==$IN[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],$IN[TYP_NR],TIME/10.0)
+            ENDIF
+        ELSE
+            IF ($OUT[OUT_NR]==$IN[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],NOT $IN[TYP_NR],TIME/10.0)
+            ENDIF
+        ENDIF
+    CASE 4
+        IF NEGATION THEN
+            IF NOT ($OUT[OUT_NR]==$OUT[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],$OUT[TYP_NR],TIME/10.0)
+            ENDIF
+        ELSE
+            IF ($OUT[OUT_NR]==$OUT[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],NOT $OUT[TYP_NR],TIME/10.0)
+            ENDIF
+        ENDIF
+    CASE 5
+        IF NEGATION THEN
+            IF NOT ($OUT[OUT_NR]==$CYCFLAG[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],$CYCFLAG[TYP_NR],TIME/10.0)
+            ENDIF
+        ELSE
+            IF ($OUT[OUT_NR]==$CYCFLAG[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],NOT $CYCFLAG[TYP_NR],TIME/10.0)
+            ENDIF
+        ENDIF
+    CASE 6
+        IF NEGATION THEN
+            IF NOT ($OUT[OUT_NR]==$FLAG[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],$FLAG[TYP_NR],TIME/10.0)
+            ENDIF
+        ELSE
+            IF ($OUT[OUT_NR]==$FLAG[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],NOT $FLAG[TYP_NR],TIME/10.0)
+            ENDIF
+        ENDIF
+    CASE 7
+        IF NEGATION THEN
+            IF NOT ($OUT[OUT_NR]==$TIMER_FLAG[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],$TIMER_FLAG[TYP_NR],TIME/10.0)
+            ENDIF
+        ELSE
+            IF ($OUT[OUT_NR]==$TIMER_FLAG[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],NOT $TIMER_FLAG[TYP_NR],TIME/10.0)
+            ENDIF
+        ENDIF
+    CASE 8
+        IF NEGATION THEN
+            IF NOT ($OUT[OUT_NR]==S[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],S[TYP_NR],TIME/10.0)
+            ENDIF
+        ELSE
+            IF ($OUT[OUT_NR]==S[TYP_NR]) THEN
+               PULSE($OUT[OUT_NR],NOT S[TYP_NR],TIME/10.0)
+            ENDIF
+        ENDIF
+    ENDSWITCH
+END
+DEFFCT  BOOL SET_IBS(SEGM :IN,TEILN :IN)
+   ; setzen eines alternativen Bussegmentes
+   INT DEZ_VALUE,SEGM,TEILN
+   INT TEMP_IBS
+   DEZ_VALUE=(SEGM*256)+TEILN
+   $IBUS_OFF=0
+   IF $IBUS_ON>0 THEN
+      TEMP_IBS=$IBUS_ON
+      $IBUS_ON=0
+      $IBUS_OFF=TEMP_IBS
+      IF $IBUS_OFF<0 THEN
+         LAST_IBS_PRO.ON=$IBUS_ON
+         RETURN  (FALSE)
+      ENDIF
+   ENDIF
+   $IBUS_ON=DEZ_VALUE
+   IF $IBUS_ON<>DEZ_VALUE THEN
+      LAST_IBS_PRO.ON=$IBUS_ON
+      RETURN  (FALSE)
+   ELSE
+      LAST_IBS_PRO.ON=$IBUS_ON
+      RETURN  (TRUE)
+   ENDIF
+ENDFCT
+DEFFCT  BOOL RESET_IBS(SEGM :OUT,TEILN :OUT)
+   ; ruecksetzen eines alternativen Bussegmentes
+   INT SEGM,TEILN
+   INT TEMP_IBS
+   TEILN=$IBUS_ON B_AND 'HFF'
+   SEGM=($IBUS_ON B_AND 'HFF00')/256
+   IF $IBUS_ON>0 THEN
+      TEMP_IBS=$IBUS_ON
+      $IBUS_ON=0
+      $IBUS_OFF=0
+      $IBUS_OFF=TEMP_IBS
+      IF $IBUS_OFF<0 THEN
+         RETURN  (FALSE)
+      ELSE
+         LAST_IBS_PRO.OFF=$IBUS_OFF
+         RETURN  (TRUE)
+      ENDIF
+   ELSE
+      $IBUS_ON=0
+      $IBUS_OFF=0
+      $IBUS_OFF=LAST_IBS_PRO.ON
+      IF $IBUS_OFF>0 THEN
+         LAST_IBS_PRO.OFF=$IBUS_OFF
+         RETURN  (TRUE)
+      ELSE
+         RETURN  (FALSE)
+      ENDIF
+   ENDIF
+ENDFCT
+DEF  CHECK_IBS ( )
+   BOOL STOP_SIGN
+   IF LAST_IBS_PRO.STATE THEN
+      IF $IBUS_ON==LAST_IBS_PRO.ON THEN
+         RETURN
+      ELSE
+         IF $PRO_MOVE THEN
+            BRAKE
+         ENDIF
+         $LOOP_CONT=TRUE
+         $LOOP_MSG[]="CHECK InterBus !!!"
+         WAIT FOR  ($IBUS_ON==LAST_IBS_PRO.ON) OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+         $LOOP_MSG[]="                                                                                                                               "
+      ENDIF
+   ELSE
+      IF $IBUS_OFF==LAST_IBS_PRO.OFF THEN
+         RETURN
+      ELSE
+         IF $PRO_MOVE THEN
+            BRAKE
+         ENDIF
+         $LOOP_CONT=TRUE
+         $LOOP_MSG[]="CHECK InterBus !!!"
+         WAIT FOR  ($IBUS_OFF==LAST_IBS_PRO.OFF) OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+         $LOOP_MSG[]="                                                                                                                               "
+      ENDIF
+   ENDIF
+   $LOOP_CONT=TRUE
+END
+DEF  CYC_RESET ( )
+   DECL CHAR TEST[128]
+   INT OFFSET
+   DECL STATE_T STATE
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF1[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF1[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF2[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF2[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF3[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF3[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF4[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF4[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF5[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF5[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF6[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF6[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF7[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF7[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF8[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF8[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF9[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF9[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF10[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF10[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF11[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF11[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF12[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF12[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF13[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF13[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF14[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF14[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF15[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF15[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF16[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF16[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF17[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF17[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF18[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF18[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF19[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF19[]="AUS"
+   ENDIF
+   OFFSET=0
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF20[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF20[]="AUS"
+   ENDIF
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF21[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF21[]="AUS"
+   ENDIF
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF22[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF22[]="AUS"
+   ENDIF
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF23[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF23[]="AUS"
+   ENDIF
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF24[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF24[]="AUS"
+   ENDIF
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF30[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF30[]="   "
+   ENDIF
+   SWRITE(TEST[],STATE,OFFSET,$CYC_DEF31[],0)
+   IF OFFSET<=1 THEN
+      $CYC_DEF31[]="EIN"
+   ENDIF
+END
+DEF  IS_CELL ( )
+   DECL STATE_T STATE
+   DECL CHAR PRO_NAME1_L[24]
+   INT OFFSET
+   PRO_NAME1_L[]="                        "
+   OFFSET=0
+   SWRITE(PRO_NAME1_L[],STATE,OFFSET,$PRO_NAME1[],0)
+   IF (PRO_NAME1_L[1]=="C") AND (PRO_NAME1_L[2]=="E") AND (PRO_NAME1_L[3]=="L") AND (PRO_NAME1_L[4]=="L") THEN
+      VW_CBY_CELL=TRUE
+   ELSE
+      VW_CBY_CELL=FALSE
+   ENDIF
+END
+DEF T_INT10 ( )
+   DECL MSG_T EMPTY_MSG
+   EMPTY_MSG={MSG_T: VALID FALSE,RELEASE FALSE,TYP #NOTIFY,MODUL[] " ",KEY[] " ",PARAM_TYP #VALUE,PARAM[] " ",DLG_FORMAT[] " ",ANSWER 0}
+   $MSG_T=EMPTY_MSG
+   WAIT SEC 0.2
+   WHILE (NOT INT10 OR not EG_SERVO_INIT)
+      $MSG_T.MODUL[]="TPVW"
+      $MSG_T.KEY[]="NoInit_UseReset"
+      $MSG_T.PARAM[]=" "
+      $MSG_T.PARAM_TYP=#VALUE
+      $MSG_T.TYP=#Notify
+      $MSG_T.VALID=TRUE
+      WAIT SEC 0.2
+      WAIT FOR NOT $MSG_T.VALID
+      HALT
+   ENDWHILE
+END
+DEF T_SUB ( )
+   DECL MSG_T EMPTY_MSG
+   IF $PRO_MOVE THEN
+      BRAKE
+   ENDIF
+   EMPTY_MSG={MSG_T: VALID FALSE,RELEASE FALSE,TYP #NOTIFY,MODUL[] " ",KEY[] " ",PARAM_TYP #VALUE,PARAM[] " ",DLG_FORMAT[] " ",ANSWER 0}
+   $MSG_T=EMPTY_MSG
+   WAIT SEC 0.2
+   WHILE ($PRO_STATE0<>#P_ACTIVE)
+      $MSG_T.MODUL[]="TPVW"
+      $MSG_T.KEY[]="Start SPS.SUB"
+      $MSG_T.PARAM[]=" "
+      $MSG_T.PARAM_TYP=#VALUE
+      $MSG_T.TYP=#Notify
+      $MSG_T.VALID=TRUE
+      WAIT SEC 0.2
+      WAIT FOR NOT $MSG_T.VALID
+      HALT
+   ENDWHILE
+END
+DEFFCT  BOOL DETECT_LMS (VERR_NR : OUT, OUT_NR :OUT)
+   INT OUT_NR
+   INT VERR_NR
+   INT N
+   IF ($CYCFLAG[31]==FALSE) THEN
+      FOR N=1 TO 8
+        IF (VW_VERR[N].IN<>1025) THEN
+           IF ($OUT[VW_VERR[N].OUT]) THEN
+             ;die Verriegelungsfreigabe wurde trotz aktiver Verriegelung auf log. 1 gesetzt
+             OUT_NR=VW_VERR[N].OUT
+             VERR_NR=N
+             RETURN TRUE 
+           ENDIF
+        ENDIF
+      ENDFOR
+      RETURN  FALSE
+    ELSE
+      OUT_NR=0
+      VERR_NR=0
+      RETURN FALSE
+    ENDIF
+ENDFCT
+DEF WRITE_VERR_COND (SUB_CALL :IN)
+   BOOL SUB_CALL
+   INT INT_N, ACTIVE_N
+     ;Anzahl der aktiven Verriegelungen ermitteln, und in das Feld ACT_VERR_OUT eintragen (Grund: LZD duerfen nicht im Cycflag verknuepft werden)
+     ACTIVE_N=0
+     FOR INT_N=1 TO  8
+        IF VW_VERR[INT_N].IN<>1025 THEN
+           ACTIVE_N=ACTIVE_N+1
+           ACT_VERR_OUT[ACTIVE_N]=VW_VERR[INT_N].OUT
+        ENDIF
+     ENDFOR
+     IF (SUB_CALL) THEN
+       SWITCH ACTIVE_N
+        CASE 0
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] 
+        CASE 1
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]])
+        CASE 2
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) 
+        CASE 3
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]])
+        CASE 4
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) 
+        CASE 5
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) 
+        CASE 6
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) AND NOT($OUT[ACT_VERR_OUT[6]]) 
+        CASE 7
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) AND NOT($OUT[ACT_VERR_OUT[6]]) AND NOT($OUT[ACT_VERR_OUT[7]]) 
+        CASE 8
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) AND NOT($OUT[ACT_VERR_OUT[6]]) AND NOT($OUT[ACT_VERR_OUT[7]]) AND NOT($OUT[ACT_VERR_OUT[8]])
+       ENDSWITCH
+     ELSE
+       SWITCH ACTIVE_N
+        CASE 0
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] 
+        CASE 1
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]])
+        CASE 2
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) 
+        CASE 3
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]])
+        CASE 4
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) 
+        CASE 5
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) 
+        CASE 6
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) AND NOT($OUT[ACT_VERR_OUT[6]]) 
+        CASE 7
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) AND NOT($OUT[ACT_VERR_OUT[6]]) AND NOT($OUT[ACT_VERR_OUT[7]]) 
+        CASE 8
+           CONTINUE
+           $CYCFLAG[31]=$IN[VW_VERR[1].IN] AND $IN[VW_VERR[2].IN] AND $IN[VW_VERR[3].IN] AND $IN[VW_VERR[4].IN] AND $IN[VW_VERR[5].IN] AND $IN[VW_VERR[6].IN] AND $IN[VW_VERR[7].IN] AND $IN[VW_VERR[8].IN] AND NOT($OUT[ACT_VERR_OUT[1]]) AND NOT($OUT[ACT_VERR_OUT[2]]) AND NOT($OUT[ACT_VERR_OUT[3]]) AND NOT($OUT[ACT_VERR_OUT[4]]) AND NOT($OUT[ACT_VERR_OUT[5]]) AND NOT($OUT[ACT_VERR_OUT[6]]) AND NOT($OUT[ACT_VERR_OUT[7]]) AND NOT($OUT[ACT_VERR_OUT[8]])
+       ENDSWITCH
+     ENDIF
+END
+GLOBAL DEF Regler (Kommando:IN )
+INT Kommando
+IF ((OV_REGLER_ON==FALSE) OR ($EKO_MODE==#OFF)) THEN
+	RETURN
+ENDIF
+; Initialisierung
+IF Kommando==0 THEN
+;----------------------------------------
+  Kaltstart()
+;----------------------------------------
+  LogEintrag(1); Regler aktiviert
+  ReglerEin=FALSE
+  LastReglerEin=ReglerEin
+  LastReglerEin2=ReglerEin2
+  OVVomRegler=-1
+  OVbeiReglerEin=100.0
+  $Timer[14]=0
+  $Timer_Stop[14]=TRUE
+  GLOBAL INTERRUPT DECL 11 WHEN $CURR_ACT[1]>99 DO Regler(1)
+  INTERRUPT ON 11
+  GLOBAL INTERRUPT DECL 12 WHEN $CURR_ACT[2]>99 DO Regler(1)
+  INTERRUPT ON 12
+  GLOBAL INTERRUPT DECL 13 WHEN $CURR_ACT[3]>99 DO Regler(1)
+  INTERRUPT ON 13
+  GLOBAL INTERRUPT DECL 14 WHEN $CURR_ACT[4]>99 DO Regler(1)
+  INTERRUPT ON 14
+  GLOBAL INTERRUPT DECL 15 WHEN $CURR_ACT[5]>99 DO Regler(1)
+  INTERRUPT ON 15
+  GLOBAL INTERRUPT DECL 16 WHEN $CURR_ACT[6]>99 DO Regler(1)
+  INTERRUPT ON 16
+  GLOBAL INTERRUPT DECL 17 WHEN $CURR_ACT[1]<-99 DO Regler(1)
+  INTERRUPT ON 17
+  GLOBAL INTERRUPT DECL 18 WHEN $CURR_ACT[2]<-99 DO Regler(1)
+  INTERRUPT ON 18
+  GLOBAL INTERRUPT DECL 19 WHEN $CURR_ACT[3]<-99 DO Regler(1)
+  INTERRUPT ON 19
+  GLOBAL INTERRUPT DECL 20 WHEN $CURR_ACT[4]<-99 DO Regler(1)
+  INTERRUPT ON 20
+  GLOBAL INTERRUPT DECL 21 WHEN $CURR_ACT[5]<-99 DO Regler(1)
+  INTERRUPT ON 21
+  GLOBAL INTERRUPT DECL 22 WHEN $CURR_ACT[6]<-99 DO Regler(1)
+  INTERRUPT ON 22
+  GLOBAL INTERRUPT DECL 23 WHEN $Timer_Flag[14] DO Regler(2)
+  INTERRUPT ON 23
+  RETURN
+ENDIF
+; Regelung einschalten
+IF Kommando==1 THEN
+  IF ($Mode_op<>#T1) AND ReglerEin2 THEN
+    IF NOT ReglerEin THEN
+      OVvomRegler=$OV_PRO
+      OVbeiReglerEin=OVvomRegler
+      OVvomRegler=OVvomRegler-25
+      IF OVvomRegler<60 THEN
+        OVvomRegler=60
+      ENDIF 
+      $OV_PRO=OVvomRegler
+      ReglerEin=TRUE
+      $Timer[14]=-500
+      $Timer_Stop[14]=FALSE
+    ENDIF
+  ENDIF
+  RETURN
+ENDIF
+; Regelung
+IF Kommando==2 THEN
+  $Timer[14]=-500
+  IF ReglerEin AND ReglerEin2 THEN
+   ;Handbetätigung?
+    IF ($OV_PRO>OVvomRegler) THEN
+      ; aber nicht schneller!
+      $OV_PRO=OVvomRegler
+    ENDIF
+    IF ($OV_PRO-OVvomRegler<-1) THEN
+      ; langsamer von Hand!
+      ReglerEin=FALSE
+      OVvomRegler=-1
+      $Timer_Stop[14]=TRUE
+      RETURN
+    ENDIF
+    ;Regelung
+    IF (ABS($CURR_ACT[1]) > 99) OR  (ABS($CURR_ACT[2]) > 99)  OR  (ABS($CURR_ACT[3]) > 99)  OR  (ABS($CURR_ACT[4]) > 99)  OR  (ABS($CURR_ACT[5]) > 99)  OR  (ABS($CURR_ACT[6]) > 99) THEN
+      OVvomRegler=OVvomRegler-25
+      IF OVvomRegler<60 THEN
+        OVvomRegler=60
+      ENDIF
+      $OV_PRO=OVvomRegler
+    ELSE
+      OVvomRegler=OVvomRegler+2.5
+      IF OVvomRegler>100.0 THEN
+        OVvomRegler=100.0
+        ReglerEin=FALSE
+      ENDIF
+      IF OVvomRegler>=OVbeiReglerEin+1 THEN
+        $OV_PRO=OVbeiReglerEIN
+        ReglerEin=FALSE
+        $Timer_Stop[14]=TRUE
+      ELSE
+        $OV_PRO=OVvomRegler
+      ENDIF
+    ENDIF
+      
+    IF ($mode_OP==#T1) THEN
+      ReglerEin=False
+      $Timer_Stop[14]=TRUE
+    ENDIF
+  ENDIF
+RETURN
+ENDIF
+;----------------------------------------
+IF Kommando==3 THEN
+  AktualisiereLaufzeit()
+  ; Ereignisse loggen
+  IF ReglerEin2 AND NOT LastReglerEin2 THEN
+    LogEintrag(1); Regler aktiviert
+  ENDIF
+  IF NOT ReglerEin2 AND LastReglerEin2 THEN
+    LogEintrag(2); Regler deaktiviert
+  ENDIF
+  IF ReglerEin AND NOT LastReglerEin THEN
+    LogEintrag(3); Regler ausgelöst
+  ENDIF
+  IF NOT ReglerEin AND LastReglerEin THEN
+    LogEintrag(4); Regler abgeschaltet
+  ENDIF
+  LastReglerEin=ReglerEin
+  LastReglerEin2=ReglerEin2
+ENDIF
+;----------------------------------------
+END
+;----------------------------------------
+; AktualisiereLaufzeit
+DEF AktualisiereLaufzeit()
+DECL INT Bremsen
+NewDate=$Date
+Warmstart(LastDate,Newdate)
+Lastdate=Newdate
+Bremsen = $Brake_Sig
+Now=$Rob_timer
+IF  (Bremsen>0) THEN
+    ; es ist eingeschaltet
+     Laufzeit=Laufzeit+(Now-LetzterNow)*2
+     IF (Laufzeit > 1800000) THEN
+       Laufzeit=1800000
+       ReglerEin2=FALSE ; Nach 30 Minuten abschalten
+     ENDIF
+     LetzterNow=Now
+ELSE
+    ; es ist ausgeschaltet
+     Laufzeit=Laufzeit-(Now-LetzterNow)*0.16666 ; Faktor für 6 Stunden Pause zum Wiedereinschalten (0.16666 = 1/12, 12 = 30 min / 6 h)
+     IF (Laufzeit < 0) THEN
+       Laufzeit=0
+       ReglerEin2=TRUE
+     ENDIF
+     LetzterNow=Now
+ENDIF
+END
+;----------------------------------------
+DEF Kaltstart()
+  LetzterNow=$Rob_Timer
+  Laufzeit=0
+  ReglerEin2=TRUE
+  Lastdate=$Date
+END
+;----------------------------------------
+DEF Warmstart(DateAlt:IN, DateNeu:OUT)
+  DECL DATE DateAlt, DateNeu
+  INT DiffSeconds
+  IF (DateNeu.year<>DateAlt.year) OR (DateAlt.month<>DateNeu.month) THEN
+   DateNeu=$Date
+   IF (DateNeu.year<>DateAlt.year) OR (DateAlt.month<>DateNeu.month) THEN
+    Kaltstart()
+    RETURN
+   ENDIF
+  ENDIF
+  DiffSeconds=(DateNeu.sec-Datealt.sec)
+  DiffSeconds=DiffSeconds+ (DateNeu.min-Datealt.min)*60
+  DiffSeconds=DiffSeconds+ (DateNeu.hour-Datealt.hour)*60*60
+  DiffSeconds=DiffSeconds+ (DateNeu.day-Datealt.day)*60*60*24
+  IF (DiffSeconds>30) THEN
+   DateNeu=$Date
+   DiffSeconds=(DateNeu.sec-Datealt.sec)
+   DiffSeconds=DiffSeconds+ (DateNeu.min-Datealt.min)*60
+   DiffSeconds=DiffSeconds+ (DateNeu.hour-Datealt.hour)*60*60
+   DiffSeconds=DiffSeconds+ (DateNeu.day-Datealt.day)*60*60*24
+   IF (Diffseconds>30) THEN
+    ; warmstart
+    Laufzeit=Laufzeit-83.33*DiffSeconds ; 83.33 = 1000 ms / 12, 12 = 2/0.16666, siehe Faktoren bei Laufzeitberechnung 
+    IF Laufzeit<0 THEN
+      Laufzeit=0
+      ReglerEin2=TRUE
+    ENDIF
+    LetzterNow=$Rob_Timer
+   ENDIF
+  ENDIF
+END
+;----------------------------------------
+DEF LogEintrag(Funktion:IN)
+INT Funktion
+DECL DATE MyDate
+MyDate=$DATE
+IF AktLogZeiger>20 THEN
+  AktLogZeiger=1
+ENDIF
+SWITCH Funktion
+CASE 1; regler enabled
+  ReglerLog[AktLogZeiger].RegFunkt=#ReglerEnabled
+  ReglerLog[AktLogZeiger].RegDate=MyDate
+CASE 2; regler disabled
+  ReglerLog[AktLogZeiger].RegFunkt=#ReglerDisabled
+  ReglerLog[AktLogZeiger].RegDate=MyDate
+CASE 3; regler aktiv
+  ReglerLog[AktLogZeiger].RegFunkt=#ReglerAktiv
+  ReglerLog[AktLogZeiger].RegDate=MyDate
+CASE 4; regler passiv
+  ReglerLog[AktLogZeiger].RegFunkt=#ReglerPassiv
+  ReglerLog[AktLogZeiger].RegDate=MyDate
+DEFAULT
+ENDSWITCH
+AktLogZeiger=AktLogZeiger + 1
+END
+;ENDFOLD  

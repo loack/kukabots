@@ -1,0 +1,74 @@
+&COMMENT SZ 1 Arbeitshub zu
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO0 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO0  Arbeitshub Schweisszange 1 zu         * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO0  Arbeitshub Schweisszange 1 zu         * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Zangenhubzaehler an BMS --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zangenhubzaehler an BMS --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A73 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A73 = EIN,3:  BOASG
+$OUT[73]=TRUE
+;ENDFOLD
+; FOLD -- Merker Stellungsueberwachung Zange 1 Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Merker Stellungsueberwachung Zange 1 Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD M18 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:M18 = EIN,3:  BOASG
+$CYCFLAG[18]=TRUE
+$CYC_DEF18[]=" EIN "
+;ENDFOLD
+; FOLD -- Kontrolle Zange 1 Arbeitshub in R --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle Zange 1 Arbeitshub in R --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E195 & E193;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E195 & E193,3:  WBOASG
+$LOOP_MSG[]="!E195 & E193"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[195] AND $IN[193]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Ventil Arbeitshub R Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ventil Arbeitshub R Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A194 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A194 = AUS,3:  BOASG
+$OUT[194]=FALSE
+;ENDFOLD
+; FOLD -- Schnellentluefter Ventil Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Schnellentluefter Ventil Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A197 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A197 = EIN,3:  BOASG
+$OUT[197]=TRUE
+;ENDFOLD
+; FOLD -- Ventil Arbeitshub V Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ventil Arbeitshub V Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A193 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A193 = EIN,3:  BOASG
+$OUT[193]=TRUE
+;ENDFOLD
+; FOLD -- Kontrolle Arbeitshub geschlossen --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle Arbeitshub geschlossen --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E195 & !E193;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E195 & !E193,3:  WBOASG
+$LOOP_MSG[]="E195 & !E193"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[195] AND NOT $IN[193]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Ventil Arbeitshub V Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ventil Arbeitshub V Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A193 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A193 = AUS,3:  BOASG
+$OUT[193]=FALSE
+;ENDFOLD
+; FOLD Puls A193 = Pegel: EIN Zeit:2 [1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VPULS %P 2:Puls A193 = Pegel: EIN Zeit:2 [1/10Sek],3:  PULS
+VW (#VW_PULSE, TRUE, 1, 0, 2, 193, TRUE)
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

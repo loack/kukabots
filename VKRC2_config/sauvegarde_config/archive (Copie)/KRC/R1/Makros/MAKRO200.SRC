@@ -1,0 +1,128 @@
+&COMMENT Kappenfraesen
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO200 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO200 Kappenfraesen Schweisszange 1  2  3  * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO200 Kappenfraesen Schweisszange 1  2  3  * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Kappenfraeser mit Phoenix Motorwendelastschalter * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Kappenfraeser mit Phoenix Motorwendelastschalter * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Kontrolle nur eine Schweisszange zum fraesen ausgewaehlt --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle nur eine Schweisszange zum fraesen ausgewaehlt --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS (F201 & !F202 & !F203) + (!F201 & F202 & !F203) + (!F201 & !F202 & F203);%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS (F201 & !F202 & !F203) + (!F201 & F202 & !F203) + (!F201 & !F202 & F203),3:  WBOASG
+$LOOP_MSG[]="(F201 & !F202 & !F203) + (!F201 & F202 & !F203) + (!F201 & !F202 & F203)"
+$LOOP_CONT=TRUE
+WAIT FOR (($FLAG[201] AND NOT $FLAG[202] AND NOT $FLAG[203]) OR (NOT $FLAG[201] AND $FLAG[202] AND NOT $FLAG[203]) OR (NOT $FLAG[201] AND NOT $FLAG[202] AND $FLAG[203])) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Kontrolle nur einen Kappenfraeser ausgewaehlt --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle nur einen Kappenfraeser ausgewaehlt --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS (F301 & !F302 & !F303) + (!F301 & F302 & !F303) + (!F301 & !F302 & F303);%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS (F301 & !F302 & !F303) + (!F301 & F302 & !F303) + (!F301 & !F302 & F303),3:  WBOASG
+$LOOP_MSG[]="(F301 & !F302 & !F303) + (!F301 & F302 & !F303) + (!F301 & !F302 & F303)"
+$LOOP_CONT=TRUE
+WAIT FOR (($FLAG[301] AND NOT $FLAG[302] AND NOT $FLAG[303]) OR (NOT $FLAG[301] AND $FLAG[302] AND NOT $FLAG[303]) OR (NOT $FLAG[301] AND NOT $FLAG[302] AND $FLAG[303])) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Ruecksetzen Flag wiederholung Fraesen Zange 1 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Flag wiederholung Fraesen Zange 1 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F124 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F124 = EIN,3:  BOASG
+$FLAG[124]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Flag wiederholung Fraesen Zange 2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Flag wiederholung Fraesen Zange 2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F125 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F125 = EIN,3:  BOASG
+$FLAG[125]=TRUE
+;ENDFOLD
+; FOLD -- Ruecksetzen Flag wiederholung Fraesen Zange 3 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Flag wiederholung Fraesen Zange 3 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F126 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F126 = EIN,3:  BOASG
+$FLAG[126]=TRUE
+;ENDFOLD
+; FOLD -- Motorstromeinstellung Phoenix Motorwendelasts.-- --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Motorstromeinstellung Phoenix Motorwendelasts.-- --,3: VW_COMMENT
+;ENDFOLD
+; FOLD SPSMAKRO199 = EIN;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO199 = EIN,3:  MAKRO
+SELECT(#MAKRO,199,TRUE)
+;ENDFOLD
+; FOLD SPSMAKRO207 = F301;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO207 = F301,3:  MAKRO
+SELECT(#MAKRO,207,$FLAG[301])
+;ENDFOLD
+; FOLD SPSMAKRO208 = F302;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO208 = F302,3:  MAKRO
+SELECT(#MAKRO,208,$FLAG[302])
+;ENDFOLD
+; FOLD SPSMAKRO209 = F303;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO209 = F303,3:  MAKRO
+SELECT(#MAKRO,209,$FLAG[303])
+;ENDFOLD
+; FOLD -- Zange 1 schliessen und Fraesen bei vorwahl F201 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zange 1 schliessen und Fraesen bei vorwahl F201 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD SPSMAKRO201 = F201;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO201 = F201,3:  MAKRO
+SELECT(#MAKRO,201,$FLAG[201])
+;ENDFOLD
+; FOLD -- Aufruf Makro Fraesen Zange 1 wiederholen bei fraesung n.i.o. --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Aufruf Makro Fraesen Zange 1 wiederholen bei fraesung n.i.o. --,3: VW_COMMENT
+;ENDFOLD
+; FOLD REPEAT MAKRO201 N= 99999 STOP= F124;%{E}%MKUKATPVW %CVW_SPS %VCYCUP %P 2:REPEAT MAKRO201 N= 99999 STOP= F124,3:  CYCUP
+SELECT (#CYC_MAKRO,201,TRUE,#NUM,99999,#F,124)
+;ENDFOLD
+; FOLD -- Zange 2 schliessen und Fraesen bei vorwahl F201 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zange 2 schliessen und Fraesen bei vorwahl F201 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD SPSMAKRO202 = F202;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO202 = F202,3:  MAKRO
+SELECT(#MAKRO,202,$FLAG[202])
+;ENDFOLD
+; FOLD -- Aufruf Makro Fraesen Zange 2 wiederholen bei fraesung n.i.o. --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Aufruf Makro Fraesen Zange 2 wiederholen bei fraesung n.i.o. --,3: VW_COMMENT
+;ENDFOLD
+; FOLD REPEAT MAKRO202 N= 99999 STOP= F125;%{E}%MKUKATPVW %CVW_SPS %VCYCUP %P 2:REPEAT MAKRO202 N= 99999 STOP= F125,3:  CYCUP
+SELECT (#CYC_MAKRO,202,TRUE,#NUM,99999,#F,125)
+;ENDFOLD
+; FOLD -- Zange 3 schliessen und Fraesen bei vorwahl F201 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zange 3 schliessen und Fraesen bei vorwahl F201 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD SPSMAKRO203 = F203;%{E}%MKUKATPVW %CVW_SPS %VMAKRO %P 2:SPSMAKRO203 = F203,3:  MAKRO
+SELECT(#MAKRO,203,$FLAG[203])
+;ENDFOLD
+; FOLD -- Aufruf Makro Fraesen Zange 3 wiederholen bei fraesung n.i.o. --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Aufruf Makro Fraesen Zange 3 wiederholen bei fraesung n.i.o. --,3: VW_COMMENT
+;ENDFOLD
+; FOLD REPEAT MAKRO203 N= 99999 STOP= F126;%{E}%MKUKATPVW %CVW_SPS %VCYCUP %P 2:REPEAT MAKRO203 N= 99999 STOP= F126,3:  CYCUP
+SELECT (#CYC_MAKRO,203,TRUE,#NUM,99999,#F,126)
+;ENDFOLD
+; FOLD -- Reset Anwahl Kappenfraeser Typ --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Anwahl Kappenfraeser Typ --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F200 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F200 = AUS,3:  BOASG
+$FLAG[200]=FALSE
+;ENDFOLD
+; FOLD -- Reset Anwahl Zange --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Anwahl Zange --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F201 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F201 = AUS,3:  BOASG
+$FLAG[201]=FALSE
+;ENDFOLD
+; FOLD F202 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F202 = AUS,3:  BOASG
+$FLAG[202]=FALSE
+;ENDFOLD
+; FOLD F203 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F203 = AUS,3:  BOASG
+$FLAG[203]=FALSE
+;ENDFOLD
+; FOLD -- Reset Anwahl Fraeser --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Anwahl Fraeser --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F301 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F301 = AUS,3:  BOASG
+$FLAG[301]=FALSE
+;ENDFOLD
+; FOLD F302 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F302 = AUS,3:  BOASG
+$FLAG[302]=FALSE
+;ENDFOLD
+; FOLD F303 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F303 = AUS,3:  BOASG
+$FLAG[303]=FALSE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

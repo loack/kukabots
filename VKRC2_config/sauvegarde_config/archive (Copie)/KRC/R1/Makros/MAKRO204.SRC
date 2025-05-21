@@ -1,0 +1,89 @@
+&COMMENT Umdr.zaehl 1.Fraeser
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO204 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO204  Umdrehungszaehler Kappenfraeser 1   * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO204  Umdrehungszaehler Kappenfraeser 1   * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Motor 1. Fraeser Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Motor 1. Fraeser Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A943 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A943 = EIN,3:  BOASG
+$OUT[943]=TRUE
+;ENDFOLD
+; FOLD A936 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A936 = EIN,3:  BOASG
+$OUT[936]=TRUE
+;ENDFOLD
+; FOLD -- Stoerzeit Kappenfraeser --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Stoerzeit Kappenfraeser --,3: VW_COMMENT
+;ENDFOLD
+; FOLD t6 ( EIN ) = i7[1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VTASG %P 2:t6 ( EIN ) = i7[1/10Sek],3:  TASG
+VW(#SET_TIME,TRUE,6,0,I[7])
+;ENDFOLD
+; FOLD -- Warte positive Flanke oder Stoerung --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte positive Flanke oder Stoerung --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E937 + T6;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E937 + T6,3:  WBOASG
+$LOOP_MSG[]="E937 + T6"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[937] OR $TIMER_FLAG[6]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Hilfsmerker Stoerung --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Hilfsmerker Stoerung --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F121 = T6;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F121 = T6,3:  BOASG
+$FLAG[121]=$TIMER_FLAG[6]
+;ENDFOLD
+; FOLD -- Zaehlung der abgelaufenen umdrehungen  0 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zaehlung der abgelaufenen umdrehungen  0 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i6 ( EIN ) = i6 - 1;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i6 ( EIN ) = i6 - 1,3:  ARIASG
+VW(#COUNTER,TRUE,6,I[6]-1)
+;ENDFOLD
+; FOLD -- Vergleich ob zaehler abgelaufen0 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Vergleich ob zaehler abgelaufen0 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F122 = i6 < 1;%{E}%MKUKATPVW %CVW_SPS %VBOCMP %P 2:F122 = i6 < 1,3:  BOCMP
+$FLAG[122]=I[6]<1
+;ENDFOLD
+; FOLD -- Stoerzeit Kappenfraeser --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Stoerzeit Kappenfraeser --,3: VW_COMMENT
+;ENDFOLD
+; FOLD t6 ( EIN ) = i7[1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VTASG %P 2:t6 ( EIN ) = i7[1/10Sek],3:  TASG
+VW(#SET_TIME,TRUE,6,0,I[7])
+;ENDFOLD
+; FOLD -- Warte negative Flanke oder Stoerung --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte negative Flanke oder Stoerung --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E937 + T6 + F121;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E937 + T6 + F121,3:  WBOASG
+$LOOP_MSG[]="!E937 + T6 + F121"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[937] OR $TIMER_FLAG[6] OR $FLAG[121]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Meldung an BMS Stoerung Fraesen --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Meldung an BMS Stoerung Fraesen --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A72 = F121 + T6;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A72 = F121 + T6,3:  BOASG
+$OUT[72]=$FLAG[121] OR $TIMER_FLAG[6]
+;ENDFOLD
+; FOLD -- Flag fuer schleifenabbruch --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Flag fuer schleifenabbruch --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F127 = F122 + A72;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F127 = F122 + A72,3:  BOASG
+$FLAG[127]=$FLAG[122] OR $OUT[72]
+;ENDFOLD
+; FOLD A936 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A936 = AUS,3:  BOASG
+$OUT[936]=FALSE
+;ENDFOLD
+; FOLD Puls A936 = Pegel: EIN Zeit:25 [1/10Sek];%{E}%MKUKATPVW %CVW_SPS %VPULS %P 2:Puls A936 = Pegel: EIN Zeit:25 [1/10Sek],3:  PULS
+VW (#VW_PULSE, TRUE, 1, 0, 25, 936, TRUE)
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

@@ -1,0 +1,40 @@
+&COMMENT Halt bei Punkt
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO80 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO80       Halt bei Punkt                  * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO80       Halt bei Punkt                  * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Warte K25 oder K26 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte K25 oder K26 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E10 + E11;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E10 + E11,3:  WBOASG
+$LOOP_MSG[]="E10 + E11"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[10] OR $IN[11]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Warte !K25 oder K26 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte !K25 oder K26 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E10 + E11;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E10 + E11,3:  WBOASG
+$LOOP_MSG[]="!E10 + E11"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[10] OR $IN[11]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

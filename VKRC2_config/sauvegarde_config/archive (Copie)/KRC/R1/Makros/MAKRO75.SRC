@@ -1,0 +1,70 @@
+&COMMENT Verriegel.5 EA26
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO75 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO75     Verriegelung 5 mit Roboter ??     * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO75     Verriegelung 5 mit Roboter ??     * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Anfrage Verriegelung 5 Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Anfrage Verriegelung 5 Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A38 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A38 = EIN,3:  BOASG
+$OUT[38]=TRUE
+;ENDFOLD
+; FOLD -- Zaehlbit Zeitmessung Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zaehlbit Zeitmessung Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A42 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A42 = EIN,3:  BOASG
+$OUT[42]=TRUE
+;ENDFOLD
+; FOLD -- Verriegelung zu Nachbarroboter Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Verriegelung zu Nachbarroboter Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A26 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A26 = EIN,3:  BOASG
+$OUT[26]=TRUE
+;ENDFOLD
+; FOLD -- Warte Freigabe von Nachbarroboter --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte Freigabe von Nachbarroboter --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E26;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E26,3:  WBOASG
+$LOOP_MSG[]="E26"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[26]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Verriegelung zu Nachbarroboter Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Verriegelung zu Nachbarroboter Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A26 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A26 = AUS,3:  BOASG
+$OUT[26]=FALSE
+;ENDFOLD
+; FOLD -- Warte Freigabe von Nachbarroboter --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte Freigabe von Nachbarroboter --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E26;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E26,3:  WBOASG
+$LOOP_MSG[]="E26"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[26]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Anfrage Verriegelung 1 Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Anfrage Verriegelung 1 Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A38 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A38 = AUS,3:  BOASG
+$OUT[38]=FALSE
+;ENDFOLD
+; FOLD -- Zaehlbit Zeitmessung Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Zaehlbit Zeitmessung Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A42 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A42 = AUS,3:  BOASG
+$OUT[42]=FALSE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

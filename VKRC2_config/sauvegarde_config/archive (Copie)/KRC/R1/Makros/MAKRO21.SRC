@@ -1,0 +1,205 @@
+&COMMENT Auswert Quit Leitr
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO21 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO21 Kappenwechsel ue Leitrechner Fase 1  2 * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO21 Kappenwechsel ue Leitrechner Fase 1  2 * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 1 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 1 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F401 = E561 + E609;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F401 = E561 + E609,3:  BOASG
+$FLAG[401]=$IN[561] OR $IN[609]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 2 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 2 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F402 = E562 + E610;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F402 = E562 + E610,3:  BOASG
+$FLAG[402]=$IN[562] OR $IN[610]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 3 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 3 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F403 = E563 + E611;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F403 = E563 + E611,3:  BOASG
+$FLAG[403]=$IN[563] OR $IN[611]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 4 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 4 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F404 = E564 + E612;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F404 = E564 + E612,3:  BOASG
+$FLAG[404]=$IN[564] OR $IN[612]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 5 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 5 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F405 = E565 + E613;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F405 = E565 + E613,3:  BOASG
+$FLAG[405]=$IN[565] OR $IN[613]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 6 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 6 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F406 = E566 + E614;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F406 = E566 + E614,3:  BOASG
+$FLAG[406]=$IN[566] OR $IN[614]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 7 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 7 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F407 = E567 + E615;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F407 = E567 + E615,3:  BOASG
+$FLAG[407]=$IN[567] OR $IN[615]
+;ENDFOLD
+; FOLD -- Reset Stepper Zange 8 erfolgt Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Reset Stepper Zange 8 erfolgt Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD F408 = E568 + E616;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F408 = E568 + E616,3:  BOASG
+$FLAG[408]=$IN[568] OR $IN[616]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 1 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 1 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A561 = F401;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A561 = F401,3:  BOASG
+$OUT[561]=$FLAG[401]
+;ENDFOLD
+; FOLD A609 = F401;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A609 = F401,3:  BOASG
+$OUT[609]=$FLAG[401]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 2 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 2 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A562 = F402;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A562 = F402,3:  BOASG
+$OUT[562]=$FLAG[402]
+;ENDFOLD
+; FOLD A610 = F402;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A610 = F402,3:  BOASG
+$OUT[610]=$FLAG[402]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 3 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 3 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A563 = F403;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A563 = F403,3:  BOASG
+$OUT[563]=$FLAG[403]
+;ENDFOLD
+; FOLD A611 = F403;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A611 = F403,3:  BOASG
+$OUT[611]=$FLAG[403]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 4 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 4 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A564 = F404;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A564 = F404,3:  BOASG
+$OUT[564]=$FLAG[404]
+;ENDFOLD
+; FOLD A612 = F404;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A612 = F404,3:  BOASG
+$OUT[612]=$FLAG[404]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 5 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 5 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A565 = F405;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A565 = F405,3:  BOASG
+$OUT[565]=$FLAG[405]
+;ENDFOLD
+; FOLD A613 = F405;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A613 = F405,3:  BOASG
+$OUT[613]=$FLAG[405]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 6 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 6 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A566 = F406;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A566 = F406,3:  BOASG
+$OUT[566]=$FLAG[406]
+;ENDFOLD
+; FOLD A614 = F406;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A614 = F406,3:  BOASG
+$OUT[614]=$FLAG[406]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 7 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 7 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A567 = F407;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A567 = F407,3:  BOASG
+$OUT[567]=$FLAG[407]
+;ENDFOLD
+; FOLD A615 = F407;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A615 = F407,3:  BOASG
+$OUT[615]=$FLAG[407]
+;ENDFOLD
+; FOLD -- Quittierung Resetmeldung Zange 8 Stepper  Fase 1  2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Quittierung Resetmeldung Zange 8 Stepper  Fase 1  2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A568 = F408;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A568 = F408,3:  BOASG
+$OUT[568]=$FLAG[408]
+;ENDFOLD
+; FOLD A616 = F408;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A616 = F408,3:  BOASG
+$OUT[616]=$FLAG[408]
+;ENDFOLD
+; FOLD -- Kontrolle Fase 1 keine zusaetzlichen Resets Zange 1 bis 8 erfolgt --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle Fase 1 keine zusaetzlichen Resets Zange 1 bis 8 erfolgt --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E561 & !E562 & !E563 & !E564 & !E565 & !E566 & !E567 & !E568;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E561 & !E562 & !E563 & !E564 & !E565 & !E566 & !E567 & !E568,3:  WBOASG
+$LOOP_MSG[]="!E561 & !E562 & !E563 & !E564 & !E565 & !E566 & !E567 & !E568"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[561] AND NOT $IN[562] AND NOT $IN[563] AND NOT $IN[564] AND NOT $IN[565] AND NOT $IN[566] AND NOT $IN[567] AND NOT $IN[568]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Kontrolle Fase 2 keine zusaetzlichen Resets Zange 1 bis 8 erfolgt --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Kontrolle Fase 2 keine zusaetzlichen Resets Zange 1 bis 8 erfolgt --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS !E609 & !E610 & !E611 & !E612 & !E613 & !E614 & !E615 & !E616;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS !E609 & !E610 & !E611 & !E612 & !E613 & !E614 & !E615 & !E616,3:  WBOASG
+$LOOP_MSG[]="!E609 & !E610 & !E611 & !E612 & !E613 & !E614 & !E615 & !E616"
+$LOOP_CONT=TRUE
+WAIT FOR (NOT $IN[609] AND NOT $IN[610] AND NOT $IN[611] AND NOT $IN[612] AND NOT $IN[613] AND NOT $IN[614] AND NOT $IN[615] AND NOT $IN[616]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD -- Ruecksetzen Reset Zange 1 bis 8   Fase 1 und 2 --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Reset Zange 1 bis 8   Fase 1 und 2 --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A561 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A561 = AUS,3:  BOASG
+$OUT[561]=FALSE
+;ENDFOLD
+; FOLD A609 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A609 = AUS,3:  BOASG
+$OUT[609]=FALSE
+;ENDFOLD
+; FOLD A562 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A562 = AUS,3:  BOASG
+$OUT[562]=FALSE
+;ENDFOLD
+; FOLD A610 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A610 = AUS,3:  BOASG
+$OUT[610]=FALSE
+;ENDFOLD
+; FOLD A563 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A563 = AUS,3:  BOASG
+$OUT[563]=FALSE
+;ENDFOLD
+; FOLD A611 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A611 = AUS,3:  BOASG
+$OUT[611]=FALSE
+;ENDFOLD
+; FOLD A564 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A564 = AUS,3:  BOASG
+$OUT[564]=FALSE
+;ENDFOLD
+; FOLD A612 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A612 = AUS,3:  BOASG
+$OUT[612]=FALSE
+;ENDFOLD
+; FOLD A565 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A565 = AUS,3:  BOASG
+$OUT[565]=FALSE
+;ENDFOLD
+; FOLD A613 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A613 = AUS,3:  BOASG
+$OUT[613]=FALSE
+;ENDFOLD
+; FOLD A566 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A566 = AUS,3:  BOASG
+$OUT[566]=FALSE
+;ENDFOLD
+; FOLD A614 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A614 = AUS,3:  BOASG
+$OUT[614]=FALSE
+;ENDFOLD
+; FOLD A567 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A567 = AUS,3:  BOASG
+$OUT[567]=FALSE
+;ENDFOLD
+; FOLD A615 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A615 = AUS,3:  BOASG
+$OUT[615]=FALSE
+;ENDFOLD
+; FOLD A568 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A568 = AUS,3:  BOASG
+$OUT[568]=FALSE
+;ENDFOLD
+; FOLD A616 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A616 = AUS,3:  BOASG
+$OUT[616]=FALSE
+;ENDFOLD
+; FOLD -- Warte Freigabe Fraesen oder Hilfsmerker Reset Stepper ueber Leitrechner --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Warte Freigabe Fraesen oder Hilfsmerker Reset Stepper ueber Leitrechner --,3: VW_COMMENT
+;ENDFOLD
+; FOLD WARTE BIS E68 + F401 + F402 + F403 + F404 + F405 + F406 + F407 + F408;%{E}%MKUKATPVW %CVW_SPS %VWBOASG %P 2:WARTE BIS E68 + F401 + F402 + F403 + F404 + F405 + F406 + F407 + F408,3:  WBOASG
+$LOOP_MSG[]="E68 + F401 + F402 + F403 + F404 + F405 + F406 + F407 + F408"
+$LOOP_CONT=TRUE
+WAIT FOR ($IN[68] OR $FLAG[401] OR $FLAG[402] OR $FLAG[403] OR $FLAG[404] OR $FLAG[405] OR $FLAG[406] OR $FLAG[407] OR $FLAG[408]) OR (NOT $LOOP_CONT AND ($MODE_OP<>#EX))
+$LOOP_MSG[]="                                                                                                                                "
+;ENDFOLD
+; FOLD F409 = !F401 & !F402 & !F403 & !F404 & !F405 & !F406 & !F407 & !F408;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:F409 = !F401 & !F402 & !F403 & !F404 & !F405 & !F406 & !F407 & !F408,3:  BOASG
+$FLAG[409]=NOT $FLAG[401] AND NOT $FLAG[402] AND NOT $FLAG[403] AND NOT $FLAG[404] AND NOT $FLAG[405] AND NOT $FLAG[406] AND NOT $FLAG[407] AND NOT $FLAG[408]
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

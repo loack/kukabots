@@ -1,0 +1,38 @@
+&ACCESS RV1
+&REL 2
+&COMMENT Maschinelle Sicherheit
+&PARAM TPVW_VERSION = 3.3.5
+DEF MAKRO95 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO95 Bilden Merker maschinelle Sicherheit  * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO95 Bilden Merker maschinelle Sicherheit  * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- MSICH BMS & FD12 bar & FD6 bar & Stellungsueberwachung Zangen --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- MSICH BMS & FD12 bar & FD6 bar & Stellungsueberwachung Zangen --,3: VW_COMMENT
+;ENDFOLD
+; FOLD M1 = E13 & E169 & M18;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:M1 = E13 & E169 & M18,3:  BOASG
+$CYCFLAG[1]=$IN[13] AND $IN[169] AND $CYCFLAG[18]
+$CYC_DEF1[]="E13 & E169 & M18"
+;ENDFOLD
+; FOLD -- Ruecksetzen Motorstrom fuer Motorwendelastschalter --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Ruecksetzen Motorstrom fuer Motorwendelastschalter --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i9 ( EIN ) = 0;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i9 ( EIN ) = 0,3: ARIASG
+VW(#COUNTER,TRUE,9,0)
+;ENDFOLD
+; FOLD -- Bilden des Merkers kein Teil im Greifer -- ;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Bilden des Merkers kein Teil im Greifer -- ,3: VW_COMMENT
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

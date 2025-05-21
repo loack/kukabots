@@ -1,0 +1,78 @@
+&COMMENT Freigabe Verriegelungen 1 bis 7
+&ACCESS RV
+&PARAM TPVW_VERSION=3.3.5
+DEF MAKRO82 ( )
+; FOLD Makro Anfang;%{PSE} %MKUKATPVW
+; interface to basic routines
+EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
+; interface to VW-standard routines
+EXT VW (VW_COMMAND:IN, BOOL: IN, REAL:IN, REAL:IN, REAL:IN, REAL:IN, BOOL :IN, E6POS :IN )
+; interface select routine
+EXT  SELECT (SUBTYPE  :IN,INT  :IN,BOOL  :IN,ARI_TYP  :IN,INT  :IN,BOOL_TYP  :IN,INT  :IN )
+SPS_N=-1
+; ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *SPSMAKRO82  Alle Freigaben Verriegelungen Ein    * --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *SPSMAKRO82  Alle Freigaben Verriegelungen Ein    * --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *Version: 6.3     Stand:07.02.2006      PP-V4/1 Sm* --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- *************************************************** --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- *************************************************** --,3: VW_COMMENT
+;ENDFOLD
+; FOLD -- Uebertrag ablaufzeit Roboter auf Zaehler --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Uebertrag ablaufzeit Roboter auf Zaehler --,3: VW_COMMENT
+;ENDFOLD
+; FOLD i1 ( EIN ) = t1 * 100;%{E}%MKUKATPVW %CVW_SPS %VARIASG %P 2:i1 ( EIN ) = t1 * 100,3:  ARIASG
+VW(#COUNTER,TRUE,1,$TIMER[1]*0.01*100)
+;ENDFOLD
+; FOLD -- Verriegelungen 1 bis 7 Ein --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Verriegelungen 1 bis 7 Ein --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A22 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A22 = EIN,3:  BOASG
+$OUT[22]=TRUE
+;ENDFOLD
+; FOLD A23 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A23 = EIN,3:  BOASG
+$OUT[23]=TRUE
+;ENDFOLD
+; FOLD A24 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A24 = EIN,3:  BOASG
+$OUT[24]=TRUE
+;ENDFOLD
+; FOLD A25 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A25 = EIN,3:  BOASG
+$OUT[25]=TRUE
+;ENDFOLD
+; FOLD A26 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A26 = EIN,3:  BOASG
+$OUT[26]=TRUE
+;ENDFOLD
+; FOLD A27 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A27 = EIN,3:  BOASG
+$OUT[27]=TRUE
+;ENDFOLD
+; FOLD A28 = EIN;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A28 = EIN,3:  BOASG
+$OUT[28]=TRUE
+;ENDFOLD
+; FOLD -- Voranmeldungen Verriegelungen 1 bis 7 Aus --;%{E}%MKUKATPVW %CVW_COM %VCOMMENT %P 2:-- Voranmeldungen Verriegelungen 1 bis 7 Aus --,3: VW_COMMENT
+;ENDFOLD
+; FOLD A34 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A34 = AUS,3:  BOASG
+$OUT[34]=FALSE
+;ENDFOLD
+; FOLD A35 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A35 = AUS,3:  BOASG
+$OUT[35]=FALSE
+;ENDFOLD
+; FOLD A36 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A36 = AUS,3:  BOASG
+$OUT[36]=FALSE
+;ENDFOLD
+; FOLD A37 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A37 = AUS,3:  BOASG
+$OUT[37]=FALSE
+;ENDFOLD
+; FOLD A38 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A38 = AUS,3:  BOASG
+$OUT[38]=FALSE
+;ENDFOLD
+; FOLD A39 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A39 = AUS,3:  BOASG
+$OUT[39]=FALSE
+;ENDFOLD
+; FOLD A40 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A40 = AUS,3:  BOASG
+$OUT[40]=FALSE
+;ENDFOLD
+; FOLD A41 = AUS;%{E}%MKUKATPVW %CVW_SPS %VBOASG %P 2:A41 = AUS,3:  BOASG
+$OUT[41]=FALSE
+;ENDFOLD
+;FOLD ;%{H}
+END
+; ENDFOLD

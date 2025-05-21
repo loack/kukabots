@@ -1,0 +1,583 @@
+    Konvertierungszeitpunkt:     < 05/04/15 7:28:16 PM >
+    1. Kommandozeilenargument: C:\KRC_OLDINST\KRC\R1
+    2. Kommandozeilenargument: C:\KRC\ROBOTER\KRC
+    Test des 1. Kommandozeilenargumentes ...  DAT- und / oder SRC-Dateien gefunden
+    Test des 2. Kommandozeilenargumentes ...  DAT- und / oder SRC-Dateien gefunden
+    Test des Template-Pfades ...  DAT- und / oder SRC-Dateien gefunden
+    Initialisierung des Upgrade-Servers war erfolgreich
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\cell.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Folgen\cell.DAT
+    Auch die Zieldatei muß gelesen werden
+    Datei < C:\KRC\ROBOTER\KRC\R1\FOLGEN\CELL.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\FOLGEN\CELL.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\CELL.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE4.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE4.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE4.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE4.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE5.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE5.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE5.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE5.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE7.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE7.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE7.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE7.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE8.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\Folgen\FOLGE8.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE8.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\FOLGEN\FOLGE8.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\Makrosaw.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\Makrosaw.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKROSAW.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\makrosps.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\makrosps.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKROSPS.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO95.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO95.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO95.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO99.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO99.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO99.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO96.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO96.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO96.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO4.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO4.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO4.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO86.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO86.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO86.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO82.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO82.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO82.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO81.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO81.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO81.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO80.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO80.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO80.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO77.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO77.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO77.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO76.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO76.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO76.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO75.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO75.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO75.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO74.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO74.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO74.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO73.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO73.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO73.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO72.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO72.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO72.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO71.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO71.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO71.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO54.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO54.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO54.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO40.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO40.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO40.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO3.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO3.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO3.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO210.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO210.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO210.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO21.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO21.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO21.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO207.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO207.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO207.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO201.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO201.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO201.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO200.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO200.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO200.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO20.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO20.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO20.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO2.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO2.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO2.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO199.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO199.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO199.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO102.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO102.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO102.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO1.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO1.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO1.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO0.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO0.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO0.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\Makros\MAKRO204.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\Makros\MAKRO204.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\MAKROS\MAKRO204.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\System\$config.SRC
+    Datei < C:\KRC_OLDINST\KRC\R1\System\$config.DAT > erfolgreich gelesen
+    Auch die Zieldatei muß gelesen werden
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\SYSTEM\$CONFIG.SRC
+    Datei < C:\KRC\ROBOTER\KRC\R1\SYSTEM\$CONFIG.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\SYSTEM\$CONFIG.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\System\bas.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\System\bas.DAT
+    Auch die Zieldatei muß gelesen werden
+    Datei < C:\KRC\ROBOTER\KRC\R1\SYSTEM\BAS.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\SYSTEM\BAS.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\SYSTEM\BAS.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\System\sps.SRC
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\System\sps.DAT
+    Auch die Zieldatei muß gelesen werden
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\SYSTEM\SPS.SRC
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\SYSTEM\SPS.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\System\vw.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\System\vw.DAT
+    Auch die Zieldatei muß gelesen werden
+    Datei < C:\KRC\ROBOTER\KRC\R1\SYSTEM\VW.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\SYSTEM\VW.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\SYSTEM\VW.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\System\weav_def.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC_OLDINST\KRC\R1\System\weav_def.DAT
+    Auch die Zieldatei muß gelesen werden
+    Datei < C:\KRC\ROBOTER\KRC\R1\SYSTEM\WEAV_DEF.SRC > erfolgreich gelesen
+    Fehler beim lesen der Datei C:\KRC\ROBOTER\KRC\R1\SYSTEM\WEAV_DEF.DAT
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\SYSTEM\WEAV_DEF.SRC )...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP10.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP10.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP10.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP10.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP1.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP1.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP1.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP1.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP8.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP8.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP8.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP8.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP9.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP9.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP9.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP9.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP41.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP41.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP41.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP41.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP51.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP51.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP51.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP51.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP52.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP52.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP52.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP52.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP42.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\UPs\UP42.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP42.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\UPS\UP42.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\VW_User\vw_user.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\VW_User\vw_user.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\VW_USER\VW_USER.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\VW_USER\VW_USER.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\VW_User\vw_usr_r.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\VW_User\vw_usr_r.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\VW_USER\VW_USR_R.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\VW_USER\VW_USR_R.DAT ) ...
+
+--------------------
+-- Konvertierung: --
+--------------------
+    Datei < C:\KRC_OLDINST\KRC\R1\VW_User\vw_usr_s.SRC > erfolgreich gelesen
+    Datei < C:\KRC_OLDINST\KRC\R1\VW_User\vw_usr_s.DAT > erfolgreich gelesen
+    Starte die Konvertierung ...
+    --> an den Upgrade-Server übergeben
+    <-- vom Upgrade-Server wieder erhalten
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\VW_USER\VW_USR_S.SRC )...
+    Datei wird geschrieben ( C:\KRC\ROBOTER\KRC\R1\VW_USER\VW_USR_S.DAT ) ...
+
+-------------------------------
+-- Konvertierung: SELECT.SRC --
+-------------------------------
+    --> Pfad an den Select-Server übergeben  C:\KRC\ROBOTER\KRC
+    --> Select-Server ist fertig
+
+----------------------------
+-- ENDE der Konvertierung --
+----------------------------
+
+----------
+-- ENDE --
+----------
