@@ -1,0 +1,23 @@
+&ACCESS RVO
+&REL 1185
+&COMMENT SK260
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM TPVW_VERSION = 3.3.5
+&PARAM EDITMASK = Folge999[1-128]
+DEF Folge4( )
+;make a simple waiting function that waits for a signal
+; define axis velocity
+
+LOOP 
+;wait for the signal
+WAIT FOR TRIGGER_START ;wait for the signal
+;print a message in the log
+PTP HOME VB=10% VE=0% ACC=100% Wzg=1 SPSTrig=0[1/100s] FP;
+;do something
+;...
+;wait for the signal to go low
+WAIT UNTIL NOT TRIGGER_START ;wait until the signal goes low
+
+ENDLOOP
+
+END
