@@ -1,0 +1,33 @@
+&ACCESS RV
+&PARAM TPVW_VERSION =3.3.5
+DEF  SPS ( )
+Regler(0)
+;Automatik extern
+VW (#VW_SPS_INIT,TRUE)
+;User-Baustein
+VW_USR_S (#USR_INIT)
+; interrupts for resets in special situations
+INTERRUPT DECL 91 WHEN $PRO_STATE1==#P_FREE DO VW(#VW_P_FREE,TRUE)
+INTERRUPT ON 91
+INTERRUPT DECL 92 WHEN $PRO_STATE1==#P_RESET DO VW(#VW_P_RESET,TRUE)
+INTERRUPT ON 92
+INTERRUPT DECL 93 WHEN $ON_PATH==FALSE DO VW(#VW_BLOCK_SEL,TRUE)
+INTERRUPT ON 93
+
+;KVP interface
+CWRITE($CMD,STAT,MODE,"RUN /R1/kvp_interface()")
+
+LOOP
+Regler(3); Time control of the override control
+;Automatik extern
+VW (#VW_SPS_CYC,TRUE)
+;Fonction de la pince
+VW (#VW_ZANGE,TRUE)
+;Freilaufende SPS
+MAKROSPS()
+;User-Baustein
+VW_USR_S (#USR_LOOP)
+
+WAIT FOR NOT $POWER_FAIL
+ENDLOOP
+END 
