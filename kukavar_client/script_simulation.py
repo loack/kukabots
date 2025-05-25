@@ -2,7 +2,7 @@ from kukavarproxy import KukaVarProxyClient
 
 robot = KukaVarProxyClient('192.168.1.5',7000)
 robot.connect()
-x = 81
+x = 1026
 #activate simulation mode
 robot.write("$IOSIM_OPT","TRUE")
 if robot.read("$IOSIM_OPT") == "TRUE":
