@@ -15,7 +15,7 @@ INTERRUPT DECL 93 WHEN $ON_PATH==FALSE DO VW(#VW_BLOCK_SEL,TRUE)
 INTERRUPT ON 93
 
 ;KVP interface
-CWRITE($CMD,STAT,MODE,"RUN /R1/kvp_interface()")
+KVP ()
 
 LOOP
 Regler(3); Time control of the override control

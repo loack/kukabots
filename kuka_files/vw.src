@@ -660,8 +660,8 @@ DEF  FB_LOOP_MSG ( )
   BOOL MIT_VERR
   DECL CHAR MY_MSG[470]
   IF (DETECT_LMS (VERR_NR, OUT_NR)) THEN
-    $OUT[OUT_NR]=FALSE   ;Freigabeausgang wieder zuruecksetzen
-    ;--- Meldung, dass Verriegelungsausgang <Out_Nr> in der Verrieglung Nr. <Verr_Nr> ueberschrieben wurde ---
+    $OUT[OUT_NR]=FALSE   ;Release output reset
+    ;---- Message that interlock output <Out_Nr> in interlock no. <Verr_Nr> was overwritten ---
     MAKE_LMS_MSG (VERR_NR, OUT_NR)
   ENDIF
   OFFSET=0
@@ -802,7 +802,7 @@ DEF  FB_STOP ( )
          ENDIF
       ENDWHILE
       IF  NOT $LOOP_CONT THEN
-         ;Simuliere-Taste gedrueckt
+         ;Simulate button pressed
          $CYCFLAG[30]=TRUE
          WAIT SEC 0.1
          $CYC_DEF30[]="SIMU"
@@ -812,7 +812,7 @@ DEF  FB_STOP ( )
                VW_VERR[INT_N].NAME[]="SIMU   "
             ENDIF
          ENDFOR
-         WRITE_VERR_COND (FALSE)  ;Auffrischen der Verriegelungsbedingung
+         WRITE_VERR_COND (FALSE)  ;Refresh interlock condition
          EXIT_OK=TRUE
          $LOOP_CONT=TRUE
       ELSE
@@ -850,7 +850,7 @@ DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
    IF (INPUT_CASE == 2) OR (INPUT_CASE == 4) THEN
       INTERRUPT DECL 101 WHEN $CYCFLAG[E_RED] DO RED_UP (SUCH_RED )
       IF $CYCFLAG[E_RED] THEN
-      ;Sensor Nah liegt bereits an
+      ;Sensor Near already present
       $OV_PRO=0.01*$OV_PRO*VEL_RED
       INTERRUPT OFF 101
    ELSE
@@ -859,7 +859,7 @@ DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
    ELSE
       INTERRUPT DECL 101 WHEN $IN[E_RED] DO RED_UP (SUCH_RED )
       IF $IN[E_RED] THEN
-         ;Sensor Nah liegt bereits an
+         ;Sensor Near already presen
          $OV_PRO=0.01*$OV_PRO*VEL_RED
          INTERRUPT OFF 101
       ELSE
@@ -876,7 +876,7 @@ DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
       INTERRUPT OFF 102
       $OV_PRO=OV_OLD
    ELSE
-      ;Sensor Fern liegt bereits an
+      ;Sensor Far already present
       INTERRUPT OFF 12
       INTERRUPT OFF 101
       INTERRUPT OFF 102

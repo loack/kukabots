@@ -9,14 +9,4 @@ DEF kvp_interface( )
 
 ;Make a notify message to be sure that the program is running
 
-DECL MSG_T EMPTY_MSG
-EMPTY_MSG={MSG_T: VALID FALSE,RELEASE FALSE,TYP #NOTIFY,MODUL[] " ",KEY[] " ",PARAM_TYP #VALUE,PARAM[] " ",DLG_FORMAT[] " ",ANSWER 0}
-$MSG_T=EMPTY_MSG
-$MSG_T.MODUL[]="KVP Interface"
-$MSG_T.KEY[]="KVP_Ready"
-$MSG_T.PARAM[]=" "
-$MSG_T.PARAM_TYP=#VALUE
-$MSG_T.TYP=#Notify
-$MSG_T.VALID=TRUE
-
 END

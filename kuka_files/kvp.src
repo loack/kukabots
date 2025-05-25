@@ -1,0 +1,8 @@
+&ACCESS R
+&PARAM TPVW_VERSION = 3.3.5
+DEF  KVP ()
+; KVP Interface for KUKA robots
+DECL CHAR MSG_STRING[20]
+
+END
+  
