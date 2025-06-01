@@ -23,11 +23,19 @@ VW(#VW_INIT,TRUE)
 TRIGGER  WHEN DISTANCE=1 DELAY=-0.1 DO P0_MERKER=TRUE
 
 ;VW(#MPARA,TRUE)
+;Define accerlation, velocity, and base
+;MOVE TO P1 (computer controlled)
 
-PTP HOME 
-WAIT SEC 2
-PTP P1
-WAIT SEC 2
-PTP HOME
+
+WHILE TRUE
+IF KVPMOVE_ENABLE THEN
+    ; PTP motion
+    PTP P1
+ENDIF
+
+WAIT SEC 0.1
+
+ENDWHILE
+
 
 END
