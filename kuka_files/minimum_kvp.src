@@ -1,0 +1,3 @@
+DEF KVP()
+  WAIT SEC 0
+END

@@ -2,7 +2,7 @@
 &REL 1
 &PARAM TPVW_VERSION = 3.3.5
 DEF  CELL ( )
-;FOLD AUTOMATIK EXTERN ;%{SE}%MKUKATPVW,%C,%V
+
 INT I,J,CELL_CNT
 BOOL IS_ANY_BIT
 STEP=0
@@ -13,72 +13,15 @@ $OUT[LPKT]=FALSE
 VW_INB=FALSE ; reset commissioning flag
 VW_CBY_CELL=TRUE
 VW_CALL_CELL=FALSE
-IF $MODE_OP==#EX THEN
-IF  NOT $IN_HOME THEN
-$LOOP_MSG[]="                                                                                                                                "
-$LOOP_MSG[]="WAITING FOR PF0 !!!"
-$LOOP_CONT=TRUE
-WAIT FOR  ($IN_HOME) OR ( NOT $LOOP_CONT AND ($MODE_OP<>#EX))
-$LOOP_MSG[]="                                                                                                                                "
-ENDIF
-ENDIF
-;ENDFOLD
-;FOLD Calculate sequence number ;%{SE}%MKUKATPVW,%C,%V
-IF (P_OLD<>0) AND ($MODE_OP==#EX) THEN
-; Cold start-up in AUTO-EXT --> last sequence number is selected
-IF P_TYPE==0 THEN ;Integer
-PGNO=P_SELECT
-STEP=1
-ELSE ;1 OUT N
-IF (P_SELECT>0) AND (P_SELECT<9) THEN
-PGNO=1
-FOR I=1 TO  (P_SELECT-1)
-PGNO=PGNO*2
-ENDFOR
-STEP=1
-ELSE
-STEP=0
-PGNO=0
-ENDIF
-ENDIF
-ENDIF
-IF (P_SELECT>0) AND ($MODE_OP<>#EX) THEN
-; Manual operation --> the last selected episode is selected
-IF P_TYPE==0 THEN ;Integer
-PGNO=P_SELECT
-STEP=1
-ELSE ;1 AUS N
-IF (P_SELECT>0) AND (P_SELECT<9) THEN
-PGNO=1
-FOR I=1 TO  (P_SELECT-1)
-PGNO=PGNO*2
-ENDFOR
-STEP=1
-ELSE
-CELL_CNT=1
-STEP=0
-PGNO=0
-ENDIF
-ENDIF
-ENDIF
+
+
+PGNO = 1
+
+
 LOOP
 IF (( NOT $ON_PATH) AND ($MODE_OP<>#EX)) THEN ;sequence zero point has not yet been reached, and P_SELECT is not released
-IF CELL_CNT==1 THEN
-IF P_TYPE==0 THEN ;Integer
-PGNO=P_OLD
-STEP=1
-ELSE ;1 OUT OF N
-IF (P_OLD>0) AND (P_OLD<9) THEN
-PGNO=1
-FOR I=1 TO  (P_OLD-1)
-PGNO=PGNO*2
-ENDFOR
-STEP=1
-ELSE
 PGNO=0
 STEP=0
-ENDIF
-ENDIF
 ENDIF
 CELL_CNT=CELL_CNT+1
 ELSE
@@ -87,6 +30,7 @@ IF $ON_PATH THEN
 STEP=0
 ENDIF
 ENDIF
+
 ;the submit interpreter is active
 IF ($PRO_STATE0<>#P_ACTIVE) THEN
 $LOOP_MSG[]="                                                                                                                                "
@@ -95,7 +39,8 @@ $LOOP_CONT=TRUE
 WAIT FOR  ($PRO_STATE0==#P_ACTIVE)
 $LOOP_MSG[]="                                                                                                                                "
 ENDIF
-$LOOP_MSG[]="Warte auf gueltige Folgenummer                                                                                                 "
+$LOOP_MSG[]="Warte auf gueltige Folgenummer    
+                                                                                             "
 ;CALCULATE SEQUENCE NUMBER
 IF STEP==0 THEN
 IS_ANY_BIT=FALSE
@@ -114,8 +59,7 @@ OUT_WPROZ=FALSE
 OUT_WSLAV=FALSE
 ENDIF
 STEP=0
-;ENDFOLD
-;FOLD Start sequence ;%{SE}%MKUKATPVW,%C,%V
+
 SWITCH  P_TYPE
 CASE 0; SEQUENCE NUMBER INTEGER
 SWITCH PGNO
@@ -138,5 +82,5 @@ ENDSWITCH
 ENDSWITCH
 ENDSWITCH
 ENDLOOP
+
 END
-;ENDFOLD

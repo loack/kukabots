@@ -179,7 +179,6 @@ DEF  BINOUT (B_NR :IN,NR :IN )
       ENDIF
    ENDIF
 END
-
 DEF NOTIFY_MSG (BINOUT_MSG[]:OUT,B_NR:IN)
    CHAR BINOUT_MSG[]
    DECL MSG_T EMPTY_MSG
@@ -203,7 +202,6 @@ DEF NOTIFY_MSG (BINOUT_MSG[]:OUT,B_NR:IN)
    WAIT SEC 0.2
    $MSG_T=EMPTY_MSG
 END
-
 DEF  GUN (GUN_NO :IN,OPEN_GUN :IN )
    INT GUN_NO,OPEN_GUN
    SWITCH  DEF_ZANGE[GUN_NO].TYP
@@ -660,8 +658,8 @@ DEF  FB_LOOP_MSG ( )
   BOOL MIT_VERR
   DECL CHAR MY_MSG[470]
   IF (DETECT_LMS (VERR_NR, OUT_NR)) THEN
-    $OUT[OUT_NR]=FALSE   ;Release output reset
-    ;---- Message that interlock output <Out_Nr> in interlock no. <Verr_Nr> was overwritten ---
+    $OUT[OUT_NR]=FALSE   ;Freigabeausgang wieder zuruecksetzen
+    ;--- Meldung, dass Verriegelungsausgang <Out_Nr> in der Verrieglung Nr. <Verr_Nr> ueberschrieben wurde ---
     MAKE_LMS_MSG (VERR_NR, OUT_NR)
   ENDIF
   OFFSET=0
@@ -802,7 +800,7 @@ DEF  FB_STOP ( )
          ENDIF
       ENDWHILE
       IF  NOT $LOOP_CONT THEN
-         ;Simulate button pressed
+         ;Simuliere-Taste gedrueckt
          $CYCFLAG[30]=TRUE
          WAIT SEC 0.1
          $CYC_DEF30[]="SIMU"
@@ -812,7 +810,7 @@ DEF  FB_STOP ( )
                VW_VERR[INT_N].NAME[]="SIMU   "
             ENDIF
          ENDFOR
-         WRITE_VERR_COND (FALSE)  ;Refresh interlock condition
+         WRITE_VERR_COND (FALSE)  ;Auffrischen der Verriegelungsbedingung
          EXIT_OK=TRUE
          $LOOP_CONT=TRUE
       ELSE
@@ -850,7 +848,7 @@ DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
    IF (INPUT_CASE == 2) OR (INPUT_CASE == 4) THEN
       INTERRUPT DECL 101 WHEN $CYCFLAG[E_RED] DO RED_UP (SUCH_RED )
       IF $CYCFLAG[E_RED] THEN
-      ;Sensor Near already present
+      ;Sensor Nah liegt bereits an
       $OV_PRO=0.01*$OV_PRO*VEL_RED
       INTERRUPT OFF 101
    ELSE
@@ -859,7 +857,7 @@ DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
    ELSE
       INTERRUPT DECL 101 WHEN $IN[E_RED] DO RED_UP (SUCH_RED )
       IF $IN[E_RED] THEN
-         ;Sensor Near already presen
+         ;Sensor Nah liegt bereits an
          $OV_PRO=0.01*$OV_PRO*VEL_RED
          INTERRUPT OFF 101
       ELSE
@@ -876,7 +874,7 @@ DEF  SUCHEN (E_STOP :IN,E_RED :IN,VEL_RED :IN,INPUT_CASE :IN )
       INTERRUPT OFF 102
       $OV_PRO=OV_OLD
    ELSE
-      ;Sensor Far already present
+      ;Sensor Fern liegt bereits an
       INTERRUPT OFF 12
       INTERRUPT OFF 101
       INTERRUPT OFF 102
@@ -981,6 +979,25 @@ DEF  AE_SPS_CYC ( )
    ;Automatik Extern Zyklischer Teil im SPS.SUB
    BOOL MERK1
    INT S
+   DECL CHAR MSG_STRING[20]
+
+   IF KVP_START THEN
+   MSG_STRING[]="Start KVP"
+   NOTIFY_MSG(MSG_STRING[],1)
+   KVP_START=FALSE
+
+   MSG_STRING[]="Init Robot"
+   NOTIFY_MSG(MSG_STRING[],1)
+   CWRITE($CMD,STAT,MODE,"STOP 1")
+   CWRITE($CMD,STAT,MODE,"CANCEL 1")
+   P_OLD=1
+   MSG_STRING[]="Run Cell"
+   NOTIFY_MSG(MSG_STRING[],1)
+   CWRITE($CMD,STAT,MODE,"RUN /R1/CELL ()")
+   ENDIF
+
+
+
    IF $PRO_MODE1==#BSTEP THEN
       ;FB_ONL - Flanke
       $TIMER[15]=-300
@@ -2209,4 +2226,3 @@ DEFAULT
 ENDSWITCH
 AktLogZeiger=AktLogZeiger + 1
 END
-;ENDFOLD  
