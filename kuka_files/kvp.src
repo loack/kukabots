@@ -8,7 +8,15 @@ DEF  KVP ()
     IF KVP_START THEN
         MSG_STRING[]="KVP START"
         MAKE_MSG(MSG_STRING)
+        CWRITE($CMD,STAT,MODE,"STOP 1")
+        CWRITE($CMD,STAT,MODE,"CANCEL 1")
+        ;P_OLD=P_SELECT
+        P_OLD = 1
+        MSG_STRING[]="Launching Cell"
+        CWRITE($CMD,STAT,MODE,"RUN /R1/CELL ()")
     ENDIF
+
+
 END
 
 DEF MAKE_MSG (TXT_MSG: CHAR[20])
