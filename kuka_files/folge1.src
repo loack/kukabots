@@ -6,8 +6,7 @@
 DEF Folge1( )
 ; FOLD ;%{H} %MKUKATPVW
 SPS_N=-1
-MSG_STRING[]="Cell in Folge1"
-NOTIFY_MSG(MSG_STRING[],1)
+
 
 VW (#VW_AUE_INIT,TRUE)
 PENTER:

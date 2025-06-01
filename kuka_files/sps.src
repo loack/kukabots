@@ -27,9 +27,6 @@ MAKROSPS()
 ;User-Baustein
 VW_USR_S (#USR_LOOP)
 
-;KVP interface
-KVP ()
-
 WAIT FOR NOT $POWER_FAIL
 ENDLOOP
 END 

@@ -1,86 +1,33 @@
-&ACCESS RVP
+&ACCESS RVP1
 &REL 1
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
 &PARAM TPVW_VERSION = 3.3.5
-DEF  CELL ( )
-
-INT I,J,CELL_CNT
-BOOL IS_ANY_BIT
-STEP=0
-PGNO=0
-CELL_CNT=0
-P0_MERKER=TRUE
-$OUT[LPKT]=FALSE
-VW_INB=FALSE ; reset commissioning flag
-VW_CBY_CELL=TRUE
-VW_CALL_CELL=FALSE
+&PARAM EDITMASK = Folge999[1-128]
+DEF Cell( )
+SPS_N=-1
 
 
-PGNO = 1
+VW (#VW_AUE_INIT,TRUE)
+PENTER:
+INTERRUPT DECL 10 WHEN $CYCFLAG[30]==FALSE DO VW(#FB_STOP,TRUE)
+INTERRUPT ON 10
+INT10=TRUE
 
 
-LOOP
-IF (( NOT $ON_PATH) AND ($MODE_OP<>#EX)) THEN ;sequence zero point has not yet been reached, and P_SELECT is not released
-PGNO=0
-STEP=0
-ENDIF
-CELL_CNT=CELL_CNT+1
-ELSE
-; a sequence zero point was approached --> from now on read the sequence from the slave
-IF $ON_PATH THEN
-STEP=0
-ENDIF
-ENDIF
+SPS_FERTIG = FALSE
+INTERRUPT DECL 10 WHEN $CYCFLAG[30]==FALSE DO VW(#FB_STOP,TRUE)
+INTERRUPT ON 10
+INT10=TRUE
+VW(#VW_INIT,TRUE)
+;VW_USR_R (#USR_INIT)
+TRIGGER  WHEN DISTANCE=1 DELAY=-0.1 DO P0_MERKER=TRUE
 
-;the submit interpreter is active
-IF ($PRO_STATE0<>#P_ACTIVE) THEN
-$LOOP_MSG[]="                                                                                                                                "
-$LOOP_MSG[]="Start SPS.SUB !"
-$LOOP_CONT=TRUE
-WAIT FOR  ($PRO_STATE0==#P_ACTIVE)
-$LOOP_MSG[]="                                                                                                                                "
-ENDIF
-$LOOP_MSG[]="Warte auf gueltige Folgenummer    
-                                                                                             "
-;CALCULATE SEQUENCE NUMBER
-IF STEP==0 THEN
-IS_ANY_BIT=FALSE
-REPEAT
-OUT_WPROZ=FALSE
-OUT_WSLAV=TRUE
-IF (PRG_NR <= 0) THEN
-IS_ANY_BIT = FALSE
-PGNO=0
-ELSE
-IS_ANY_BIT = TRUE
-PGNO = PRG_NR
-ENDIF
-UNTIL IS_ANY_BIT
-OUT_WPROZ=FALSE
-OUT_WSLAV=FALSE
-ENDIF
-STEP=0
+;VW(#MPARA,TRUE)
 
-SWITCH  P_TYPE
-CASE 0; SEQUENCE NUMBER INTEGER
-SWITCH PGNO
-CASE 1
-FOLGE1()
-CASE 13
-FOLGE13()
-CASE 14
-FOLGE14()
-CASE 15
-FOLGE15()
-ENDSWITCH
-CASE 1; SEQUENCE NUMBER 1 OUT OF N
-SWITCH PGNO
-CASE 1,2,4,8,16,32,64,128
-SWITCH PGNO
-CASE 1
-FOLGE1()
-ENDSWITCH
-ENDSWITCH
-ENDSWITCH
-ENDLOOP
+PTP HOME 
+WAIT SEC 2
+PTP P1
+WAIT SEC 2
+PTP HOME
 
 END

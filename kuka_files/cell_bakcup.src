@@ -13,7 +13,6 @@ $OUT[LPKT]=FALSE
 VW_INB=FALSE ; reset commissioning flag
 VW_CBY_CELL=TRUE
 VW_CALL_CELL=FALSE
-
 IF $MODE_OP==#EX THEN
 IF  NOT $IN_HOME THEN
 $LOOP_MSG[]="                                                                                                                                "
