@@ -14,8 +14,7 @@ INTERRUPT ON 92
 INTERRUPT DECL 93 WHEN $ON_PATH==FALSE DO VW(#VW_BLOCK_SEL,TRUE)
 INTERRUPT ON 93
 
-;KVP interface
-KVP ()
+
 
 LOOP
 Regler(3); Time control of the override control
@@ -27,6 +26,9 @@ VW (#VW_ZANGE,TRUE)
 MAKROSPS()
 ;User-Baustein
 VW_USR_S (#USR_LOOP)
+
+;KVP interface
+KVP ()
 
 WAIT FOR NOT $POWER_FAIL
 ENDLOOP
