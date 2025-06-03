@@ -32,19 +32,21 @@ def read_position(robot):
 
 robot = KukaVarProxyClient('192.168.1.5',7000)
 robot.connect()
+
+#start_program(robot)
+
 print("Program started")
-set_speed(robot, 10)  # Set speed to 10%
-#robot.write("KVPMOVE_ENABLE", "FALSE")
+set_speed(robot, 20)  # Set speed to 10%
+robot.write("KVPMOVE_ENABLE", "TRUE")
 
 read_position(robot)
-target_position = "{E6AXIS: A1 0, A2 -90.00000, A3 90, A4 0.0, A5 0.0, A6 0.0, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
+target_position = "{E6AXIS: A1 -20, A2 -90.00000, A3 90, A4 0.0, A5 0.0, A6 0.0, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
 #target_position = "{E6POS: X 1780.000, Y 0.0, Z 1000.000, A 0.0, B 89.99999, C 0.0, S 2, T 2, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
 
 #robot.write("KVPMOVE_ENABLE", "TRUE")
 print(robot.write("P1", target_position))
 
 
-#start_program(robot)
 
 
 robot.disconnect()
