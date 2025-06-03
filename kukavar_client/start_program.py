@@ -1,4 +1,5 @@
 from kukavarproxy import KukaVarProxyClient
+import time
 
 def set_variable(robot,variable_name,new_value):
     robot.write(variable_name,new_value)
@@ -33,18 +34,26 @@ def read_position(robot):
 robot = KukaVarProxyClient('192.168.1.5',7000)
 robot.connect()
 
-#start_program(robot)
+start_program(robot)
 
 print("Program started")
 set_speed(robot, 20)  # Set speed to 10%
 robot.write("KVPMOVE_ENABLE", "TRUE")
+robot.write("KVP_LIN_MOTION", "FALSE")
+robot.write("KVP_PTP_MOTION", "TRUE")
+
+print(f"XPT1:{robot.read("XPT1")}")
 
 read_position(robot)
-target_position = "{E6AXIS: A1 -20, A2 -90.00000, A3 90, A4 0.0, A5 0.0, A6 0.0, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
-#target_position = "{E6POS: X 1780.000, Y 0.0, Z 1000.000, A 0.0, B 89.99999, C 0.0, S 2, T 2, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
+target_position = "{E6AXIS: A1 0, A2 -90.00000, A3 90, A4 0.0, A5 0.0, A6 0.0, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
+Pos1 = "{E6POS: X 652.2838, Y 1282.793, Z 591.0475, A -10.04039, B 26.83337, C -140.3085, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
+Pos2 = "{E6POS: X 652.2838, Y 1282.793, Z 591.0475, A -10.04039, B 26.83337, C -140.3085, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
 
 #robot.write("KVPMOVE_ENABLE", "TRUE")
-print(robot.write("P1", target_position))
+#robot.write("XPT1", Pos1)
+robot.write("P1", target_position)
+
+time.sleep(10)  # Wait for the robot to move to the position
 
 
 

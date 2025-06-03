@@ -37,21 +37,42 @@ class KukaUI:
         ttk.Label(master, textvariable=self.status_var).pack()
         ttk.Label(master, text="Current Axis Position:").pack()
         ttk.Label(master, textvariable=self.axis_var).pack()
+        # Add XYZ position display
+        ttk.Label(master, text="Current XYZ Position:").pack()
+        self.xyz_var = tk.StringVar(value="N/A")
+        ttk.Label(master, textvariable=self.xyz_var).pack()
 
-        # Axis controls
-        axis_frame = ttk.LabelFrame(master, text="Axis Control")
-        axis_frame.pack(padx=10, pady=10, fill=tk.X)
+        main_frame = ttk.Frame(master)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Axis controls on the left half
+        axis_frame = ttk.LabelFrame(main_frame, text="Axis Control")
+        axis_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+
         self.axis_labels = {}
         for i in range(1, 7):
             axis = f"A{i}"
             row = ttk.Frame(axis_frame)
             row.pack(fill=tk.X, pady=2)
             ttk.Label(row, text=axis, width=3).pack(side=tk.LEFT)
-            ttk.Button(row, text="-", width=2, command=lambda a=axis: self.increment_axis(a, -self.increment_var.get())).pack(side=tk.LEFT)
+            ttk.Button(row, text="-", width=2, command=lambda a=axis: self.move_axis(a, -self.increment_var.get())).pack(side=tk.LEFT)
             lbl = ttk.Label(row, textvariable=self.axis_values[axis], width=10)
             lbl.pack(side=tk.LEFT, padx=5)
             self.axis_labels[axis] = lbl
-            ttk.Button(row, text="+", width=2, command=lambda a=axis: self.increment_axis(a, self.increment_var.get())).pack(side=tk.LEFT)
+            ttk.Button(row, text="+", width=2, command=lambda a=axis: self.move_axis(a, self.increment_var.get())).pack(side=tk.LEFT)
+
+        # Cartesian controls on the right half
+        cart_frame = ttk.LabelFrame(main_frame, text="Cartesian Control")
+        cart_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
+        # Add labels for Cartesian coordinates
+        for coord in ["X", "Y", "Z","A", "B", "C"]:
+            row = ttk.Frame(cart_frame)
+            row.pack(fill=tk.X, pady=2)
+            ttk.Label(row, text=coord, width=3).pack(side=tk.LEFT)
+            ttk.Button(row, text="-", width=2, command=lambda c=coord: self.move_cartesian(c, -self.increment_var.get())).pack(side=tk.LEFT)
+            lbl = ttk.Label(row, textvariable=self.cartesian_vars[coord], width=10)
+            lbl.pack(side=tk.LEFT, padx=5)
+            ttk.Button(row, text="+", width=2, command=lambda c=coord: self.move_cartesian(c, self.increment_var.get())).pack(side=tk.LEFT)
 
         # Speed control
         self.speed_var = tk.IntVar(value=10)
@@ -70,6 +91,7 @@ class KukaUI:
         # Poll status on start
         self.update_status()
         self.periodic_axis_update()  # Start the non-blocking loop
+        self.periodic_xyz_update()   # Start the non-blocking XYZ update
 
     def extract_axis_values(self, axis_string):
         # Example axis_string: "{E6AXIS: A1 -20, A2 -90.00000, A3 90, A4 0.0, A5 0.0, A6 0.0, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
@@ -84,7 +106,17 @@ class KukaUI:
                     axis_values[k] = float(v)
         return axis_values
 
-    def increment_axis(self, axis, delta):
+    def extract_xyz_values(self, pos_string):
+        # Example: "{X 1780.000, Y 0.0, Z 1000.000, A 0.0, B 89.99999, C 0.0, S 2, T 2, ...}"
+        xyz = {}
+        pos_string = pos_string.replace("E6POS: ", "")
+        for part in pos_string.strip("{}").split(","):
+            if " " in part:
+                k, v = part.strip().split(" ")
+                xyz[k] = float(v)
+        return xyz
+
+    def move_axis(self, axis, delta):
         # Read current axis values
         current_axis = self.robot.read("$AXIS_ACT")
         axis_vals = self.extract_axis_values(current_axis)
@@ -92,8 +124,40 @@ class KukaUI:
             axis_vals[axis] += delta
             # Build new axis string
             axis_str = "{E6AXIS: " + ", ".join(f"{k} {axis_vals[k]}" for k in sorted(axis_vals.keys())) + "}"
+            #define PTP motion
+            print(self.robot.read("KVPMOVE_ENABLE"))
+            print(self.robot.read("KVP_PTP_MOTION"))
+            self.robot.write("KVP_PTP_MOTION", "TRUE")
+            # Write new axis values to P1
             self.robot.write("P1", axis_str)
             self.read_axis()
+
+    def move_cartesian(self, coord, delta):
+        # Read current cartesian position
+        pos = self.robot.read("$POS_ACT")
+        xyz_vals = self.extract_xyz_values(pos)
+        if coord in xyz_vals:
+            xyz_vals[coord] += delta
+            # Build new E6POS string (keep other values unchanged)
+            pos_dict = xyz_vals
+            # Fill in missing values from current pos
+            for k in ["X", "Y", "Z", "A", "B", "C"]:
+                if k not in pos_dict:
+                    pos_dict[k] = 0.0
+            # Read current orientation and other fields
+            parts = []
+            for part in pos.replace("E6POS: ", "").strip("{}").split(","):
+                if " " in part:
+                    k, v = part.strip().split(" ")
+                    if k in pos_dict:
+                        parts.append(f"{k} {pos_dict[k]}")
+                    else:
+                        parts.append(f"{k} {v}")
+            pos_str = "{E6POS: " + ", ".join(parts) + "}"
+            # Set LIN motion
+            self.robot.write("KVP_LIN_MOTION", "TRUE")
+            self.robot.write("XPT1", pos_str)
+            self.read_xyz()
 
     def start_program(self):
         self.robot.write("KVP_START", "TRUE")
@@ -103,10 +167,10 @@ class KukaUI:
         self.robot.write("KVP_START", "FALSE")
         self.update_status()
     def move_enable(self):
-        self.robot.write("$MOVE_ENABLE", "TRUE")
+        self.robot.write("KVPMOVE_ENABLE", "TRUE")
         print("Move enabled")
     def move_disable(self):
-        self.robot.write("$MOVE_ENABLE", "FALSE")
+        self.robot.write("KVPMOVE_ENABLE", "FALSE")
         print("Move disabled")
 
     def go_home(self):
@@ -132,6 +196,14 @@ class KukaUI:
             if k in axis_vals:
                 self.axis_values[k].set(axis_vals[k])
 
+    def read_xyz(self):
+        pos = self.robot.read("$POS_ACT")
+        self.xyz_var.set(str(pos))
+        cartesian_vals = self.extract_xyz_values(pos)
+        for k in ["X", "Y", "Z", "A", "B", "C"]:
+            if k in cartesian_vals:
+                self.cartesian_vars[k].set(cartesian_vals[k])
+
     def update_status(self):
         status = self.robot.read("KVP_START")
         self.status_var.set(str(status))
@@ -139,6 +211,10 @@ class KukaUI:
     def periodic_axis_update(self):
         self.read_axis()
         self.master.after(1000, self.periodic_axis_update)  # Update every 1 second
+
+    def periodic_xyz_update(self):
+        self.read_xyz()
+        self.master.after(1000, self.periodic_xyz_update)  # Update every 1 second
 
     def set_speed(self, speed):
         self.robot.write("$OV_PRO", speed)
