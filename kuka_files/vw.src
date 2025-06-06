@@ -975,19 +975,26 @@ DEF  WPROZ_WSLAV ( )
       $OUT[WSLAV]=FALSE
    ENDIF
 END
+;Automatic external cyclic part in SPS.SUB
+
+
+
 DEF  AE_SPS_CYC ( )
    ;Automatik Extern Zyklischer Teil im SPS.SUB
    BOOL MERK1
    INT S
+
+   
+   
+   ;-------------------------------KVP defintions-------------------------------
+   ;----------------------------------------------------------------------------
    DECL CHAR MSG_STRING[20]
 
+   ;KVP Start
    IF KVP_START THEN
    MSG_STRING[]="Start KVP"
    NOTIFY_MSG(MSG_STRING[],1)
    KVP_START=FALSE
-
-   MSG_STRING[]="Stop Robot"
-   NOTIFY_MSG(MSG_STRING[],1)
    CWRITE($CMD,STAT,MODE,"STOP 1")
    CWRITE($CMD,STAT,MODE,"CANCEL 1")
    P_OLD=1
@@ -995,7 +1002,17 @@ DEF  AE_SPS_CYC ( )
    NOTIFY_MSG(MSG_STRING[],1)
    CWRITE($CMD,STAT,MODE,"RUN /R1/CELL ()")
    ENDIF
-
+   ;KVP Stop
+   IF KVP_STOP THEN
+      MSG_STRING[]="Stop KVP "
+      NOTIFY_MSG(MSG_STRING[],1)
+      KVP_STOP=FALSE
+      BRAKE;
+      CWRITE($CMD,STAT,MODE,"STOP 1")
+      CWRITE($CMD,STAT,MODE,"CANCEL 1")
+   ENDIF
+   ;--------------------------------KVP defintions-------------------------------
+   ;----------------------------------------------------------------------------
 
 
    IF $PRO_MODE1==#BSTEP THEN

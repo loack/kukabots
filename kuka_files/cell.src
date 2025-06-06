@@ -3,6 +3,7 @@
 &PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
 &PARAM TPVW_VERSION = 3.3.5
 &PARAM EDITMASK = Folge999[1-128]
+
 DEF Cell( )
 SPS_N=-1
 
