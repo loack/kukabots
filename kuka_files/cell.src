@@ -25,7 +25,9 @@ TRIGGER  WHEN DISTANCE=1 DELAY=-0.1 DO P0_MERKER=TRUE
 ;Define accerlation, velocity, and base
 ;MOVE TO P1 (computer controlled)
 
+;Enter the main loop
 WHILE TRUE
+
 IF KVPMOVE_ENABLE THEN
 KVP_MOTION_END = FALSE
 
@@ -38,12 +40,49 @@ KVP_MOTION_END = FALSE
         PTP XPT1
     ENDIF
 
+    IF KVP_TRAJECTORY_MODE THEN
+        ; Trajectory motion
+        TRAJECTORY_MOT()
+    ENDIF
+
 ENDIF
-
 KVP_MOTION_END = TRUE
-WAIT SEC 0.1
-
 ENDWHILE
 
+END
 
+DEF TRAJECTORY_MOT()
+   ; Initialize variables if needed
+   COM_NEW_POINTS = 0
+   COM_CURRENT_POINT_INDEX = 0
+   COM_TRAJECTORY_FINISHED = FALSE
+
+   ;Advance to look ahead for new points
+   $ADVANCE = NB_ADVANCE_POINTS 
+
+   LOOP
+      ; Wait for new points to be sent from external application
+      WAIT FOR COM_NEW_POINTS > 0
+
+      FOR COM_CURRENT_POINT_INDEX = 1 TO COM_NEW_POINTS
+         ; Execute the point. Adjust velocity, approximation, etc., as needed.
+         ; Use LIN for linear, PTP for point-to-point.
+         LIN COM_E6POS[COM_CURRENT_POINT_INDEX] C_DIS ; C_DIS for continuous path
+
+         ; Exit loop if asked
+         IF EXIT_TRAJECTORY THEN
+            COM_TRAJECTORY_FINISHED = TRUE
+            BREAK ; Exit the FOR loop
+         ENDIF
+      ENDFOR
+
+      COM_NEW_POINTS = 0 ; Reset the flag for the next chunk
+      ; Check if the entire trajectory is finished
+      IF COM_TRAJECTORY_FINISHED THEN
+        EXIT_TRAJECTORY  =FALSE ; Reset the exit flag
+        COM_TRAJECTORY_FINISHED = FALSE ; Reset the trajectory finished flag
+        BREAK ; Exit the loop
+      ENDIF
+   ENDLOOP
+   
 END

@@ -2,6 +2,40 @@
 &REL 1
 DEFDAT  $CONFIG
 ;FOLD ;%{E}
+;-------KUKAVARPROXY USER VARIABLES -----------------
+E6AXIS P1={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
+E6AXIS P2={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
+E6AXIS P3={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
+
+
+;Start KVP Cell program
+DECL BOOL KVP_START = FALSE
+
+;Stop all runing programs
+DECL BOOL KVP_STOP = FALSE
+
+;Check if current motion is finished
+DECL BOOL KVP_MOTION_END = FALSE
+;Enable KVP motion
+DECL BOOL KVPMOVE_ENABLE = FALSE
+
+;Choose motion type
+DECL BOOL KVP_PTP_MOTION = FALSE
+DECL BOOL KVP_CP_MOTION = FALSE
+DECL BOOL KVP_CIRC_MOTION = FALSE
+DECL BOOL KVP_LIN_MOTION = FALSE
+
+; Trajectory mode control
+DECL BOOL KVP_TRAJECTORY_MODE = FALSE ; Enable trajectory mode
+DECL BOOL EXIT_TRAJECTORY = FALSE ; Flag to exit trajectory mode
+DECL GLOBAL E6POS COM_E6POS[100] ; An array to store a segment of points
+DECL GLOBAL INT COM_NEW_POINTS = 0 ; Flag to indicate new points are available
+DECL GLOBAL INT COM_CURRENT_POINT_INDEX = 0 ; Index of the current point to execute
+DECL GLOBAL BOOL COM_TRAJECTORY_FINISHED = FALSE ; Flag to signal end of trajectory
+DECL GLOBAL INT NB_ADVANCE_POINTS = 3 ; Number of points to look ahead
+; ---------------------------------------------------
+
+
 ; NEW BASE-PACKAGE   
 STRUC PDAT INT TOOL_NO,BASE_NO,REAL VEL,ACC,APO_DIST
 STRUC LDAT INT TOOL_NO,BASE_NO,REAL VEL,ACC,APO_DIST,APO_FAC
@@ -96,36 +130,6 @@ EXT  BAS (BAS_COMMAND  :IN,REAL  :IN )
 ;  POSITION
 ;----------------------------------
 E6AXIS HOME={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-
-;-------KUKAVARPROXY USER VARIABLES -----------------
-E6AXIS P1={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-E6AXIS P2={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-E6AXIS P3={a1 0.0,a2 -90.0,a3 90.0,a4 0.0,a5 0.0,a6 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-E6POS XPT1={x 0.0,y 0.0,z 0.0,a 0.0,b 0.0,c 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-E6POS XPT2={x 0.0,y 0.0,z 0.0,a 0.0,b 0.0,c 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-E6POS XPT3={x 0.0,y 0.0,z 0.0,a 0.0,b 0.0,c 0.0,e1 0.0,e2 0.0,e3 0.0,e4 0.0,e5 0.0,e6 0.0}
-
-;Start KVP Cell program
-DECL BOOL KVP_START = FALSE
-
-;Stop all runing programs
-DECL BOOL KVP_STOP = FALSE
-
-;Check if current motion is finished
-DECL BOOL KVP_MOTION_END = FALSE
-;Enable KVP motion
-DECL BOOL KVPMOVE_ENABLE = FALSE
-
-;Choose motion type
-DECL BOOL KVP_PTP_MOTION = FALSE
-DECL BOOL KVP_CP_MOTION = FALSE
-DECL BOOL KVP_CIRC_MOTION = FALSE
-DECL BOOL KVP_LIN_MOTION = FALSE
-
-
-
-; ---------------------------------------------------
-
 
 ; REFERENCE POINT
 ;----------------------------------
