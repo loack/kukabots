@@ -31,9 +31,11 @@ DECL REAL KVP_APO = 2.0
 DECL BOOL KVP_TRAJECTORY_MODE = FALSE ; Enable trajectory mode
 DECL BOOL EXIT_TRAJECTORY = FALSE ; Flag to exit trajectory mode
 DECL GLOBAL E6POS COM_E6POS[100] ; An array to store a segment of points
-DECL GLOBAL INT COM_NEW_POINTS = 0 ; Flag to indicate new points are available
-DECL GLOBAL INT COM_CURRENT_POINT_INDEX = 0 ; Index of the current point to execute
+DECL GLOBAL INT COM_LOOP_START = 0 ; Flag to indicate new points are available
+DECL GLOBAL INT COM_LOOP_END = 0 ; Flag to indicate new points are available
+DECL GLOBAL INT COM_CURRENT_POINT_INDEX = 2 ; Index of the current point to execute
 DECL GLOBAL BOOL COM_TRAJECTORY_FINISHED = FALSE ; Flag to signal end of trajectory
+DECL GLOBAL BOOL COM_ALL_POINTS_TRANSMITTED = FALSE ; Flag to signal end of trajectory
 DECL GLOBAL INT NB_ADVANCE_POINTS = 3 ; Number of points to look ahead
 ; ---------------------------------------------------
 

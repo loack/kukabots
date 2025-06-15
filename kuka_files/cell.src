@@ -20,7 +20,6 @@ TRIGGER  WHEN DISTANCE=1 DELAY=-0.1 DO P0_MERKER=TRUE
 
 ;VW(#MPARA,TRUE)
 ;Define accerlation, velocity, and base
-;MOVE TO P1 (computer controlled)
 
 WHILE TRUE
 IF KVPMOVE_ENABLE THEN
@@ -36,25 +35,52 @@ KVP_MOTION_END = FALSE
     ENDIF
 
     IF KVP_TRAJECTORY_MODE THEN
-        $ADVANCE=NB_ADVANCE_POINTS
-        $APO.CDIS = KVP_APO
+        ; --- Trajectory Mode Enhancements ---
 
-        COM_TRAJECTORY_FINISHED = FALSE
+        ; Ensure the robot is at the first point before starting the continuous path
+        ; This separates the initial PTP move from the continuous LIN segment.
+        ; Make sure COM_E6POS[1] contains the actual start point of the trajectory.
         PTP COM_E6POS[1]
 
-        FOR POINT_INDEX = 2 TO COM_NEW_POINTS
-            LIN COM_E6POS[POINT_INDEX] C_DIS
-            ; Exit loop if asked
-            IF EXIT_TRAJECTORY THEN
-                COM_TRAJECTORY_FINISHED = TRUE
-                EXIT ; Exit the FOR loop
-            ENDIF
-        ENDFOR
+        ; Set global look-ahead and approximation
+        $ADVANCE = NB_ADVANCE_POINTS
+        $APO.CDIS = KVP_APO
 
-        
+        ; Reset flags for a new trajectory
+        COM_TRAJECTORY_FINISHED = FALSE
+        EXIT_TRAJECTORY = FALSE ; Ensure this flag is reset by external app too
+
+        ; --- Loop to handle multiple chunks of points ---
+        LOOP
+            ; Wait for new points to be ready from the external application
+            ; Set where to initiate trajectory
+            LOOP_START = COM_LOOP_START
+            LOOP_END = COM_LOOP_END
+
+            ; Execute the received chunk of points
+            FOR POINT_INDEX = LOOP_START TO LOOP_END
+                LIN COM_E6POS[POINT_INDEX] C_DIS
+
+                COM_CURRENT_POINT_INDEX = POINT_INDEX
+                ; Exit loop if external app asks for it (e.g., emergency stop, trajectory aborted)
+                IF EXIT_TRAJECTORY THEN
+                    EXIT ; Exit the FOR loop
+                ENDIF
+            ENDFOR
+
+            ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
+            IF EXIT_TRAJECTORY THEN
+                EXIT
+            ENDIF
+
+            IF COM_ALL_POINTS_TRANSMITTED THEN; Flag to signal end of trajectory
+                EXIT
+            ENDIF
+
+        ENDLOOP
+        ; --- End of Trajectory Mode Enhancements ---
         COM_TRAJECTORY_FINISHED = TRUE
     ENDIF
-
 
 ENDIF
 
@@ -64,6 +90,3 @@ WAIT SEC 0.1
 ENDWHILE
 
 END
-
-
-
