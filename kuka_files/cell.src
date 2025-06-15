@@ -37,14 +37,14 @@ KVP_MOTION_END = FALSE
 
     ELSE
         ; Wait
-        WAIT 0.1 SEC
+        WAIT SEC 0.1
     ENDIF
     IF KVP_LIN_MOTION THEN
         ; Linear motion
         PTP XPT1
     ELSE
         ; Wait
-        WAIT 0.1 SEC
+        WAIT SEC 0.1
 
     ENDIF
 
@@ -82,7 +82,7 @@ KVP_MOTION_END = FALSE
         ENDLOOP
     ELSE
         ; Wait
-        WAIT 0.1 SEC
+        WAIT SEC 0.1
     ENDIF
 
 ENDIF
