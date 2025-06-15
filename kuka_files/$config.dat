@@ -25,6 +25,8 @@ DECL BOOL KVP_CP_MOTION = FALSE
 DECL BOOL KVP_CIRC_MOTION = FALSE
 DECL BOOL KVP_LIN_MOTION = FALSE
 
+;Approximation in trajectory
+DECL REAL KVP_APO = 2.0
 ; Trajectory mode control
 DECL BOOL KVP_TRAJECTORY_MODE = FALSE ; Enable trajectory mode
 DECL BOOL EXIT_TRAJECTORY = FALSE ; Flag to exit trajectory mode
