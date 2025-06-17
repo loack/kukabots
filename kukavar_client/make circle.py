@@ -64,77 +64,100 @@ def generate_circle_trajectory(radius, num_points):
         trajectory.append(trajstring)
     return trajectory
 
-def send_points(robot,trajectory,istart,iend, offset):
-    print(f"sendind points to the robot from trajectory {istart+offset} to {iend+offset}")
-    #send trajectory points to the robot
-    for i in range(istart+offset,iend+offset):
-        variable_name = f"COM_E6POS[{i+1-offset}]" # KRL arrays are typically 1-indexed
-        set_variable(robot, variable_name, trajectory[i])
-    robot.write("COM_LOOP_START", istart) # Set the number of trajectory points
-    robot.write("COM_LOOP_END", iend) # Set the number of trajectory points
-    print(f"{iend-istart} trajectory points sent to the robot.")
-
-if __name__ == "__main__":
-    radius = 200  # Radius of the circle
-    num_points = 200 # Number of points in the trajectory
-    trajectory = ["{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                  "{E6POS: X 100.8644, Y 1600.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                  "{E6POS: X 300.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                  "{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"]
-    trajectory = generate_circle_trajectory(radius,num_points)
-    robot = KukaVarProxyClient('192.168.1.5',7000)
-    robot.connect()
-    start_program(robot)
-    set_speed(robot, 100)  # Set speed to 10%
-    read_position(robot)
-
-    #----------init robot--------------------------
-    robot.write("KVPMOVE_ENABLE", "FALSE") 
+def init_trajectory_mode(robot,cdis=2.0,advance_points=5):
     #def approximation for linear move
-    robot.write("KVP_APO",2.0)
-    robot.write("NB_ADVANCE_POINTS",5)
+    robot.write("KVP_APO",cdis)
+    robot.write("NB_ADVANCE_POINTS",advance_points)
 
-    #send first 100 points to robot
-    send_points(robot,trajectory,1,100,0)
-
-    # Enable trajectory mode
+    # init trajectory mode Enable trajectory mode
     robot.write("KVP_LIN_MOTION", "FALSE")
     robot.write("KVP_PTP_MOTION", "FALSE")   
     robot.write("KVP_TRAJECTORY_MODE", "TRUE") 
     robot.write("KVPMOVE_ENABLE", "TRUE")  
 
-    print("Program started")
+def stop_movement(robot):
+    robot.write("KVPMOVE_ENABLE", "FALSE")  
+    robot.write("EXIT_TRAJECTORY","TRUE")
+    robot.write("KVP_LIN_MOTION", "FALSE")
+    robot.write("KVP_PTP_MOTION", "FALSE")   
+    robot.write("KVP_TRAJECTORY_MODE", "FALSE") 
 
-    #watch current point
-    current_index = 1
-    while current_index < 50 :
-        current_index = int(robot.read("COM_CURRENT_POINT_INDEX"))
+def send_and_watch_points(robot, points_to_send):
+    points_sent_count = 0
+    write_idx=0
+    total_points = len(points_to_send)
+    buffer_size = 100
+    
+    try: 
+        while points_sent_count < total_points:
+            # --- Synchronisation ---
+            read_idx = robot.read('READ_INDEX')
+            print(f"Robot executing point n°{read_idx}")
+            
+            # Calcul du remplissage actuel du buffer
+            current_fill = write_idx - read_idx
+            if current_fill < buffer_size:
+                # Le buffer n'est pas plein, on peut envoyer un point
+        
+                # 1. Calculer l'index dans le buffer KRL (1-100)
+                buffer_krl_idx = (write_idx % buffer_size) + 1
+                
+                # 2. Récupérer le point à envoyer
+                point = points_to_send[points_sent_count]
+                
+                # 3. Écrire le point dans le buffer KRL
+                robot.write(f'BUFFER_E6POS[{buffer_krl_idx}]', point)
+                
+                # 4. Mettre à jour l'index d'écriture (signal pour le robot)
+                robot.write('WRITE_INDEX', write_idx + 1)
+                write_idx = write_idx + 1
+                
+                points_sent_count += 1
+                print(f"✅ Point {points_sent_count}/{total_points} envoyé. Buffer: {current_fill + 1}/{buffer_size}")
+            else:
+                # Le buffer est plein, on attend un peu
+                print(f"⏸️ Buffer plein ({current_fill}). En attente...")
+                time.sleep(0.1) # Attente passive pour ne pas surcharger le réseau
 
-    #half of it reached sending other points + offset 100 ( 101 à 150)
-    send_points(robot,trajectory,1,50,100)
+    except Exception as e:
+        print(f"❌ Erreur: {e}")
+    finally:
+        # --- Nettoyage ---
+        print("Fin de l'envoi. Signal d'arrêt au robot.")
+        robot.write('KVPMOVE_ENABLE', False) # On dit au robot de terminer sa boucle
 
+if __name__ == "__main__":
+    try: 
+        radius = 200  # Radius of the circle
+        num_points = 300 # Number of points in the trajectory
+        trajectory = ["{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
+                    "{E6POS: X 100.8644, Y 1600.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
+                    "{E6POS: X 300.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
+                    "{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"]
+        trajectory = generate_circle_trajectory(radius,num_points)
+        robot = KukaVarProxyClient('192.168.1.5',7000)
+        robot.connect()
+        print("🤖 Connexion au robot établie.")
+        # --- Initialisation ---
+        print("🔄 Initialisation des variables sur le robot...")
+        set_speed(robot, 10)  # Set speed to 10%
+        #----------init robot--------------------------
+        robot.write("KVPMOVE_ENABLE", "FALSE")
+        print("Program started")
+        start_program(robot)
+        read_position(robot)
+        init_trajectory_mode(robot)
+        #send  points to robot
+        send_and_watch_points(robot,trajectory)
+    except Exception as e:
+        print(f"❌ Erreur: {e}")
+        stop_movement(robot)
+        robot.disconnect()
+    finally:
+        stop_movement(robot)
+        robot.disconnect()
 
     
 
-    #read current trajectory state
-    current_state = robot.read("COM_TRAJECTORY_FINISHED")
-    current_point = robot.read("COM_CURRENT_POINT_INDEX")
-    while current_state != "TRUE":
-        #print(f"Current trajectory state: {current_state}, Current point index: {current_point}")
-        current_state = robot.read("COM_TRAJECTORY_FINISHED")
-        current_point = robot.read("POINT_INDEX")
-    print("Trajectory finished")
-    #handle end of programm if ctrl-c break the trajectory
-    
 
 
-
-
-    # Wait for the trajectory to finish
-    robot.write("KVP_TRAJECTORY_MODE", "FALSE")  # Disable trajectory mode
-    print("Trajectory finished")
-
-
-
-
-robot.disconnect()

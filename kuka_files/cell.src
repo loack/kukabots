@@ -31,53 +31,67 @@ KVP_MOTION_END = FALSE
     ENDIF
     IF KVP_LIN_MOTION THEN
         ; Linear motion
-        PTP COM_E6POS[1]
+        PTP BUFFER_E6POS[1]
     ENDIF
 
     IF KVP_TRAJECTORY_MODE THEN
-        ; --- Trajectory Mode Enhancements ---
-
-        ; Ensure the robot is at the first point before starting the continuous path
-        ; This separates the initial PTP move from the continuous LIN segment.
-        ; Make sure COM_E6POS[1] contains the actual start point of the trajectory.
-        PTP COM_E6POS[1]
-
+     
         ; Set global look-ahead and approximation
         $ADVANCE = NB_ADVANCE_POINTS
-        $APO.CDIS = KVP_APO
+        $APO.CDIS = KVP_APROX_CDIS
 
         ; Reset flags for a new trajectory
         COM_TRAJECTORY_FINISHED = FALSE
         EXIT_TRAJECTORY = FALSE ; Ensure this flag is reset by external app too
 
-        ; --- Loop to handle multiple chunks of points ---
+        ;----Initialise by starting at first point of trajectory----------
+        ; Le robot attend qu'au moins les 10 premiers points soit disponibles dans le buffer.
+        WAIT FOR (READ_INDEX + 10)< WRITE_INDEX
+        ; Ensure the robot is at the first point before starting the continuous path
+        ; This separates the initial PTP move from the continuous LIN segment.
+        ; Make sure BUFFER_E6POS[1] contains the actual start point of the trajectory.
+        PTP BUFFER_E6POS[1]
+
+        
+        ; --- BOUCLE PRINCIPALE FIFO BUFFER---
         LOOP
-            ; Wait for new points to be ready from the external application
-            ; Set where to initiate trajectory
-            LOOP_START = COM_LOOP_START
-            LOOP_END = COM_LOOP_END
+            ; Condition de sortie de la boucle (si Python a fini et tout a été lu)
+            IF NOT KVP_TRAJECTORY_MODE AND (READ_INDEX >= WRITE_INDEX) THEN
+                EXIT
+            ENDIF
 
-            ; Execute the received chunk of points
-            FOR POINT_INDEX = LOOP_START TO LOOP_END
-                LIN COM_E6POS[POINT_INDEX] C_DIS
+            ; --- SYNCHRONISATION ---
+            ; Le robot attend ici SANS consommer de CPU
+            ; qu'au moins un nouveau point soit disponible dans le buffer.
+            WAIT FOR READ_INDEX < WRITE_INDEX
+            
+            ; --- LECTURE DU POINT ---
+            ; On incrémente notre compteur de lecture
+            READ_INDEX = READ_INDEX + 1
+            
+            ; On calcule l'index dans notre buffer circulaire (de 1 à 100)
+            ; En KRL, la division d'entiers donne un résultat entier (tronqué)
+            QUOTIENT = (READ_INDEX - 1) / 100  ; Calcul du quotient entier
+            ; Calcul du reste (modulo)
+            BUFFER_INDEX = (READ_INDEX - 1) - (100 * QUOTIENT) + 1
+            
+            COM_CURRENT_POINT_INDEX = BUFFER_INDEX
 
-                COM_CURRENT_POINT_INDEX = POINT_INDEX
-                ; Exit loop if external app asks for it (e.g., emergency stop, trajectory aborted)
-                IF EXIT_TRAJECTORY THEN
-                    EXIT ; Exit the FOR loop
-                ENDIF
-            ENDFOR
+            ; On exécute le mouvement
+            ; Utilisez PTP, LIN ou CIRC selon votre besoin
+            LIN BUFFER_E6POS[BUFFER_INDEX] C_DIS
 
             ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
             IF EXIT_TRAJECTORY THEN
                 EXIT
             ENDIF
-
-            IF COM_ALL_POINTS_TRANSMITTED THEN; Flag to signal end of trajectory
+            ; Flag to signal end of trajectory
+            IF COM_ALL_POINTS_TRANSMITTED THEN
                 EXIT
             ENDIF
-
+            
         ENDLOOP
+        
         ; --- End of Trajectory Mode Enhancements ---
         COM_TRAJECTORY_FINISHED = TRUE
     ENDIF
