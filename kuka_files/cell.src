@@ -33,7 +33,6 @@ KVP_MOTION_END = FALSE
         ; Linear motion
         PTP BUFFER_E6POS[1]
     ENDIF
-
     IF KVP_TRAJECTORY_MODE THEN
      
         ; Set global look-ahead and approximation
@@ -86,7 +85,7 @@ KVP_MOTION_END = FALSE
                 EXIT
             ENDIF
             ; Flag to signal end of trajectory
-            IF COM_ALL_POINTS_TRANSMITTED THEN
+            IF COM_ALL_POINTS THEN
                 EXIT
             ENDIF
             

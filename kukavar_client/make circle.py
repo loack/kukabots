@@ -75,6 +75,7 @@ def init_trajectory_mode(robot,cdis=2.0,advance_points=5):
     robot.write("KVP_TRAJECTORY_MODE", "TRUE") 
     robot.write("KVPMOVE_ENABLE", "TRUE")  
 
+
 def stop_movement(robot):
     robot.write("KVPMOVE_ENABLE", "FALSE")  
     robot.write("EXIT_TRAJECTORY","TRUE")
@@ -84,14 +85,19 @@ def stop_movement(robot):
 
 def send_and_watch_points(robot, points_to_send):
     points_sent_count = 0
-    write_idx=0
     total_points = len(points_to_send)
     buffer_size = 100
-    
+
+    #init index
+    robot.write("READ_INDEX",0)
+    robot.write("WRITE_INDEX",0)
+    read_idx = 0
+    write_idx = 0
+
     try: 
         while points_sent_count < total_points:
             # --- Synchronisation ---
-            read_idx = robot.read('READ_INDEX')
+            read_idx = int(robot.read('READ_INDEX'))
             print(f"Robot executing point n°{read_idx}")
             
             # Calcul du remplissage actuel du buffer
@@ -140,7 +146,7 @@ if __name__ == "__main__":
         print("🤖 Connexion au robot établie.")
         # --- Initialisation ---
         print("🔄 Initialisation des variables sur le robot...")
-        set_speed(robot, 10)  # Set speed to 10%
+        set_speed(robot, 5)  # Set speed to 10%
         #----------init robot--------------------------
         robot.write("KVPMOVE_ENABLE", "FALSE")
         print("Program started")
