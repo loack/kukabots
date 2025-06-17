@@ -1,0 +1,10 @@
+//
+// File Checksum Integrity Verifier version 2.05.
+//
+		MD5				SHA-1
+-------------------------------------------------------------------------
+dde7ea03da9e1e357bb571440336c4d2 1eedb3e7c658d7a88da3bb14678894ad76e8cdb9 C3BANSI.exe
+a21e94e994bbf351df506700c42cce30 fc07f354043fc806f067324d596ace25976ee83e C3BCOMPT.exe
+83751e79bff6e3ce61a2de8d50115490 48f040890af0af6fb9c2126f4e41fe4d27539ead C3Bridge.exe
+e1addf46c7f94177f6512af6e4168860 abbb1013a3f51115b85e35e90faf440f70036b5b C3Control.exe
+b9f1198606746c523344ec69392fb5b4 d451a76d0264419a72b9de09512650a693ad4ffc C3Easy.exe
