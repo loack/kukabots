@@ -37,7 +37,7 @@ DECL GLOBAL INT READ_INDEX = 0 ; Current index that is read by robot
 DECL GLOBAL INT WRITE_INDEX = 0 ; Current index written to robot
 DECL GLOBAL INT COM_CURRENT_POINT_INDEX = 1 ; Index of the current point to execute
 DECL GLOBAL BOOL COM_TRAJECTORY_FINISHED = FALSE ; Flag to signal end of trajectory
-DECL GLOBAL BOOL COM_ALL_POINTS_TRANSMITTED = FALSE ; Flag to signal end of trajectory
+DECL GLOBAL INT NB_PTS_TRAJ = 0 ; Number of points in trajectory
 
 ; ---------------------------------------------------
 
