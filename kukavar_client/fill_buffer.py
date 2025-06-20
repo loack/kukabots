@@ -122,10 +122,6 @@ if __name__ == "__main__":
     try: 
         radius = 200  # Radius of the circle
         num_points = 100         # Number of points in the trajectory
-        trajectory = ["{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                    "{E6POS: X 100.8644, Y 1600.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                    "{E6POS: X 300.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                    "{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"]
         trajectory = generate_circle_trajectory(radius,num_points)
         robot = KukaVarProxyClient('192.168.1.5',7000)
         robot.connect()
@@ -138,13 +134,24 @@ if __name__ == "__main__":
         print("Program started")
         start_program(robot)
 
-
-        init_trajectory_mode(robot)
+        
         #send  points to robot
-        filled = fill_buffer(robot,trajectory[0:99],1)
-        if filled:
-            select_buffer(robot,1)
-            move_enable(robot)
+        #filled = fill_buffer(robot,trajectory,1)
+
+        #execute" buffer
+            
+        
+        robot.write("EXIT_TRAJECTORY","FALSE")
+        robot.write("KVP_LIN_MOTION", "FALSE")
+        robot.write("KVP_PTP_MOTION", "FALSE")  
+        robot.write("EXEC_BUFF3","FALSE") 
+        robot.write("EXEC_BUFF2","TRUE")
+        robot.write("EXEC_BUFF1","FALSE")
+        robot.write("KVP_TRAJECTORY_MODE", "TRUE") 
+        robot.write("KVPMOVE_ENABLE", "TRUE")  
+
+        #for i in range(1,100):
+        #    print(robot.read(f"BUFFER1_E6POS[{i}]"))
 
     except Exception as e:
         print(f"❌ Erreur: {e}")

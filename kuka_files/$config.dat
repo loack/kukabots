@@ -32,9 +32,14 @@ DECL GLOBAL INT NB_ADVANCE_POINTS = 3 ; Number of points to look ahead
 ; Trajectory mode control
 DECL BOOL KVP_TRAJECTORY_MODE = FALSE ; Enable trajectory mode
 DECL BOOL EXIT_TRAJECTORY = FALSE ; Flag to exit trajectory mode
-DECL GLOBAL E6POS BUFFER_E6POS[100] ; An array to store a segment of points
-DECL GLOBAL INT READ_INDEX = 0 ; Current index that is read by robot
-DECL GLOBAL INT WRITE_INDEX = 0 ; Current index written to robot
+DECL GLOBAL E6POS BUFFER1_E6POS[30] ; An array to store a segment of points
+DECL GLOBAL E6POS BUFFER2_E6POS[30] ; An array to store a segment of points
+DECL GLOBAL E6POS BUFFER3_E6POS[30] ; An array to store a segment of points
+
+DECL BOOL EXEC_BUFF1 = FALSE
+DECL BOOL EXEC_BUFF2 = FALSE
+DECL BOOL EXEC_BUFF3 = FALSE
+
 DECL GLOBAL INT COM_CURRENT_POINT_INDEX = 1 ; Index of the current point to execute
 DECL GLOBAL BOOL COM_TRAJECTORY_FINISHED = FALSE ; Flag to signal end of trajectory
 DECL GLOBAL INT TRAJ_TOTAL_POINTS = 1 ; Flag to signal end of trajectory
