@@ -15,10 +15,10 @@ def set_speed(robot, speed):
         print(f"Failed to set speed. Current speed: {current_speed}")
 
 def start_program(robot):
+    variable_name = "KVP_START"
+    new_value = "TRUE"
     # Set the start variable to TRUE
-    set_variable(robot, "KVP_START",  "TRUE")
-    set_variable(robot, "EXIT_TRAJECTORY",  "FALSE")
-
+    set_variable(robot, variable_name, new_value)
 
 def read_position(robot):
     position = robot.read("$AXIS_ACT")
@@ -64,97 +64,63 @@ def generate_circle_trajectory(radius, num_points):
         trajectory.append(trajstring)
     return trajectory
 
-def init_trajectory_mode(robot,cdis=2.0,advance_points=5):
-    #def approximation for linear move
-    robot.write("KVP_APO",cdis)
-    robot.write("NB_ADVANCE_POINTS",advance_points)
-
-    # init trajectory mode Enable trajectory mode
-    robot.write("KVP_LIN_MOTION", "FALSE")
-    robot.write("KVP_PTP_MOTION", "FALSE")   
-    robot.write("KVP_TRAJECTORY_MODE", "TRUE") 
-
-
-def stop_movement(robot):
-    robot.write("KVPMOVE_ENABLE", "FALSE")  
-    robot.write("EXIT_TRAJECTORY","TRUE")
-    robot.write("KVP_LIN_MOTION", "FALSE")
-    robot.write("KVP_PTP_MOTION", "FALSE")   
-    robot.write("KVP_TRAJECTORY_MODE", "FALSE") 
-
-def move_enable(robot):
-    robot.write("WRITE_INDEX",100)
-    robot.write("KVPMOVE_ENABLE","TRUE")
-    print(f"✅ Move Enable")
-
-def select_buffer(robot,buffer):
-    #set to TRUE select buffer and 2 other to FALSE
-    buffers= [1,2,3]
-    for buff in buffers:
-        if buff == buffer:
-            signal = "TRUE"
-        else: 
-            signal = "FALSE"
-        robot.write(f"EXEC_BUFF{buff}",signal)
-    print(f"✅ Buffer n°{buffer} selected")
-
-def fill_buffer(robot, points_to_send,buffer_nb):
-    buffer_size = 100
-    print(f"")
-    try: 
-        for i in range(0,buffer_size-1):
-            # 2. Récupérer le point à envoyer
-            point = points_to_send[i]
-            # 3. Écrire le point dans le buffer KRL
-            robot.write(f'BUFFER{buffer_nb}_E6POS[{i+1}]', point)
-            #print(f"Writing point n°{i+1}/100")
-    except Exception as e:
-        print(f"❌ Erreur: {e}")
-        return False
-    finally:
-        #launch robot on first 100 points
-        print(f"✅ Buffer n°{buffer_nb} 100 Points sent")
-        return True
-
-    
-
 if __name__ == "__main__":
-    try: 
-        radius = 200  # Radius of the circle
-        num_points = 100         # Number of points in the trajectory
-        trajectory = ["{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                    "{E6POS: X 100.8644, Y 1600.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                    "{E6POS: X 300.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
-                    "{E6POS: X 133.8644, Y 1899.212, Z 999.9999, A 5.259741E-04, B -4.623500E-05, C -89.99998, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"]
-        trajectory = generate_circle_trajectory(radius,num_points)
-        robot = KukaVarProxyClient('192.168.1.5',7000)
-        robot.connect()
-        print("🤖 Connexion au robot établie.")
-        # --- Initialisation ---
-        print("🔄 Initialisation des variables sur le robot...")
-        set_speed(robot, 5)  # Set speed to 10%
-        #----------init robot--------------------------
-        robot.write("KVPMOVE_ENABLE", "FALSE")
-        print("Program started")
-        start_program(robot)
+    radius = 200  # Radius of the circle
+    num_points = 100 # Number of points in the trajectory
+    trajectory = ["{E6POS: X 10.41123, Y 1800.0, Z 2000.0, A -93.38996, B 89.96180, C 179.2077, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
+                  "{E6POS: X 10.41123, Y 1600.0, Z 2000.0, A -93.38996, B 89.96180, C 179.2077, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
+                  "{E6POS: X 10.41123, Y 1600.0, Z 1800.0, A -93.38996, B 89.96180, C 179.2077, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"]
+    trajectory = generate_circle_trajectory(radius,num_points)
+    robot = KukaVarProxyClient('192.168.1.5',7000)
+    robot.connect()
+    start_program(robot)
+    set_speed(robot, 10)  # Set speed to 10%
+    read_position(robot)
 
+    #init
+    robot.write("KVPMOVE_ENABLE", "FALSE") 
+    #def approximation for linear move
+    robot.write("KVP_APO",3.0)
+    robot.write("NB_ADVANCE_POINTS",5)
 
-        init_trajectory_mode(robot)
-        #send  points to robot
-        filled = fill_buffer(robot,trajectory[0:99],1)
-        if filled:
-            select_buffer(robot,1)
-            move_enable(robot)
+    print("sendind points to the robot")
+    #send trajectory points to the robot
+    for i, point in enumerate(trajectory):
+        variable_name = f"BUFFER1_E6POS[{i+1}]" # KRL arrays are typically 1-indexed
+        #print(point)
+        set_variable(robot, variable_name, point)
 
-    except Exception as e:
-        print(f"❌ Erreur: {e}")
-        stop_movement(robot)
-        robot.disconnect()
-    finally:
-        stop_movement(robot)
-        robot.disconnect()
+    print(f"All {len(trajectory)} trajectory points sent to the robot.")
+    
+    # Enable trajectory mode
+    robot.write("KVP_LIN_MOTION", "FALSE")
+    robot.write("KVP_PTP_MOTION", "FALSE")   
+    robot.write("EXEC_BUFF1","TRUE")
+    robot.write("KVP_TRAJECTORY_MODE", "TRUE") 
+    robot.write("KVPMOVE_ENABLE", "TRUE")  
 
+   
+    print("Program started")
+
+    #read current trajectory state
+    current_state = robot.read("COM_TRAJECTORY_FINISHED")
+    current_point = robot.read("COM_CURRENT_POINT_INDEX")
+    while current_state != "TRUE":
+        #print(f"Current trajectory state: {current_state}, Current point index: {current_point}")
+        current_state = robot.read("COM_TRAJECTORY_FINISHED")
+        current_point = robot.read("POINT_INDEX")
+    print("Trajectory finished")
+    #handle end of programm if ctrl-c break the trajectory
     
 
 
 
+
+    # Wait for the trajectory to finish
+    robot.write("KVP_TRAJECTORY_MODE", "FALSE")  # Disable trajectory mode
+    print("Trajectory finished")
+
+
+
+
+robot.disconnect()

@@ -59,7 +59,7 @@ KVP_MOTION_END = FALSE
             ENDIF
 
             IF EXEC_BUFF1 THEN
-                FOR POINT_INDEX=1 TO 30                 
+                FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
                 ; On exécute le mouvement
                 LIN BUFFER1_E6POS[POINT_INDEX] C_DIS
@@ -71,7 +71,7 @@ KVP_MOTION_END = FALSE
             ENDIF
 
             IF EXEC_BUFF2 THEN
-                FOR POINT_INDEX=1 TO 30                 
+                FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
                 ; On exécute le mouvement
                 LIN BUFFER2_E6POS[POINT_INDEX] C_DIS
@@ -83,7 +83,7 @@ KVP_MOTION_END = FALSE
             ENDIF
 
             IF EXEC_BUFF3 THEN
-                FOR POINT_INDEX=1 TO 30                 
+                FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
                 ; On exécute le mouvement
                 LIN BUFFER3_E6POS[POINT_INDEX] C_DIS
