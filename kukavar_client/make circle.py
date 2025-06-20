@@ -56,7 +56,7 @@ def generate_circle_trajectory(radius, num_points):
         angle = 2 * 3.14159 * i / num_points  # Full circle
         x = 159+radius * sin(angle)
         y = 1500 + radius * cos(angle)
-        z = 1000  # Assuming flat trajectory
+        z = 930  # Assuming flat trajectory
         a, b, c = 0.0, 0.0, -90.0 # Orientation angles
         trajstring = f"E6POS: X {x:.4f}, Y {y:.4f}, Z {z:.4f}, A {a:.4f}, B {b:.4f}, C {c:.4f}, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0"
         #add bracket at beginning and end
@@ -66,7 +66,7 @@ def generate_circle_trajectory(radius, num_points):
 
 if __name__ == "__main__":
     radius = 200  # Radius of the circle
-    num_points = 100 # Number of points in the trajectory
+    num_points = 30 # Number of points in the trajectory
     trajectory = ["{E6POS: X 10.41123, Y 1800.0, Z 2000.0, A -93.38996, B 89.96180, C 179.2077, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
                   "{E6POS: X 10.41123, Y 1600.0, Z 2000.0, A -93.38996, B 89.96180, C 179.2077, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}",
                   "{E6POS: X 10.41123, Y 1600.0, Z 1800.0, A -93.38996, B 89.96180, C 179.2077, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"]
@@ -74,13 +74,13 @@ if __name__ == "__main__":
     robot = KukaVarProxyClient('192.168.1.5',7000)
     robot.connect()
     start_program(robot)
-    set_speed(robot, 10)  # Set speed to 10%
+    set_speed(robot, 30)  # Set speed to 10%
     read_position(robot)
 
     #init
     robot.write("KVPMOVE_ENABLE", "FALSE") 
     #def approximation for linear move
-    robot.write("KVP_APO",3.0)
+    robot.write("KVP_APO",2.0)
     robot.write("NB_ADVANCE_POINTS",5)
 
     print("sendind points to the robot")
