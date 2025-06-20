@@ -115,12 +115,21 @@ if __name__ == "__main__":
 
    
     #read current trajectory state
-    current_state = int(robot.read("BUFFER1_END"))
+    current_state = robot.read("BUFFER1_END")
     while current_state != "TRUE":
-        #print(f"Current trajectory state: {current_state}, Current point index: {current_point}")
+        current_point = robot.read("COM_CURRENT_POINT_INDEX")
         current_state = robot.read("BUFFER1_END")
-    print("Trajectory finished")
+        print(f"Current trajectory state: {current_state}, Current point index: {current_point}")
+    print("Trajectory 1 finished")
     #handle end of programm if ctrl-c break the trajectory
+    
+    current_state = robot.read("BUFFER2_END")
+    while current_state != "TRUE":
+        current_point = robot.read("COM_CURRENT_POINT_INDEX")
+        current_state = robot.read("BUFFER2_END")
+        print(f"Current trajectory state: {current_state}, Current point index: {current_point}")
+        
+    print("Trajectory 2 finished")
     
 
 
