@@ -99,16 +99,26 @@ if __name__ == "__main__":
     robot.write("KVP_TRAJECTORY_MODE", "TRUE") 
     robot.write("KVPMOVE_ENABLE", "TRUE")  
 
-   
     print("Program started")
 
+    #send new points to robot
+    print("sendind new points to the robot (buffer 2)")
+    #send trajectory points to the robot
+    for i, point in enumerate(trajectory):
+        variable_name = f"BUFFER2_E6POS[{i+1}]" # KRL arrays are typically 1-indexed
+        #print(point)
+        set_variable(robot, variable_name, point)
+
+    print(f"All {len(trajectory)} trajectory points sent to the robot - Preparing buffer2.")
+    robot.write("EXEC_BUFF1","FALSE")
+    robot.write("EXEC_BUFF2","TRUE")
+
+   
     #read current trajectory state
-    current_state = robot.read("COM_TRAJECTORY_FINISHED")
-    current_point = robot.read("COM_CURRENT_POINT_INDEX")
+    current_state = int(robot.read("BUFFER1_END"))
     while current_state != "TRUE":
         #print(f"Current trajectory state: {current_state}, Current point index: {current_point}")
-        current_state = robot.read("COM_TRAJECTORY_FINISHED")
-        current_point = robot.read("POINT_INDEX")
+        current_state = robot.read("BUFFER1_END")
     print("Trajectory finished")
     #handle end of programm if ctrl-c break the trajectory
     

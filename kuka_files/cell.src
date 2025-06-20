@@ -59,6 +59,7 @@ KVP_MOTION_END = FALSE
             ENDIF
 
             IF EXEC_BUFF1 THEN
+                BUFFER1_END = FALSE
                 FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
                 ; On exécute le mouvement
@@ -68,9 +69,11 @@ KVP_MOTION_END = FALSE
                     EXIT
                 ENDIF
                 ENDFOR
+                BUFFER1_END = TRUE
             ENDIF
 
             IF EXEC_BUFF2 THEN
+                BUFFER2_END = FALSE
                 FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
                 ; On exécute le mouvement
@@ -80,9 +83,11 @@ KVP_MOTION_END = FALSE
                     EXIT
                 ENDIF
                 ENDFOR
+                BUFFER2_END = TRUE
             ENDIF
 
             IF EXEC_BUFF3 THEN
+                BUFFER3_END = FALSE
                 FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
                 ; On exécute le mouvement
@@ -92,6 +97,7 @@ KVP_MOTION_END = FALSE
                     EXIT
                 ENDIF
                 ENDFOR
+                BUFFER3_END = TRUE
             ENDIF 
 
 
