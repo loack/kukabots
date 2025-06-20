@@ -94,6 +94,8 @@ def send_and_watch_points(robot, points_to_send):
     read_idx = 0
     write_idx = 0
 
+    robot.write("TRAJ_TOTAL_POINTS",total_points)
+
     try: 
         while points_sent_count < total_points:
             # --- Synchronisation ---

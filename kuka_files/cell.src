@@ -45,20 +45,18 @@ KVP_MOTION_END = FALSE
 
         ;----Initialise by starting at first point of trajectory----------
         ; Le robot attend qu'au moins les 10 premiers points soit disponibles dans le buffer.
-        WAIT FOR (READ_INDEX + 10)< WRITE_INDEX
+        IF (READ_INDEX+10)<WRITE_INDEX THEN
+            WAIT FOR (READ_INDEX + 10)< WRITE_INDEX
+        ENDIF
         ; Ensure the robot is at the first point before starting the continuous path
         ; This separates the initial PTP move from the continuous LIN segment.
         ; Make sure BUFFER_E6POS[1] contains the actual start point of the trajectory.
         PTP BUFFER_E6POS[1]
 
-        
-        ; --- BOUCLE PRINCIPALE FIFO BUFFER---
-        LOOP
-            ; Condition de sortie de la boucle (si Python a fini et tout a été lu)
-            IF NOT KVP_TRAJECTORY_MODE AND (READ_INDEX >= WRITE_INDEX) THEN
-                EXIT
-            ENDIF
+        TOTAL_POINTS = TRAJ_TOTAL_POINTS
 
+        ; --- BOUCLE PRINCIPALE FIFO BUFFER---
+        FOR TRAJECTORY_INDEX=1 TO TOTAL_POINTS
             ; --- SYNCHRONISATION ---
             ; Le robot attend ici SANS consommer de CPU
             ; qu'au moins un nouveau point soit disponible dans le buffer.
@@ -89,7 +87,7 @@ KVP_MOTION_END = FALSE
                 EXIT
             ENDIF
             
-        ENDLOOP
+        ENDFOR
         
         ; --- End of Trajectory Mode Enhancements ---
         COM_TRAJECTORY_FINISHED = TRUE
