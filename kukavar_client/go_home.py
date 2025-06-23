@@ -38,18 +38,19 @@ start_program(robot)
 
 print("Program started")
 set_speed(robot, 10)  # Set speed to 10%
-robot.write("KVPMOVE_ENABLE", "TRUE")
+robot.write("EXIT_TRAJECTORY", "FALSE")
 robot.write("KVP_LIN_MOTION", "FALSE")
+robot.write("KVP_TRAJECTORY_MODE", "FALSE")
 robot.write("KVP_PTP_MOTION", "TRUE")
+robot.write("KVPMOVE_ENABLE", "TRUE")
 target_position = "{E6AXIS: A1 0, A2 -90.00000, A3 90, A4 0.0, A5 0.0, A6 0.0, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
-Pos1 = "{E6POS: X 652.2838, Y 1282.793, Z 591.0475, A -10.04039, B 26.83337, C -140.3085, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
+Pos1 = "{E6POS: X 100.9826, Y 1700.002, Z 1000.001, A 5.937964E-04, B -6.349671E-05, C -89.99999, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
 Pos2 = "{E6POS: X 652.2838, Y 1282.793, Z 591.0475, A -10.04039, B 26.83337, C -140.3085, S 2, T 35, E1 0.0, E2 0.0, E3 0.0, E4 0.0, E5 0.0, E6 0.0}"
 
 read_position(robot)
 print(f"Moving to target position : {target_position}")
 #robot.write("KVPMOVE_ENABLE", "TRUE")
 #robot.write("XPT1", Pos1)
-time.sleep(5)
 robot.write("P1", target_position)
 
 time.sleep(10)  # Wait for the robot to move to the position

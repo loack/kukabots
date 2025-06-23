@@ -31,10 +31,13 @@ KVP_MOTION_END = FALSE
     ENDIF
     IF KVP_LIN_MOTION THEN
         ; Linear motion
-        PTP BUFFER_E6POS[1]
+        PTP BUFFER1_E6POS[1]
     ENDIF
-
     IF KVP_TRAJECTORY_MODE THEN
+        ;Exit if true
+        IF EXIT_TRAJECTORY THEN
+            EXIT
+        ENDIF
      
         ; Set global look-ahead and approximation
         $ADVANCE = NB_ADVANCE_POINTS
@@ -43,55 +46,62 @@ KVP_MOTION_END = FALSE
         ; Reset flags for a new trajectory
         COM_TRAJECTORY_FINISHED = FALSE
         EXIT_TRAJECTORY = FALSE ; Ensure this flag is reset by external app too
-
         ;----Initialise by starting at first point of trajectory----------
-        ; Le robot attend qu'au moins les 10 premiers points soit disponibles dans le buffer.
-        WAIT FOR (READ_INDEX + 10)< WRITE_INDEX
-        ; Ensure the robot is at the first point before starting the continuous path
-        ; This separates the initial PTP move from the continuous LIN segment.
         ; Make sure BUFFER_E6POS[1] contains the actual start point of the trajectory.
-        PTP BUFFER_E6POS[1]
+        PTP BUFFER1_E6POS[1]
 
-        
-        ; --- BOUCLE PRINCIPALE FIFO BUFFER---
-        LOOP
-            ; Condition de sortie de la boucle (si Python a fini et tout a été lu)
-            IF NOT KVP_TRAJECTORY_MODE AND (READ_INDEX >= WRITE_INDEX) THEN
-                EXIT
-            ENDIF
-
-            ; --- SYNCHRONISATION ---
-            ; Le robot attend ici SANS consommer de CPU
-            ; qu'au moins un nouveau point soit disponible dans le buffer.
-            WAIT FOR READ_INDEX < WRITE_INDEX
-            
-            ; --- LECTURE DU POINT ---
-            ; On incrémente notre compteur de lecture
-            READ_INDEX = READ_INDEX + 1
-            
-            ; On calcule l'index dans notre buffer circulaire (de 1 à 100)
-            ; En KRL, la division d'entiers donne un résultat entier (tronqué)
-            QUOTIENT = (READ_INDEX - 1) / 100  ; Calcul du quotient entier
-            ; Calcul du reste (modulo)
-            BUFFER_INDEX = (READ_INDEX - 1) - (100 * QUOTIENT) + 1
-            
-            COM_CURRENT_POINT_INDEX = BUFFER_INDEX
-
-            ; On exécute le mouvement
-            ; Utilisez PTP, LIN ou CIRC selon votre besoin
-            LIN BUFFER_E6POS[BUFFER_INDEX] C_DIS
-
-            ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
+        TOTAL_POINTS=TRAJ_TOTAL_POINTS
+        ;ENTER BUFFER LOOP
+        WHILE TRUE
+            ;Exit if true
             IF EXIT_TRAJECTORY THEN
                 EXIT
             ENDIF
-            ; Flag to signal end of trajectory
-            IF COM_ALL_POINTS_TRANSMITTED THEN
-                EXIT
+
+            IF EXEC_BUFF1 THEN
+                BUFFER1_END = FALSE
+                FOR POINT_INDEX=1 TO 100                 
+                COM_CURRENT_POINT_INDEX = POINT_INDEX
+                ; On exécute le mouvement
+                LIN BUFFER1_E6POS[POINT_INDEX] C_DIS
+                ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
+                IF EXIT_TRAJECTORY THEN
+                    EXIT
+                ENDIF
+                ENDFOR
+                BUFFER1_END = TRUE
             ENDIF
-            
-        ENDLOOP
-        
+
+            IF EXEC_BUFF2 THEN
+                BUFFER2_END = FALSE
+                FOR POINT_INDEX=1 TO 100                 
+                COM_CURRENT_POINT_INDEX = POINT_INDEX
+                ; On exécute le mouvement
+                LIN BUFFER2_E6POS[POINT_INDEX] C_DIS
+                ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
+                IF EXIT_TRAJECTORY THEN
+                    EXIT
+                ENDIF
+                ENDFOR
+                BUFFER2_END = TRUE
+            ENDIF
+
+            IF EXEC_BUFF3 THEN
+                BUFFER3_END = FALSE
+                FOR POINT_INDEX=1 TO 100                 
+                COM_CURRENT_POINT_INDEX = POINT_INDEX
+                ; On exécute le mouvement
+                LIN BUFFER3_E6POS[POINT_INDEX] C_DIS
+                ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
+                IF EXIT_TRAJECTORY THEN
+                    EXIT
+                ENDIF
+                ENDFOR
+                BUFFER3_END = TRUE
+            ENDIF 
+
+
+        ENDWHILE
         ; --- End of Trajectory Mode Enhancements ---
         COM_TRAJECTORY_FINISHED = TRUE
     ENDIF
