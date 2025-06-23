@@ -1,0 +1,29 @@
+Camera streamer 
+
+1. Install ustreamer
+sudo apt install ustreamer
+
+2. check devices
+list devices with V4L2
+v4l2-ctl --list-devices
+v4l2-ctl --list-formats
+v4l2-ctl -d /dev/video0 --list-formats-ext
+
+/dev/video0
+/dev/video1
+
+3. Launch ustreamer
+
+ustreamer
+sudo ustreamer --device=/dev/video1 --host=0.0.0.0 --port=80
+
+sudo ustreamer --device=/dev/video0 --format=MJPEG --desired-fps=30 --quality=100 --resolution=1920x1080 --host=0.0.0.0 --port=80\ # Device input format
+    --encoder=m2m-image \ # Hardware encoding on V4L2 M2M driver
+    --workers=3 \ # Workers number
+    --persistent \ # Suppress repetitive signal source errors (for example when HDMI cable was disconnected)
+    --dv-timings \ # Use DV-timings
+    --drop-same-frames=30 # Save the traffic
+    --desired-fps=30 --quality=100 --resolution=1920x1080
+
+
+http://lolobotlab:80
