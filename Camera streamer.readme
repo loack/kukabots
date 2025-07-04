@@ -17,7 +17,7 @@ v4l2-ctl -d /dev/video0 --list-formats-ext
 ustreamer
 sudo ustreamer --device=/dev/video1 --host=0.0.0.0 --port=80
 
-sudo ustreamer --device=/dev/video0 --format=MJPEG --desired-fps=30 --quality=100 --resolution=1920x1080 --host=0.0.0.0 --port=80\ # Device input format
+sudo ustreamer --device=/dev/video0 --format=MJPEG --desired-fps=30 --quality=100 --resolution=1920x1080--host=0.0.0.0 --port=80\ # Device input format
     --encoder=m2m-image \ # Hardware encoding on V4L2 M2M driver
     --workers=3 \ # Workers number
     --persistent \ # Suppress repetitive signal source errors (for example when HDMI cable was disconnected)

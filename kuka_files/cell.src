@@ -20,6 +20,21 @@ TRIGGER  WHEN DISTANCE=1 DELAY=-0.1 DO P0_MERKER=TRUE
 
 ;VW(#MPARA,TRUE)
 ;Define accerlation, velocity, and base
+$VEL_AXIS[1]=100 ;definition of the axis velocities
+$VEL_AXIS[2]=100
+$VEL_AXIS[3]=100
+$VEL_AXIS[4]=100
+$VEL_AXIS[5]=100
+$VEL_AXIS[6]=100
+$ACC_AXIS[1]=100 ;definition of the axis accelerations
+$ACC_AXIS[2]=100
+$ACC_AXIS[3]=100
+$ACC_AXIS[4]=100
+$ACC_AXIS[5]=100
+$ACC_AXIS[6]=100
+
+$VEL.CP = KVP_VELOCITY ; Set the default velocity for the
+$ACC.CP = KVP_ACCELERATION ; Set the default acceleration for the trajectory
 
 WHILE TRUE
 IF KVPMOVE_ENABLE THEN
@@ -51,6 +66,8 @@ KVP_MOTION_END = FALSE
         PTP BUFFER1_E6POS[1]
 
         TOTAL_POINTS=TRAJ_TOTAL_POINTS
+        $ORI_TYPE=#CONST ; set orientation of tool to constant
+
         ;ENTER BUFFER LOOP
         WHILE TRUE
             ;Exit if true
@@ -62,8 +79,27 @@ KVP_MOTION_END = FALSE
                 BUFFER1_END = FALSE
                 FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
-                ; On exécute le mouvement
-                LIN BUFFER1_E6POS[POINT_INDEX] C_DIS
+                ; Définir la vitesse spécifique pour ce point
+                $VEL.CP = BUFFER1_VELOCITY[POINT_INDEX]
+                
+                ; Exécuter le type de mouvement approprié
+                SWITCH BUFFER1_MOVE_TYPE[POINT_INDEX]
+                    CASE 1
+                        ; Mouvement linéaire
+                        LIN BUFFER1_E6POS[POINT_INDEX] C_DIS
+                    CASE 2
+                        ; Mouvement circulaire avec point de passage
+                        CIRC BUFFER1_AUX_POS[POINT_INDEX], BUFFER1_E6POS[POINT_INDEX] C_DIS
+                    CASE 3
+                        ; Mouvement circulaire avec point central (nécessite adaptation)
+                        ; Note: KUKA ne supporte pas directement les arcs par centre
+                        ; Il faut calculer le point de passage à partir du centre
+                        LIN BUFFER1_E6POS[POINT_INDEX] C_DIS
+                    DEFAULT
+                        ; Mouvement linéaire par défaut
+                        LIN BUFFER1_E6POS[POINT_INDEX] C_DIS
+                ENDSWITCH
+                
                 ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
                 IF EXIT_TRAJECTORY THEN
                     EXIT
@@ -76,8 +112,25 @@ KVP_MOTION_END = FALSE
                 BUFFER2_END = FALSE
                 FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
-                ; On exécute le mouvement
-                LIN BUFFER2_E6POS[POINT_INDEX] C_DIS
+                ; Définir la vitesse spécifique pour ce point
+                $VEL.CP = BUFFER2_VELOCITY[POINT_INDEX]
+                
+                ; Exécuter le type de mouvement approprié
+                SWITCH BUFFER2_MOVE_TYPE[POINT_INDEX]
+                    CASE 1
+                        ; Mouvement linéaire
+                        LIN BUFFER2_E6POS[POINT_INDEX] C_DIS
+                    CASE 2
+                        ; Mouvement circulaire avec point de passage
+                        CIRC BUFFER2_AUX_POS[POINT_INDEX], BUFFER2_E6POS[POINT_INDEX] C_DIS
+                    CASE 3
+                        ; Mouvement circulaire avec point central
+                        LIN BUFFER2_E6POS[POINT_INDEX] C_DIS
+                    DEFAULT
+                        ; Mouvement linéaire par défaut
+                        LIN BUFFER2_E6POS[POINT_INDEX] C_DIS
+                ENDSWITCH
+                
                 ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
                 IF EXIT_TRAJECTORY THEN
                     EXIT
@@ -90,8 +143,25 @@ KVP_MOTION_END = FALSE
                 BUFFER3_END = FALSE
                 FOR POINT_INDEX=1 TO 100                 
                 COM_CURRENT_POINT_INDEX = POINT_INDEX
-                ; On exécute le mouvement
-                LIN BUFFER3_E6POS[POINT_INDEX] C_DIS
+                ; Définir la vitesse spécifique pour ce point
+                $VEL.CP = BUFFER3_VELOCITY[POINT_INDEX]
+                
+                ; Exécuter le type de mouvement approprié
+                SWITCH BUFFER3_MOVE_TYPE[POINT_INDEX]
+                    CASE 1
+                        ; Mouvement linéaire
+                        LIN BUFFER3_E6POS[POINT_INDEX] C_DIS
+                    CASE 2
+                        ; Mouvement circulaire avec point de passage
+                        CIRC BUFFER3_AUX_POS[POINT_INDEX], BUFFER3_E6POS[POINT_INDEX] C_DIS
+                    CASE 3
+                        ; Mouvement circulaire avec point central
+                        LIN BUFFER3_E6POS[POINT_INDEX] C_DIS
+                    DEFAULT
+                        ; Mouvement linéaire par défaut
+                        LIN BUFFER3_E6POS[POINT_INDEX] C_DIS
+                ENDSWITCH
+                
                 ; If EXIT_TRAJECTORY was set, break out of the main LOOP as well
                 IF EXIT_TRAJECTORY THEN
                     EXIT
@@ -99,7 +169,6 @@ KVP_MOTION_END = FALSE
                 ENDFOR
                 BUFFER3_END = TRUE
             ENDIF 
-
 
         ENDWHILE
         ; --- End of Trajectory Mode Enhancements ---

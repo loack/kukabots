@@ -28,6 +28,9 @@ DECL BOOL KVP_LIN_MOTION = FALSE
 ;Approximation in trajectory
 DECL REAL KVP_APROX_CDIS = 2.0
 DECL GLOBAL INT NB_ADVANCE_POINTS = 3 ; Number of points to look ahead
+; Default velocity and acceleration for trajectory
+DECL REAL KVP_VELOCITY = 100.0 ; Default velocity for trajectory (mm/s)
+DECL REAL KVP_ACCELERATION = 100.0 ; Default acceleration for trajectory (mm/s^2)
 
 ; Trajectory mode control
 DECL BOOL KVP_TRAJECTORY_MODE = FALSE ; Enable trajectory mode
@@ -35,6 +38,21 @@ DECL BOOL EXIT_TRAJECTORY = FALSE ; Flag to exit trajectory mode
 DECL GLOBAL E6POS BUFFER1_E6POS[100] ; An array to store a segment of points
 DECL GLOBAL E6POS BUFFER2_E6POS[100] ; An array to store a segment of points
 DECL GLOBAL E6POS BUFFER3_E6POS[100] ; An array to store a segment of points
+
+; Velocity buffers for each trajectory buffer
+DECL GLOBAL REAL BUFFER1_VELOCITY[100] ; Velocity array for buffer 1 (mm/s)
+DECL GLOBAL REAL BUFFER2_VELOCITY[100] ; Velocity array for buffer 2 (mm/s)
+DECL GLOBAL REAL BUFFER3_VELOCITY[100] ; Velocity array for buffer 3 (mm/s)
+
+; Movement type buffers (1=LIN, 2=CIRC via point, 3=CIRC center)
+DECL GLOBAL INT BUFFER1_MOVE_TYPE[100] ; Movement type array for buffer 1
+DECL GLOBAL INT BUFFER2_MOVE_TYPE[100] ; Movement type array for buffer 2
+DECL GLOBAL INT BUFFER3_MOVE_TYPE[100] ; Movement type array for buffer 3
+
+; Auxiliary points for circular movements (via points or center points)
+DECL GLOBAL E6POS BUFFER1_AUX_POS[100] ; Auxiliary points for buffer 1
+DECL GLOBAL E6POS BUFFER2_AUX_POS[100] ; Auxiliary points for buffer 2
+DECL GLOBAL E6POS BUFFER3_AUX_POS[100] ; Auxiliary points for buffer 3
 
 DECL BOOL EXEC_BUFF1 = FALSE
 DECL BOOL EXEC_BUFF2 = FALSE
@@ -1092,7 +1110,7 @@ EXT  UP64 ( )
 EXT  UP65 ( )
 EXT  UP66 ( )
 EXT  UP67 ( )
-EXT  UP68 ( )
+EXT   UP68 ( )
 EXT  UP69 ( )
 EXT  UP70 ( )
 EXT  UP71 ( )
