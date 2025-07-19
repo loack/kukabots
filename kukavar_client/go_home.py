@@ -24,6 +24,19 @@ def start_program(robot):
     # Set the start variable to TRUE
     set_variable(robot, variable_name, new_value)
 
+def stop_program(robot):
+    variable_name = "KVP_START"
+    new_value = "FALSE"
+    # Set the start variable to FALSE
+    set_variable(robot, variable_name, new_value)
+    robot.write("EXIT_TRAJECTORY", "FALSE")
+    robot.write("KVP_LIN_MOTION", "FALSE")
+    robot.write("KVP_TRAJECTORY_MODE", "FALSE")
+    robot.write("KVP_PTP_MOTION", "FALSE")
+    robot.write("KVPMOVE_ENABLE", "FALSE")
+    robot.write("KVP_STOP", "TRUE")
+
+
 def read_position(robot):
     position = robot.read("$AXIS_ACT")
     print(f"Current axis position: {position}")
@@ -31,7 +44,7 @@ def read_position(robot):
     print(f"Current Cartesian position: {position_xyz}")
     return position
 
-robot = KukaVarProxyClient('192.168.1.5',7000)
+robot = KukaVarProxyClient('192.168.1.6',7000)
 robot.connect()
 
 start_program(robot)
@@ -55,7 +68,8 @@ robot.write("P1", target_position)
 
 time.sleep(10)  # Wait for the robot to move to the position
 
-
+stop_program(robot)
+print("Program stopped")
 
 
 robot.disconnect()

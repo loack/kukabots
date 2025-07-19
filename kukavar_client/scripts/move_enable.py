@@ -1,6 +1,6 @@
 from kukavarproxy import KukaVarProxyClient
 
-robot = KukaVarProxyClient('192.168.1.5',7000)
+robot = KukaVarProxyClient('192.168.1.6',7000)
 robot.connect()
 variable_name = "KVPMOVE_ENABLE"
 new_value = "TRUE"
