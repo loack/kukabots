@@ -8,7 +8,7 @@ class KukaUI:
         master.title("KUKA Robot Control")
 
         # Connect to robot
-        self.robot = KukaVarProxyClient('192.168.1.5', 7000)
+        self.robot = KukaVarProxyClient('192.168.1.6', 7000)
         self.robot.connect()
 
         # Status indicators

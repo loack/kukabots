@@ -1002,15 +1002,6 @@ DEF  AE_SPS_CYC ( )
    NOTIFY_MSG(MSG_STRING[],1)
    CWRITE($CMD,STAT,MODE,"RUN /R1/CELL ()")
    ENDIF
-   ;KVP Stop
-   IF KVP_STOP THEN
-      MSG_STRING[]="Stop KVP "
-      NOTIFY_MSG(MSG_STRING[],1)
-      KVP_STOP=FALSE
-      BRAKE;
-      CWRITE($CMD,STAT,MODE,"STOP 1")
-      CWRITE($CMD,STAT,MODE,"CANCEL 1")
-   ENDIF
    ;--------------------------------KVP defintions-------------------------------
    ;----------------------------------------------------------------------------
 
